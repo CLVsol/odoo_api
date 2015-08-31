@@ -18,11 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
 ################################################################################
 
-# import re
-# import openerplib
-# import xmlrpclib
-# import argparse
-# import getpass
+import argparse
+import getpass
 
 hostname = 'localhost'
 admin = 'admin'
