@@ -17,6 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
 ################################################################################
 
-from erppeek import 
+from erppeek import *
 import openerplib
 import base
