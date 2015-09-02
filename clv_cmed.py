@@ -246,5 +246,5 @@ if __name__ == '__main__':
     print('--> Executing clv_cmed_import_new()...')
     clv_cmed_import_new(client, infile_name, from_)
 
-    print('--> clv_cmed_import_new.py')
+    print('--> clv_cmed.py')
     print('--> Execution time:', secondsToStr(time() - start))
