@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 ################################################################################
 #                                                                              #
@@ -17,11 +18,63 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
 ################################################################################
 
+from __future__ import print_function
+
+import xmlrpclib
 from erppeek import *
-import openerplib
-import base
-import clv_cmed
-import clv_insured_mng
-import clv_medicament
-import clv_medicament_list
-import clv_medicament_group
+import csv
+
+from base import *
+import argparse
+import getpass
+
+def get_arguments():
+
+    global username
+    global password
+    global dbname
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--user', action="store", dest="username")
+    parser.add_argument('--pw', action="store", dest="password")
+    parser.add_argument('--db', action="store", dest="dbname")
+
+    args = parser.parse_args()
+    print('%s%s' % ('--> ', args))
+
+    if args.dbname != None:
+        dbname = args.dbname
+    elif dbname == '*':
+        dbname = raw_input('dbname: ')
+
+    if args.username != None:
+        username = args.username
+    elif username == '*':
+        username = raw_input('username: ')
+
+    if args.password != None:
+        password = args.password
+    elif password == '*':
+        password = getpass.getpass('password: ')
+
+if __name__ == '__main__':
+
+    server = 'http://localhost:8069'
+
+    # username = 'username'
+    username = '*'
+    # paswword = 'paswword' 
+    paswword = '*' 
+
+    dbname = 'odoo'
+    # dbname = '*'
+
+    get_arguments()
+
+    from time import time
+    start = time()
+
+    print('--> clv_insured_mng.py...')
+
+    print('--> clv_insured_mng.py')
+    print('--> Execution time:', secondsToStr(time() - start))
