@@ -28,6 +28,26 @@ from base import *
 import argparse
 import getpass
 
+def clv_insured_mng_unlink(client, status):
+
+    clv_insured_mng = client.model('clv_insured_mng')
+    insured_mng_browse = clv_insured_mng.browse([('state', '=', status),])
+
+    i = 0
+    for insured_mng in insured_mng_browse:
+        i += 1
+        print(i, insured_mng.name)
+
+        history = client.model('clv_insured_mng.history')
+        history_browse = history.browse([('insured_mng_id', '=', insured_mng.id),])
+        history_ids = history_browse.id
+        print('>>>>>', history_ids)
+
+        history.unlink(history_ids)
+        clv_insured_mng.unlink(insured_mng.id)
+
+    print('--> i: ', i)
+
 def get_arguments():
 
     global username
@@ -75,6 +95,22 @@ if __name__ == '__main__':
     start = time()
 
     print('--> clv_insured_mng.py...')
+
+    client = erppeek.Client(server, dbname, username, password)
+
+    print('-->', client)
+
+    print('--> Executing clv_insured_mng_unlink("draft")...')
+    clv_insured_mng_unlink(client, 'draft')
+
+    print('--> Executing clv_insured_mng_unlink("revised")...')
+    clv_insured_mng_unlink(client, 'revised')
+
+    print('--> Executing clv_insured_mng_unlink("done")...')
+    clv_insured_mng_unlink(client, 'done')
+
+    print('--> Executing clv_insured_mng_unlink("canceled")...')
+    clv_insured_mng_unlink(client, 'canceled')
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
