@@ -132,8 +132,8 @@ def clv_cmed_import_new(client, infile_name, from_):
         print(excluded, cmed.name)
 
         values = {
-                'excluded': True,
-                }
+            'excluded': True,
+            }
         clv_cmed.write(cmed.id, values)
 
     f.close()
@@ -164,15 +164,95 @@ def clv_cmed_check_ean(client):
             found += 1
             print('>>>>>', ean_cmed_ids)
             values = {
-                    'tag_ids': [(4, tag_id_EAN_replicado)],
-                    }
+                'tag_ids': [(4, tag_id_EAN_replicado)],
+                }
             clv_cmed.write(cmed.id, values)
         else:
             not_found += 1
             values = {
-                    'tag_ids': [(3, tag_id_EAN_replicado)],
-                    }
+                'tag_ids': [(3, tag_id_EAN_replicado)],
+                }
             clv_cmed.write(cmed.id, values)
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not found: ', not_found)
+
+def clv_cmed_updt_manufacturer(client):
+
+    clv_cmed = client.model('clv_cmed')
+    cmed_browse = clv_cmed.browse([('state', '=', 'new'), 
+                                   ('manufacturer', '=', False),
+                                   ])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for cmed in cmed_browse:
+        i += 1
+
+        print(i, cmed.latoratorio)
+
+        clv_medicament_manufacturer_str = client.model('clv_medicament.manufacturer.str')
+        manufacturer_str_browse = clv_medicament_manufacturer_str.browse([('name', '=', cmed.latoratorio),])
+        manufacturer_str_id = manufacturer_str_browse.id
+
+        if manufacturer_str_id != []:
+            found += 1
+
+            manufacturer_id = manufacturer_str_browse.manufacturer_id.id
+
+            print('>>>>>', manufacturer_str_id, manufacturer_id)
+            
+            values = {
+                'manufacturer': manufacturer_id[0],
+                }
+            clv_cmed.write(cmed.id, values)
+        else:
+            not_found += 1
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not found: ', not_found)
+
+def clv_cmed_updt_active_component(client):
+
+    clv_cmed = client.model('clv_cmed')
+    cmed_browse = clv_cmed.browse([('state', '=', 'new'), 
+                                   ('active_component', '=', False),
+                                   ])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for cmed in cmed_browse:
+        i += 1
+
+        print(i, cmed.principio_ativo)
+
+        clv_medicament_active_component_str = \
+            client.model('clv_medicament.active_component.str')
+        active_component_str_browse = \
+            clv_medicament_active_component_str.browse([('name', '=', cmed.principio_ativo),])
+        active_component_str_id = active_component_str_browse.id
+
+        if active_component_str_id != []:
+
+            active_component_id = active_component_str_browse.active_component_id.id
+
+            if active_component_id != [False]:
+                found += 1
+
+                print('>>>>>', active_component_str_id, active_component_id)
+                
+                values = {
+                    'active_component': active_component_id[0],
+                    }
+                clv_cmed.write(cmed.id, values)
+            else:
+                not_found += 1
+        else:
+            not_found += 1
 
     print('--> i: ', i)
     print('--> found: ', found)
@@ -284,9 +364,17 @@ if __name__ == '__main__':
     # print('--> Executing clv_cmed_import_new()...')
     # clv_cmed_import_new(client, infile_name, from_)
 
+    # print('-->', client)
+    # print('--> Executing clv_cmed_check_ean()...')
+    # clv_cmed_check_ean(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_cmed_updt_manufacturer()...')
+    # clv_cmed_updt_manufacturer(client)
+
     print('-->', client)
-    print('--> Executing clv_cmed_check_ean()...')
-    clv_cmed_check_ean(client)
+    print('--> Executing clv_cmed_updt_active_component()...')
+    clv_cmed_updt_active_component(client)
 
     print('--> clv_cmed.py')
     print('--> Execution time:', secondsToStr(time() - start))
