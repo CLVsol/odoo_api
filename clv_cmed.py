@@ -28,6 +28,8 @@ from base import *
 import argparse
 import getpass
 
+import clv_tag
+
 def clv_cmed_import_new(client, infile_name, from_):
 
     delimiter_char = ';'
@@ -140,6 +142,42 @@ def clv_cmed_import_new(client, infile_name, from_):
     print('--> not_found: ', not_found)
     print('--> excluded: ', excluded)
 
+def clv_cmed_check_ean(client):
+
+    tag_id_EAN_replicado = clv_tag.get_tag_id(client, 'EAN replicado', 'Registro com o código EAN replicado.')
+
+    print('>>>>>', tag_id_EAN_replicado)
+
+
+    clv_cmed = client.model('clv_cmed')
+    cmed_browse = clv_cmed.browse([])
+    i = 0
+    found = 0
+    not_found = 0
+    for cmed in cmed_browse:
+        i += 1
+        print(i, cmed.name)
+
+        ean_cmed_ids = clv_cmed.browse([('ean', '=', cmed.ean),]).id
+
+        if len(ean_cmed_ids) > 1:
+            found += 1
+            print('>>>>>', ean_cmed_ids)
+            values = {
+                    'tag_ids': [(4, tag_id_EAN_replicado)],
+                    }
+            clv_cmed.write(cmed.id, values)
+        else:
+            not_found += 1
+            values = {
+                    'tag_ids': [(3, tag_id_EAN_replicado)],
+                    }
+            clv_cmed.write(cmed.id, values)
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not found: ', not_found)
+
 def get_arguments():
 
     global admin_pw
@@ -242,9 +280,13 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    print('-->', client, infile_name, from_)
-    print('--> Executing clv_cmed_import_new()...')
-    clv_cmed_import_new(client, infile_name, from_)
+    # print('-->', client, infile_name, from_)
+    # print('--> Executing clv_cmed_import_new()...')
+    # clv_cmed_import_new(client, infile_name, from_)
+
+    print('-->', client)
+    print('--> Executing clv_cmed_check_ean()...')
+    clv_cmed_check_ean(client)
 
     print('--> clv_cmed.py')
     print('--> Execution time:', secondsToStr(time() - start))
