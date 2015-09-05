@@ -198,16 +198,19 @@ def clv_cmed_updt_manufacturer(client):
         manufacturer_str_id = manufacturer_str_browse.id
 
         if manufacturer_str_id != []:
-            found += 1
 
             manufacturer_id = manufacturer_str_browse.manufacturer_id.id
 
-            print('>>>>>', manufacturer_str_id, manufacturer_id)
-            
-            values = {
-                'manufacturer': manufacturer_id[0],
-                }
-            clv_cmed.write(cmed.id, values)
+            if manufacturer_id != [False]:
+                found += 1
+                print('>>>>>', manufacturer_str_id, manufacturer_id)
+                
+                values = {
+                    'manufacturer': manufacturer_id[0],
+                    }
+                clv_cmed.write(cmed.id, values)
+            else:
+                not_found += 1
         else:
             not_found += 1
 
