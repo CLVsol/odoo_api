@@ -363,17 +363,17 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    # print('-->', client, infile_name, from_)
-    # print('--> Executing clv_cmed_import_new()...')
-    # clv_cmed_import_new(client, infile_name, from_)
+    print('-->', client, infile_name, from_)
+    print('--> Executing clv_cmed_import_new()...')
+    clv_cmed_import_new(client, infile_name, from_)
 
-    # print('-->', client)
-    # print('--> Executing clv_cmed_check_ean()...')
-    # clv_cmed_check_ean(client)
+    print('-->', client)
+    print('--> Executing clv_cmed_check_ean()...')
+    clv_cmed_check_ean(client)
 
-    # print('-->', client)
-    # print('--> Executing clv_cmed_updt_manufacturer()...')
-    # clv_cmed_updt_manufacturer(client)
+    print('-->', client)
+    print('--> Executing clv_cmed_updt_manufacturer()...')
+    clv_cmed_updt_manufacturer(client)
 
     print('-->', client)
     print('--> Executing clv_cmed_updt_active_component()...')
