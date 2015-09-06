@@ -39,9 +39,12 @@ def clv_cmed_import_new(client, infile_name, from_):
     rownum = 0
     found = 0
     not_found = 0
+    ct = False
     for row in r:
 
         if rownum == 0:
+            if row[7] == 'CLASSE TERAPÊUTICA':
+                ct = True
             rownum += 1
             continue
 
@@ -54,7 +57,10 @@ def clv_cmed_import_new(client, infile_name, from_):
         EAN = row[i.next()]
         PRODUTO = row[i.next()]
         APRESENTACAO = row[i.next()]
-        CLASSE_TERAPEUTICA = row[i.next()]
+        if ct:
+            CLASSE_TERAPEUTICA = row[i.next()]
+        else:
+            CLASSE_TERAPEUTICA = False
         PF_0 = row[i.next()].replace(",", ".")
         if PF_0 == 'Liberado':
             PF_0 = ""
@@ -261,6 +267,134 @@ def clv_cmed_updt_active_component(client):
     print('--> found: ', found)
     print('--> not found: ', not_found)
 
+def get_cmed_list_id(client, list_name):
+
+    clv_cmed_list = client.model('clv_cmed.list')
+    cmed_list_browse = clv_cmed_list.browse([('name', '=', list_name),])
+    cmed_list_id = cmed_list_browse.id
+
+    if cmed_list_id == []:
+        values = {
+            'name': list_name,
+            }
+        cmed_list_id = clv_cmed_list.create(values).id
+    else:
+        cmed_list_id = cmed_list_id[0]
+
+    return cmed_list_id
+
+def clv_cmed_list_import_new(client, file_name, list_name, previous_list_name):
+
+    list_id = get_cmed_list_id(client, list_name)
+    previous_list_id = False
+    if previous_list_name != False:
+        previous_list_id = get_cmed_list_id(client, previous_list_name)
+
+    delimiter_char = ';'
+
+    f  = open(file_name, "rb")
+    r = csv.reader(f, delimiter=delimiter_char)
+    rownum = 0
+    cmed_found = 0
+    cmed_not_found = 0
+    cmed_included = 0
+    ct = False
+    for row in r:
+
+        if rownum == 0:
+            if row[7] == 'CLASSE TERAPÊUTICA':
+                ct = True
+            rownum += 1
+            continue
+
+        i = autoIncrement(0, 1)
+
+        PRINCIPIO_ATIVO = row[i.next()]
+        CNPJ = row[i.next()]
+        LABORATORIO = row[i.next()]
+        CODIGO_GGREM = row[i.next()]
+        EAN = row[i.next()]
+        PRODUTO = row[i.next()]
+        APRESENTACAO = row[i.next()]
+        if ct:
+            CLASSE_TERAPEUTICA = row[i.next()]
+        else:
+            CLASSE_TERAPEUTICA = False
+        PF_0 = row[i.next()].replace(",", ".")
+        if PF_0 == 'Liberado':
+            PF_0 = ""
+        PF_12 = row[i.next()].replace(".", "").replace(",", ".")
+        PF_17 = row[i.next()].replace(".", "").replace(",", ".")
+        PF_18 = row[i.next()].replace(".", "").replace(",", ".")
+        PF_19 = row[i.next()].replace(".", "").replace(",", ".")
+        PF_17_ZONA_FRANCA_DE_MANAUS = row[i.next()].replace(".", "").replace(",", ".")
+        PMC_0 = row[i.next()].replace(".", "").replace(",", ".")
+        PMC_12 = row[i.next()].replace(".", "").replace(",", ".")
+        PMC_17 = row[i.next()].replace(".", "").replace(",", ".")
+        PMC_18 = row[i.next()].replace(".", "").replace(",", ".")
+        PMC_19 = row[i.next()].replace(".", "").replace(",", ".")
+        PMC_17_ZONA_FRANCA_DE_MANAUS = row[i.next()].replace(".", "").replace(",", ".")
+        RESTRICAO_HOSPITALAR = row[i.next()]
+        CAP = row[i.next()]
+        CONFAZ_87 = row[i.next()]
+        ANALISE_RECURSAL = row[i.next()]
+
+        print(rownum, CODIGO_GGREM, from_, PRODUTO, APRESENTACAO, CLASSE_TERAPEUTICA)
+
+        clv_cmed = client.model('clv_cmed')
+        cmed_browse = clv_cmed.browse([('codigo_ggrem', '=', CODIGO_GGREM),])
+        cmed_id = cmed_browse.id
+
+        if cmed_id != []:
+            cmed_found += 1
+            cmed_id = cmed_id[0]
+            cmed_from = cmed_browse.read('from')[0]
+
+            clv_cmed_list_item = client.model('clv_cmed.list.item')
+            cmed_list_item_browse = \
+                clv_cmed_list_item.browse([('list_id', '=', previous_list_id),
+                                           ('medicament_id', '=', cmed_id),
+                                           ])
+            previous_list_item_id = cmed_list_item_browse.id
+
+            included = False
+            if previous_list_item_id == []:
+                cmed_included += 1
+                included = True
+
+            print('>>>>>', cmed_found, cmed_from, list_name, included)
+
+            values = {
+                'list_id': list_id,
+                'medicament_id': cmed_id,
+                'order': rownum,
+                'pf_0': PF_0,
+                'pf_12': PF_12,
+                'pf_17': PF_17,
+                'pf_18': PF_18,
+                'pf_19': PF_19,
+                'pf_17_zfm': PF_17_ZONA_FRANCA_DE_MANAUS,
+                'pmc_0': PMC_0,
+                'pmc_12': PMC_12,
+                'pmc_17': PMC_17,
+                'pmc_18': PMC_18,
+                'pmc_19': PMC_19,
+                'pmc_17_zfm': PMC_17_ZONA_FRANCA_DE_MANAUS,
+                'included': included,
+                }
+            cmed_list_item = clv_cmed_list_item.create(values)
+        else:
+            cmed_not_found += 1
+
+        rownum += 1
+
+    f.close()
+
+    print('rownum: ', rownum - 1)
+    print('cmed_found: ', cmed_found)
+    print('cmed_not_found: ', cmed_not_found)
+    print('cmed_included: ', cmed_included)
+
 def get_arguments():
 
     global admin_pw
@@ -363,21 +497,141 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    print('-->', client, infile_name, from_)
-    print('--> Executing clv_cmed_import_new()...')
-    clv_cmed_import_new(client, infile_name, from_)
+    # print('-->', client, infile_name, from_)
+    # print('--> Executing clv_cmed_import_new()...')
+    # clv_cmed_import_new(client, infile_name, from_)
 
-    print('-->', client)
-    print('--> Executing clv_cmed_check_ean()...')
-    clv_cmed_check_ean(client)
+    # print('-->', client)
+    # print('--> Executing clv_cmed_check_ean()...')
+    # clv_cmed_check_ean(client)
 
-    print('-->', client)
-    print('--> Executing clv_cmed_updt_manufacturer()...')
-    clv_cmed_updt_manufacturer(client)
+    # print('-->', client)
+    # print('--> Executing clv_cmed_updt_manufacturer()...')
+    # clv_cmed_updt_manufacturer(client)
 
-    print('-->', client)
-    print('--> Executing clv_cmed_updt_active_component()...')
-    clv_cmed_updt_active_component(client)
+    # print('-->', client)
+    # print('--> Executing clv_cmed_updt_active_component()...')
+    # clv_cmed_updt_active_component(client)
+
+    # list_name = 'CMED_2014_01_08'
+    # previous_list_name = False
+    # file_name = '/opt/openerp/cmed/CMED_2014_01_08.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_02_20'
+    # previous_list_name = 'CMED_2014_01_08'
+    # file_name = '/opt/openerp/cmed/CMED_2014_02_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_03_18'
+    # previous_list_name = 'CMED_2014_02_20'
+    # file_name = '/opt/openerp/cmed/CMED_2014_03_18.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_04_22'
+    # previous_list_name = 'CMED_2014_03_18'
+    # file_name = '/opt/openerp/cmed/CMED_2014_04_22.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_05_20'
+    # previous_list_name = 'CMED_2014_04_22'
+    # file_name = '/opt/openerp/cmed/CMED_2014_05_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_06_18'
+    # previous_list_name = 'CMED_2014_05_20'
+    # file_name = '/opt/openerp/cmed/CMED_2014_06_18.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_07_30'
+    # previous_list_name = 'CMED_2014_06_18'
+    # file_name = '/opt/openerp/cmed/CMED_2014_07_30.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_08_20'
+    # previous_list_name = 'CMED_2014_07_30'
+    # file_name = '/opt/openerp/cmed/CMED_2014_08_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_09_22'
+    # previous_list_name = 'CMED_2014_08_20'
+    # file_name = '/opt/openerp/cmed/CMED_2014_09_22.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_10_20'
+    # previous_list_name = 'CMED_2014_09_22'
+    # file_name = '/opt/openerp/cmed/CMED_2014_10_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_11_20'
+    # previous_list_name = 'CMED_2014_10_20'
+    # file_name = '/opt/openerp/cmed/CMED_2014_11_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2014_12_22'
+    # previous_list_name = 'CMED_2014_11_20'
+    # file_name = '/opt/openerp/cmed/CMED_2014_12_22.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_01_20'
+    # previous_list_name = 'CMED_2014_12_22'
+    # file_name = '/opt/openerp/cmed/CMED_2015_01_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_02_20'
+    # previous_list_name = 'CMED_2015_01_20'
+    # file_name = '/opt/openerp/cmed/CMED_2015_02_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_03_30'
+    # previous_list_name = 'CMED_2015_02_20'
+    # file_name = '/opt/openerp/cmed/CMED_2015_03_30.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_04_14'
+    # previous_list_name = 'CMED_2015_03_30'
+    # file_name = '/opt/openerp/cmed/CMED_2015_04_14.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_05_14'
+    # previous_list_name = 'CMED_2015_04_14'
+    # file_name = '/opt/openerp/cmed/CMED_2015_05_14.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_06_22'
+    # previous_list_name = 'CMED_2015_05_14'
+    # file_name = '/opt/openerp/cmed/CMED_2015_06_22.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_07_20'
+    # previous_list_name = 'CMED_2015_06_22'
+    # file_name = '/opt/openerp/cmed/CMED_2015_07_20.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'CMED_2015_08_21'
+    # previous_list_name = 'CMED_2015_07_20'
+    # file_name = '/opt/openerp/cmed/CMED_2015_08_21.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_cmed_list_import_new(client, file_name, list_name, previous_list_name)
 
     print('--> clv_cmed.py')
     print('--> Execution time:', secondsToStr(time() - start))
