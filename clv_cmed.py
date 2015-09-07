@@ -80,8 +80,7 @@ def clv_cmed_import_new(client, infile_name, from_):
         CONFAZ_87 = row[i.next()]
         ANALISE_RECURSAL = row[i.next()]
 
-        print(rownum, CODIGO_GGREM, from_, PRODUTO.encode("utf-8"), 
-              APRESENTACAO.encode("utf-8"))
+        print(rownum, CODIGO_GGREM, from_)
 
         clv_cmed = client.model('clv_cmed')
         cmed_browse = clv_cmed.browse([('codigo_ggrem', '=', CODIGO_GGREM),])
@@ -136,7 +135,7 @@ def clv_cmed_import_new(client, infile_name, from_):
     for cmed in cmed_browse:
         excluded += 1
 
-        print(excluded, cmed.name.encode("utf-8"))
+        print(excluded, cmed.codigo_ggrem)
 
         values = {
             'excluded': True,
@@ -164,7 +163,7 @@ def clv_cmed_check_ean(client):
     not_found = 0
     for cmed in cmed_browse:
         i += 1
-        print(i, cmed.name.encode("utf-8"))
+        print(i, cmed.codigo_ggrem)
 
         ean_cmed_ids = clv_cmed.browse([('ean', '=', cmed.ean),]).id
 
@@ -199,7 +198,7 @@ def clv_cmed_updt_manufacturer(client):
     for cmed in cmed_browse:
         i += 1
 
-        print(i, cmed.latoratorio.encode("utf-8"))
+        print(i, cmed.latoratorio)
 
         clv_medicament_manufacturer_str = client.model('clv_medicament.manufacturer.str')
         manufacturer_str_browse = clv_medicament_manufacturer_str.browse([('name', '=', cmed.latoratorio),])
@@ -341,8 +340,7 @@ def clv_cmed_list_import_new(client, file_name, list_name, previous_list_name):
         CONFAZ_87 = row[i.next()]
         ANALISE_RECURSAL = row[i.next()]
 
-        print(rownum, CODIGO_GGREM, from_, PRODUTO.encode("utf-8"), 
-              APRESENTACAO.encode("utf-8"), CLASSE_TERAPEUTICA.encode("utf-8"))
+        print(rownum, CODIGO_GGREM, from_)
 
         clv_cmed = client.model('clv_cmed')
         cmed_browse = clv_cmed.browse([('codigo_ggrem', '=', CODIGO_GGREM),])
