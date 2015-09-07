@@ -80,7 +80,8 @@ def clv_cmed_import_new(client, infile_name, from_):
         CONFAZ_87 = row[i.next()]
         ANALISE_RECURSAL = row[i.next()]
 
-        print(rownum, CODIGO_GGREM, from_, PRODUTO, APRESENTACAO)
+        print(rownum, CODIGO_GGREM, from_, PRODUTO.encode("utf-8"), 
+              APRESENTACAO.encode("utf-8"))
 
         clv_cmed = client.model('clv_cmed')
         cmed_browse = clv_cmed.browse([('codigo_ggrem', '=', CODIGO_GGREM),])
@@ -135,7 +136,7 @@ def clv_cmed_import_new(client, infile_name, from_):
     for cmed in cmed_browse:
         excluded += 1
 
-        print(excluded, cmed.name)
+        print(excluded, cmed.name.encode("utf-8"))
 
         values = {
             'excluded': True,
@@ -150,7 +151,8 @@ def clv_cmed_import_new(client, infile_name, from_):
 
 def clv_cmed_check_ean(client):
 
-    tag_id_EAN_replicado = clv_tag.get_tag_id(client, 'EAN replicado', 'Registro com o código EAN replicado.')
+    tag_id_EAN_replicado = \
+        clv_tag.get_tag_id(client, 'EAN replicado', 'Registro com o código EAN replicado.')
 
     print('>>>>>', tag_id_EAN_replicado)
 
@@ -162,7 +164,7 @@ def clv_cmed_check_ean(client):
     not_found = 0
     for cmed in cmed_browse:
         i += 1
-        print(i, cmed.name)
+        print(i, cmed.name.encode("utf-8"))
 
         ean_cmed_ids = clv_cmed.browse([('ean', '=', cmed.ean),]).id
 
@@ -197,7 +199,7 @@ def clv_cmed_updt_manufacturer(client):
     for cmed in cmed_browse:
         i += 1
 
-        print(i, cmed.latoratorio)
+        print(i, cmed.latoratorio.encode("utf-8"))
 
         clv_medicament_manufacturer_str = client.model('clv_medicament.manufacturer.str')
         manufacturer_str_browse = clv_medicament_manufacturer_str.browse([('name', '=', cmed.latoratorio),])
@@ -339,7 +341,8 @@ def clv_cmed_list_import_new(client, file_name, list_name, previous_list_name):
         CONFAZ_87 = row[i.next()]
         ANALISE_RECURSAL = row[i.next()]
 
-        print(rownum, CODIGO_GGREM, from_, PRODUTO, APRESENTACAO, CLASSE_TERAPEUTICA)
+        print(rownum, CODIGO_GGREM, from_, PRODUTO.encode("utf-8"), 
+              APRESENTACAO.encode("utf-8"), CLASSE_TERAPEUTICA.encode("utf-8"))
 
         clv_cmed = client.model('clv_cmed')
         cmed_browse = clv_cmed.browse([('codigo_ggrem', '=', CODIGO_GGREM),])
@@ -483,10 +486,8 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
-    # infile_name = '/opt/openerp/cmed/CMED_2015_08_21.csv'
-    infile_name = '*'
-    # from_ = 'CMED_2015_08_21'
-    from_ = '*'
+    # infile_name = '*'
+    # from_ = '*'
 
     get_arguments()
 
@@ -497,6 +498,8 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
+    # infile_name = '/opt/openerp/cmed/CMED_2015_08_21.csv'
+    # from_ = 'CMED_2015_08_21'
     # print('-->', client, infile_name, from_)
     # print('--> Executing clv_cmed_import_new()...')
     # clv_cmed_import_new(client, infile_name, from_)
