@@ -198,7 +198,7 @@ def clv_cmed_updt_manufacturer(client):
     for cmed in cmed_browse:
         i += 1
 
-        print(i, cmed.latoratorio.encode("utf-8"))
+        print(i, cmed.codigo_ggrem, cmed.latoratorio.encode("utf-8"))
 
         clv_medicament_manufacturer_str = client.model('clv_medicament.manufacturer.str')
         manufacturer_str_browse = clv_medicament_manufacturer_str.browse([('name', '=', cmed.latoratorio),])
@@ -238,7 +238,7 @@ def clv_cmed_updt_active_component(client):
     for cmed in cmed_browse:
         i += 1
 
-        print(i, cmed.principio_ativo)
+        print(i, cmed.codigo_ggrem, cmed.principio_ativo)
 
         clv_medicament_active_component_str = \
             client.model('clv_medicament.active_component.str')
