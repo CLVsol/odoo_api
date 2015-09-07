@@ -173,16 +173,16 @@ def get_arguments():
     global username
     global password
     global dbname
-    global infile_name
-    global from_
+    # global infile_name
+    # global from_
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--user', action="store", dest="username")
     parser.add_argument('--pw', action="store", dest="password")
     parser.add_argument('--db', action="store", dest="dbname")
 
-    parser.add_argument('--infile', action="store", dest="infile_name")
-    parser.add_argument('--from', action="store", dest="from_")
+    # parser.add_argument('--infile', action="store", dest="infile_name")
+    # parser.add_argument('--from', action="store", dest="from_")
 
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
@@ -202,15 +202,15 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
-    if args.infile_name != None:
-        infile_name = args.infile_name
-    elif infile_name == '*':
-        infile_name = raw_input('infile_name: ')
+    # if args.infile_name != None:
+    #     infile_name = args.infile_name
+    # elif infile_name == '*':
+    #     infile_name = raw_input('infile_name: ')
 
-    if args.from_ != None:
-        from_ = args.from_
-    elif from_ == '*':
-        from_ = raw_input('from_: ')
+    # if args.from_ != None:
+    #     from_ = args.from_
+    # elif from_ == '*':
+    #     from_ = raw_input('from_: ')
 
 if __name__ == '__main__':
 
@@ -224,10 +224,8 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
-    # infile_name = '/opt/openerp/abcfarma/TABELA_2014_01.dbf'
-    infile_name = '*'
-    # from_ = 'TABELA_2014_01'
-    from_ = '*'
+    # infile_name = '*'
+    # from_ = '*'
 
     get_arguments()
 
@@ -244,11 +242,119 @@ if __name__ == '__main__':
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
 
-    list_name = 'TABELA_2014_02'
-    previous_list_name = 'TABELA_2014_01'
-    file_name = '/opt/openerp/abcfarma/TABELA_2014_02.dbf'
-    print('-->', client, file_name, list_name, previous_list_name)
-    clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+    # list_name = 'TABELA_2014_02'
+    # previous_list_name = 'TABELA_2014_01'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_02.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_03'
+    # previous_list_name = 'TABELA_2014_02'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_03.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_04'
+    # previous_list_name = 'TABELA_2014_03'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_04.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_05'
+    # previous_list_name = 'TABELA_2014_04'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_05.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_06'
+    # previous_list_name = 'TABELA_2014_05'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_06.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_07'
+    # previous_list_name = 'TABELA_2014_06'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_07.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_08'
+    # previous_list_name = 'TABELA_2014_07'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_08.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_09'
+    # previous_list_name = 'TABELA_2014_08'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_09.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_10'
+    # previous_list_name = 'TABELA_2014_09'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_10.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_11'
+    # previous_list_name = 'TABELA_2014_10'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_11.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2014_12'
+    # previous_list_name = 'TABELA_2014_11'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2014_12.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_01'
+    # previous_list_name = 'TABELA_2014_12'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_01.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_02'
+    # previous_list_name = 'TABELA_2015_01'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_02.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_03'
+    # previous_list_name = 'TABELA_2015_02'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_03.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_04'
+    # previous_list_name = 'TABELA_2015_03'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_04.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_05'
+    # previous_list_name = 'TABELA_2015_04'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_05.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_06'
+    # previous_list_name = 'TABELA_2015_05'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_06.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_07'
+    # previous_list_name = 'TABELA_2015_06'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_07.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_08'
+    # previous_list_name = 'TABELA_2015_07'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_08.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
 
     print('--> clv_abcfarma.py')
     print('--> Execution time:', secondsToStr(time() - start))
