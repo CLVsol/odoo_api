@@ -406,8 +406,8 @@ def get_arguments():
     global username
     global password
     global dbname
-    global infile_name
-    global from_
+    # global infile_name
+    # global from_
 
     parser = argparse.ArgumentParser()
     # parser.add_argument('--admin_pw', action="store", dest="admin_pw")
@@ -417,8 +417,8 @@ def get_arguments():
     parser.add_argument('--pw', action="store", dest="password")
     parser.add_argument('--db', action="store", dest="dbname")
 
-    parser.add_argument('--infile', action="store", dest="infile_name")
-    parser.add_argument('--from', action="store", dest="from_")
+    # parser.add_argument('--infile', action="store", dest="infile_name")
+    # parser.add_argument('--from', action="store", dest="from_")
 
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
@@ -453,15 +453,15 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
-    if args.infile_name != None:
-        infile_name = args.infile_name
-    elif infile_name == '*':
-        infile_name = raw_input('infile_name: ')
+    # if args.infile_name != None:
+    #     infile_name = args.infile_name
+    # elif infile_name == '*':
+    #     infile_name = raw_input('infile_name: ')
 
-    if args.from_ != None:
-        from_ = args.from_
-    elif from_ == '*':
-        from_ = raw_input('from_: ')
+    # if args.from_ != None:
+    #     from_ = args.from_
+    # elif from_ == '*':
+    #     from_ = raw_input('from_: ')
 
 if __name__ == '__main__':
 
