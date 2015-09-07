@@ -340,7 +340,7 @@ def clv_cmed_list_import_new(client, file_name, list_name, previous_list_name):
         CONFAZ_87 = row[i.next()]
         ANALISE_RECURSAL = row[i.next()]
 
-        print(rownum, CODIGO_GGREM, from_)
+        print(rownum, CODIGO_GGREM)
 
         clv_cmed = client.model('clv_cmed')
         cmed_browse = clv_cmed.browse([('codigo_ggrem', '=', CODIGO_GGREM),])
