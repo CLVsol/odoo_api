@@ -48,6 +48,26 @@ def clv_insured_outside_unlink(client, status):
 
     print('--> i: ', i)
 
+def clv_insured_outside_import(client):
+
+    clv_insured_card = client.model('clv_insured_card')
+    insured_card_browse = clv_insured_card.browse([('orizon', '=', True),])
+    i = 0
+    found = 0
+    not_found = 0
+    for insured_card in insured_card_browse:
+        i += 1
+        print(i, insured_card.code, insured_card.name)
+
+        clv_insured = client.model('clv_insured')
+        insured_browse = clv_insured.browse([('id', '=', insured_card.insured_id.id),])
+
+        print('>>>>>', insured_browse.code, insured_browse.name)
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not found: ', not_found)
+
 def get_arguments():
 
     global username
@@ -100,20 +120,24 @@ if __name__ == '__main__':
 
     print('-->', client)
 
-    print('--> Executing clv_insured_outside_unlink("new")...')
-    clv_insured_outside_unlink(client, 'new')
+    # print('--> Executing clv_insured_outside_unlink("new")...')
+    # clv_insured_outside_unlink(client, 'new')
 
-    print('--> Executing clv_insured_outside_unlink("processing")...')
-    clv_insured_outside_unlink(client, 'processing')
+    # print('--> Executing clv_insured_outside_unlink("processing")...')
+    # clv_insured_outside_unlink(client, 'processing')
 
-    print('--> Executing clv_insured_outside_unlink("active")...')
-    clv_insured_outside_unlink(client, 'active')
+    # print('--> Executing clv_insured_outside_unlink("active")...')
+    # clv_insured_outside_unlink(client, 'active')
 
-    print('--> Executing clv_insured_outside_unlink("suspended")...')
-    clv_insured_outside_unlink(client, 'suspended')
+    # print('--> Executing clv_insured_outside_unlink("suspended")...')
+    # clv_insured_outside_unlink(client, 'suspended')
 
-    print('--> Executing clv_insured_outside_unlink("canceled")...')
-    clv_insured_outside_unlink(client, 'canceled')
+    # print('--> Executing clv_insured_outside_unlink("canceled")...')
+    # clv_insured_outside_unlink(client, 'canceled')
+
+    print('-->', client)
+    print('--> Executing clv_insured_outside_import()...')
+    clv_insured_outside_import(client)
 
     print('--> clv_insured_outside.py')
     print('--> Execution time:', secondsToStr(time() - start))
