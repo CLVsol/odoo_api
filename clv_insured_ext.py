@@ -65,10 +65,17 @@ def clv_insured_ext_import(client):
         clv_insured = client.model('clv_insured')
         insured_browse = clv_insured.browse([('id', '=', insured_card.insured_id.id),])
 
+        clv_address = client.model('clv_address')
+        address_browse = clv_address.browse([('id', '=', insured_browse.address_home_id.id[0]),])
+        zip_code = False
+        if address_browse.zip != []:
+            zip_code = address_browse.zip[0]
+
         print('>>>>>', insured_browse.code, insured_browse.name)
         print('#####', insured_card.code, insured_card.name, insured_browse.birthday[0], 
                        insured_browse.gender[0], insured_browse.id[0], insured_card.id,
-                       insured_browse.cpf[0])
+                       insured_browse.cpf[0],
+                       zip_code)
 
         values = {
             'name': insured_card.name,
@@ -79,6 +86,7 @@ def clv_insured_ext_import(client):
             'insured_id': insured_browse.id[0],
             'insured_card_id': insured_card.id,
             'cpf': insured_browse.cpf[0],
+            'zip_code': zip_code,
             }
 
         insured_ext_id = clv_insured_ext.create(values).id
