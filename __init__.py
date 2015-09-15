@@ -23,6 +23,7 @@ import openerplib
 import base
 import clv_cmed
 import clv_abcfarma
+import clv_insured_ext
 import clv_insured_mng
 import clv_medicament
 import clv_medicament_list

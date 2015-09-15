@@ -28,29 +28,29 @@ from base import *
 import argparse
 import getpass
 
-def clv_insured_outside_unlink(client, status):
+def clv_insured_ext_unlink(client, status):
 
-    clv_insured_outside = client.model('clv_insured_outside')
-    insured_outside_browse = clv_insured_outside.browse([('state', '=', status),])
+    clv_insured_ext = client.model('clv_insured_ext')
+    insured_ext_browse = clv_insured_ext.browse([('state', '=', status),])
 
     i = 0
-    for insured_outside in insured_outside_browse:
+    for insured_ext in insured_ext_browse:
         i += 1
-        print(i, insured_outside.name)
+        print(i, insured_ext.name)
 
-        history = client.model('clv_insured_outside.history')
-        history_browse = history.browse([('insured_outside_id', '=', insured_outside.id),])
+        history = client.model('clv_insured_ext.history')
+        history_browse = history.browse([('insured_ext_id', '=', insured_ext.id),])
         history_ids = history_browse.id
         print('>>>>>', history_ids)
 
         history.unlink(history_ids)
-        clv_insured_outside.unlink(insured_outside.id)
+        clv_insured_ext.unlink(insured_ext.id)
 
     print('--> i: ', i)
 
-def clv_insured_outside_import(client):
+def clv_insured_ext_import(client):
 
-    clv_insured_outside = client.model('clv_insured_outside')
+    clv_insured_ext = client.model('clv_insured_ext')
 
     clv_insured_card = client.model('clv_insured_card')
     insured_card_browse = clv_insured_card.browse([('orizon', '=', True),])
@@ -81,9 +81,9 @@ def clv_insured_outside_import(client):
             'cpf': insured_browse.cpf[0],
             }
 
-        insured_outside_id = clv_insured_outside.create(values).id
+        insured_ext_id = clv_insured_ext.create(values).id
 
-        print('xxxxx', insured_outside_id, insured_card.orizon_state)
+        print('xxxxx', insured_ext_id, insured_card.orizon_state)
 
         values = {
             'date_activation': insured_card.date_activation,
@@ -92,30 +92,30 @@ def clv_insured_outside_import(client):
         if insured_card.orizon_synchronized:
             synchronized += 1
             if insured_card.orizon_state == 'active':
-                client.exec_workflow('clv_insured_outside', 'button_process', insured_outside_id)
-                client.exec_workflow('clv_insured_outside', 'button_activate', insured_outside_id)
-                clv_insured_outside.write(insured_outside_id, values)
+                client.exec_workflow('clv_insured_ext', 'button_process', insured_ext_id)
+                client.exec_workflow('clv_insured_ext', 'button_activate', insured_ext_id)
+                clv_insured_ext.write(insured_ext_id, values)
             if insured_card.orizon_state == 'canceled':
-                client.exec_workflow('clv_insured_outside', 'button_process', insured_outside_id)
-                client.exec_workflow('clv_insured_outside', 'button_cancel', insured_outside_id)
-                clv_insured_outside.write(insured_outside_id, values)
+                client.exec_workflow('clv_insured_ext', 'button_process', insured_ext_id)
+                client.exec_workflow('clv_insured_ext', 'button_cancel', insured_ext_id)
+                clv_insured_ext.write(insured_ext_id, values)
         else:
             not_synchronized += 1
             if insured_card.orizon_previous_state == 'active':
-                client.exec_workflow('clv_insured_outside', 'button_process', insured_outside_id)
-                client.exec_workflow('clv_insured_outside', 'button_activate', insured_outside_id)
-                clv_insured_outside.write(insured_outside_id, values)
+                client.exec_workflow('clv_insured_ext', 'button_process', insured_ext_id)
+                client.exec_workflow('clv_insured_ext', 'button_activate', insured_ext_id)
+                clv_insured_ext.write(insured_ext_id, values)
             if insured_card.orizon_previous_state == 'canceled':
-                client.exec_workflow('clv_insured_outside', 'button_process', insured_outside_id)
-                client.exec_workflow('clv_insured_outside', 'button_cancel', insured_outside_id)
-                clv_insured_outside.write(insured_outside_id, values)
+                client.exec_workflow('clv_insured_ext', 'button_process', insured_ext_id)
+                client.exec_workflow('clv_insured_ext', 'button_cancel', insured_ext_id)
+                clv_insured_ext.write(insured_ext_id, values)
 
         values = {
             'synchronized': insured_card.orizon_synchronized,
             'date_synchronization': insured_card.orizon_date_synchronization,
             'date_previous_synchronization': insured_card.orizon_date_previous_synchronization,
             }
-        clv_insured_outside.write(insured_outside_id, values)
+        clv_insured_ext.write(insured_ext_id, values)
 
     print('--> i: ', i)
     print('--> synchronized: ', synchronized)
@@ -167,30 +167,30 @@ if __name__ == '__main__':
     from time import time
     start = time()
 
-    print('--> clv_insured_outside.py...')
+    print('--> clv_insured_ext.py...')
 
     client = erppeek.Client(server, dbname, username, password)
 
     print('-->', client)
 
-    print('--> Executing clv_insured_outside_unlink("new")...')
-    clv_insured_outside_unlink(client, 'new')
+    print('--> Executing clv_insured_ext_unlink("new")...')
+    clv_insured_ext_unlink(client, 'new')
 
-    print('--> Executing clv_insured_outside_unlink("processing")...')
-    clv_insured_outside_unlink(client, 'processing')
+    print('--> Executing clv_insured_ext_unlink("processing")...')
+    clv_insured_ext_unlink(client, 'processing')
 
-    print('--> Executing clv_insured_outside_unlink("active")...')
-    clv_insured_outside_unlink(client, 'active')
+    print('--> Executing clv_insured_ext_unlink("active")...')
+    clv_insured_ext_unlink(client, 'active')
 
-    print('--> Executing clv_insured_outside_unlink("suspended")...')
-    clv_insured_outside_unlink(client, 'suspended')
+    print('--> Executing clv_insured_ext_unlink("suspended")...')
+    clv_insured_ext_unlink(client, 'suspended')
 
-    print('--> Executing clv_insured_outside_unlink("canceled")...')
-    clv_insured_outside_unlink(client, 'canceled')
+    print('--> Executing clv_insured_ext_unlink("canceled")...')
+    clv_insured_ext_unlink(client, 'canceled')
 
     print('-->', client)
-    print('--> Executing clv_insured_outside_import()...')
-    clv_insured_outside_import(client)
+    print('--> Executing clv_insured_ext_import()...')
+    clv_insured_ext_import(client)
 
-    print('--> clv_insured_outside.py')
+    print('--> clv_insured_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
