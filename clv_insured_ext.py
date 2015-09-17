@@ -23,6 +23,7 @@ from __future__ import print_function
 import xmlrpclib
 from erppeek import *
 import csv
+import fileinput
 import re
 
 from base import *
@@ -61,7 +62,7 @@ def clv_insured_ext_import(client):
     for insured_card in insured_card_browse:
         i += 1
 
-        print(i, insured_card.code, insured_card.orizon_synchronized, insured_card.state, insured_card.name)
+        print(i, insured_card.code, insured_card.synchronized, insured_card.state, insured_card.name)
 
         clv_insured = client.model('clv_insured')
         insured_browse = clv_insured.browse([('id', '=', insured_card.insured_id.id),])
@@ -98,7 +99,7 @@ def clv_insured_ext_import(client):
             'date_activation': insured_card.date_activation,
             'date_cancelation': insured_card.date_cancelation,
             }
-        if insured_card.orizon_synchronized:
+        if insured_card.synchronized:
             synchronized += 1
             if insured_card.orizon_state == 'active':
                 client.exec_workflow('clv_insured_ext', 'button_process', insured_ext_id)
@@ -120,8 +121,8 @@ def clv_insured_ext_import(client):
                 clv_insured_ext.write(insured_ext_id, values)
 
         values = {
-            'synchronized': insured_card.orizon_synchronized,
-            'date_synchronization': insured_card.orizon_date_synchronization,
+            'synchronized': insured_card.synchronized,
+            'date_synchronization': insured_card.date_synchronization,
             'date_previous_synchronization': insured_card.orizon_date_previous_synchronization,
             }
         clv_insured_ext.write(insured_ext_id, values)
@@ -291,6 +292,125 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
 
     print('--> i: ', i)
 
+def clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization):
+
+    Cod_Convenio =     [ 0,   0]
+    Cod_Contrato =     [ 1,   6]
+    Cod_Beneficiario = [ 2,  12]
+    Cod_Empresa =      [ 3,  42]
+    Nome =             [ 4,  52]
+    End_Logradouro =   [ 5,  92]
+    End_No =           [ 6, 132]
+    End_Complemento =  [ 7, 138]
+    End_Bairro =       [ 8, 158]
+    End_Cidade =       [ 9, 188]
+    End_UF =           [10, 218]
+    End_CEP =          [11, 220]
+    Sexo =             [12, 228]
+    Data_Nascimento =  [13, 229]
+    DDD =              [14, 237]
+    Telefone =         [15, 241]
+    RG =               [16, 256]
+    UF_Emissao_RG =    [17, 266]
+    CPF =              [18, 268]
+    Tipo_de_Operacao = [19, 279]
+    Data_Inativacao =  [20, 280]
+    Cod_Titular =      [21, 293]
+    LCDF =             [22, 318]
+    LCS =              [23, 333]
+    ADS_Usuario =      [24, 348]
+    CF_Usuario =       [25, 388]
+    Email_Usuario =    [26, 428]
+    Matricula =        [27, 468]
+    Data_Ativacao =    [28, 498]
+    XXX =              [29, 506]
+
+    w = [
+        Cod_Convenio[1],
+        Cod_Contrato[1],
+        Cod_Beneficiario[1],
+        Cod_Empresa[1],
+        Nome[1],
+        End_Logradouro[1],
+        End_No[1],
+        End_Complemento[1],
+        End_Bairro[1],
+        End_Cidade[1],
+        End_UF[1],
+        End_CEP[1],
+        Sexo[1],
+        Data_Nascimento[1],
+        DDD[1],
+        Telefone[1],
+        RG[1],
+        UF_Emissao_RG[1],
+        CPF[1],
+        Tipo_de_Operacao[1],
+        Data_Inativacao[1],
+        Cod_Titular[1],
+        LCDF[1],
+        LCS[1],
+        ADS_Usuario[1],
+        CF_Usuario[1],
+        Email_Usuario[1],
+        Matricula[1],
+        Data_Ativacao[1],
+        XXX[1],
+        ]
+
+    line_no = 0
+    for line in fileinput.input([file_name]):
+        line_no += 1
+        s = [ line[ w[i-1] : w[i] ] for i in range(1,len(w)) ]
+        
+        crd_code = s[Cod_Beneficiario[0]].strip()
+        code_len = len(crd_code) - 2
+        while len(crd_code) < 16:
+            crd_code = '0' + crd_code
+        code_str = "%s.%s.%s.%s.%s-%s" % (str(crd_code[0]) + str(crd_code[1]),
+                                          str(crd_code[2]) + str(crd_code[3]) + str(crd_code[4]),
+                                          str(crd_code[5]) + str(crd_code[6]) + str(crd_code[7]),
+                                          str(crd_code[8]) + str(crd_code[9]) + str(crd_code[10]),
+                                          str(crd_code[11]) + str(crd_code[12]) + str(crd_code[13]),
+                                          str(crd_code[14]) + str(crd_code[15]))
+        if code_len <= 3:
+            code_form = code_str[18 - code_len:21]
+        elif code_len > 3 and code_len <= 6:
+            code_form = code_str[17 - code_len:21]
+        elif code_len > 6 and code_len <= 9:
+            code_form = code_str[16 - code_len:21]
+        elif code_len > 9 and code_len <= 12:
+            code_form = code_str[15 - code_len:21]
+        elif code_len > 12 and code_len <= 14:
+            code_form = code_str[14 - code_len:21]
+
+        clv_insured_ext = client.model('clv_insured_ext')
+        insured_ext_browse = clv_insured_ext.browse([('code', '=', code_form),])
+        insured_ext_id = insured_ext_browse.id[0]
+
+        print(line_no, s[Tipo_de_Operacao[0]], code_form, s[Nome[0]], insured_ext_id)
+
+        if s[Tipo_de_Operacao[0]] == 'I':
+            values = {
+                'synchronized': True,
+                'processing_synchronization': False,
+                'date_synchronization': date_synchronization,
+                'date_activation': date_synchronization,
+                }
+            client.exec_workflow('clv_insured_ext', 'button_process', insured_ext_id)
+            client.exec_workflow('clv_insured_ext', 'button_activate', insured_ext_id)
+        if s[Tipo_de_Operacao[0]] == 'E':
+            values = {
+                'synchronized': True,
+                'processing_synchronization': False,
+                'date_synchronization': date_synchronization,
+                'date_cancelation': date_synchronization,
+                }
+            client.exec_workflow('clv_insured_ext', 'button_cancel', insured_ext_id)
+        clv_insured_ext.write(insured_ext_id, values)
+
+    print('--> line_no: ', line_no)
+
 def get_arguments():
 
     global username
@@ -366,6 +486,12 @@ if __name__ == '__main__':
     # file_name = '/opt/openerp/orizon/USU1865_20150915_150902_I.TXT'
     # print('--> Executing clv_insured_ext_syncronize_orizon(' + file_name + ')...')
     # clv_insured_ext_syncronize_orizon(client, file_name)
+
+    # print('-->', client)
+    # file_name = '/opt/openerp/orizon/USU1865_20150915_150902_I.TXT'
+    # date_synchronization = '2015-09-16 21:00:00'
+    # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
+    # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
     print('--> clv_insured_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
