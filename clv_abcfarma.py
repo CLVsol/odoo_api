@@ -28,6 +28,142 @@ from base import *
 import argparse
 import getpass
 
+def clv_abcfarma_import_new(client, file_name, from_):
+
+    db = dbf.Dbf(file_name)
+
+    names = []
+    for field in db.header.fields:
+        names.append(field.name)
+    print(names)
+
+    rownum = 0
+    found = 0
+    not_found = 0
+    for rec in db:
+
+        if rownum == 0:
+            rownum += 1
+
+        row = rec.fieldData
+
+        i = autoIncrement(0, 1)
+
+        MED_ABC = row[i.next()]
+        MED_CTR = row[i.next()]
+        MED_LAB = row[i.next()]
+        LAB_NOM = row[i.next()]
+        MED_DES = row[i.next()].decode('ISO 8859-1').encode('utf-8')
+        MED_APR = row[i.next()].decode('ISO 8859-1').encode('utf-8')
+        MED_PCO18 = row[i.next()]
+        MED_PLA18 = row[i.next()]
+        MED_FRA18 = row[i.next()]
+        MED_PCO17 = row[i.next()]
+        MED_PLA17 = row[i.next()]
+        MED_FRA17 = row[i.next()]
+        MED_PCO12 = row[i.next()]
+        MED_PLA12 = row[i.next()]
+        MED_FRA12 = row[i.next()]
+        MED_UNI = row[i.next()]
+        MED_IPI = row[i.next()]
+        MED_DTVIG = row[i.next()]
+        EXP_13 = row[i.next()]
+        MED_BARRA = row[i.next()]
+        MED_GENE = row[i.next()]
+        MED_NEGPOS = row[i.next()]
+        MED_PRINCI = row[i.next()]
+        MED_PCO19 = row[i.next()]
+        MED_PLA19 = row[i.next()]
+        MED_FRA19 = row[i.next()]
+        MED_PCOZFM = row[i.next()]
+        MED_PLAZFM = row[i.next()]
+        MED_FRAZFM = row[i.next()]
+        MED_PCO0 = row[i.next()]
+        MED_PLA0 = row[i.next()]
+        MED_FRA0 = row[i.next()]
+        MED_REGIMS = row[i.next()]
+        MED_VARPRE = row[i.next()]
+
+        print(rownum, MED_ABC, MED_DES, MED_APR)
+
+        clv_abcfarma = client.model('clv_abcfarma')
+        abcfarma_browse = clv_abcfarma.browse([('med_abc', '=', MED_ABC),])
+        abcfarma_id = abcfarma_browse.id
+
+        values = {
+            'med_abc': MED_ABC,
+            'med_ctr': MED_CTR,
+            'med_lab': MED_LAB,
+            'lab_nom': LAB_NOM,
+            'med_des': MED_DES,
+            'med_apr': MED_APR,
+            'med_pco18': MED_PCO18,
+            'med_pla18': MED_PLA18,
+            'med_fra18': MED_FRA18,
+            'med_pco17': MED_PCO17,
+            'med_pla17': MED_PLA17,
+            'med_fra17': MED_FRA17,
+            'med_pco12': MED_PCO12,
+            'med_pla12': MED_PLA12,
+            'med_fra12': MED_FRA12,
+            'med_uni': MED_UNI,
+            'med_ipi': MED_IPI,
+            'med_dtvig': str(MED_DTVIG),
+            'exp_13': EXP_13,
+            'med_barra': str(MED_BARRA),
+            'med_negpos': MED_NEGPOS,
+            'med_pco19': MED_PCO19,
+            'med_pla19': MED_PLA19,
+            'med_fra19': MED_FRA19,
+            'med_pcozfm': MED_PCOZFM,
+            'med_plazfm': MED_PLAZFM,
+            'med_frazfm': MED_FRAZFM,
+            'med_pco0': MED_PCO0,
+            'med_pla0': MED_PLA0,
+            'med_fra0': MED_FRA0,
+            
+            'med_gene': MED_GENE,
+            'med_princi': MED_PRINCI,
+            'med_regims': MED_REGIMS,
+            'med_varpre': MED_VARPRE,
+
+            'from': from_,
+            'excluded': False,
+            'product_name': MED_DES + ' ' + MED_APR,
+            }
+
+        if abcfarma_id != []:
+            found += 1
+            abcfarma_id = abcfarma_id[0]
+            clv_abcfarma.write(abcfarma_id, values)
+
+        else:
+            not_found += 1
+            abcfarma_id = clv_abcfarma.create(values)
+
+        rownum += 1
+
+    clv_abcfarma = client.model('clv_abcfarma')
+    abcfarma_browse = clv_abcfarma.browse([('excluded', '=', False),
+                                           ('from', '!=', from_),])
+    excluded = 0
+    for abcfarma in abcfarma_browse:
+        excluded += 1
+
+        print(excluded, abcfarma.codigo_ggrem)
+
+        values = {
+            'excluded': True,
+            }
+        clv_abcfarma.write(abcfarma.id, values)
+
+    # f.close()
+
+    print('--> rownum: ', rownum - 1)
+    print('--> found: ', found)
+    print('--> not_found: ', not_found)
+    print('--> excluded: ', excluded)
+
 def get_abcfarma_list_id(client, list_name):
 
     clv_abcfarma_list = client.model('clv_abcfarma.list')
@@ -173,7 +309,7 @@ def get_arguments():
     global username
     global password
     global dbname
-    # global infile_name
+    # global file_name
     # global from_
 
     parser = argparse.ArgumentParser()
@@ -181,7 +317,7 @@ def get_arguments():
     parser.add_argument('--pw', action="store", dest="password")
     parser.add_argument('--db', action="store", dest="dbname")
 
-    # parser.add_argument('--infile', action="store", dest="infile_name")
+    # parser.add_argument('--infile', action="store", dest="file_name")
     # parser.add_argument('--from', action="store", dest="from_")
 
     args = parser.parse_args()
@@ -202,10 +338,10 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
-    # if args.infile_name != None:
-    #     infile_name = args.infile_name
-    # elif infile_name == '*':
-    #     infile_name = raw_input('infile_name: ')
+    # if args.file_name != None:
+    #     file_name = args.file_name
+    # elif file_name == '*':
+    #     file_name = raw_input('file_name: ')
 
     # if args.from_ != None:
     #     from_ = args.from_
@@ -224,7 +360,7 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
-    # infile_name = '*'
+    # file_name = '*'
     # from_ = '*'
 
     get_arguments()
@@ -235,6 +371,12 @@ if __name__ == '__main__':
     print('--> clv_abcfarma.py...')
 
     client = erppeek.Client(server, dbname, username, password)
+
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_09.dbf'
+    # from_ = 'TABELA_2015_09'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_abcfarma_import_new()...')
+    # clv_abcfarma_import_new(client, file_name, from_)
 
     # list_name = 'TABELA_2014_01'
     # previous_list_name = False
