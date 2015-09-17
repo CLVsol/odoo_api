@@ -135,6 +135,113 @@ def clv_orizon_lpm_import_new(client, file_name, from_):
     print('--> not_found: ', not_found)
     print('--> excluded: ', excluded)
 
+def get_orizon_lpm_list_id(client, list_name):
+
+    clv_orizon_lpm_list = client.model('clv_orizon_lpm.list')
+    orizon_lpm_list_browse = clv_orizon_lpm_list.browse([('name', '=', list_name),])
+    orizon_lpm_list_id = orizon_lpm_list_browse.id
+
+    if orizon_lpm_list_id == []:
+        values = {
+            'name': list_name,
+            }
+        orizon_lpm_list_id = clv_orizon_lpm_list.create(values).id
+    else:
+        orizon_lpm_list_id = orizon_lpm_list_id[0]
+
+    return orizon_lpm_list_id
+
+def clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name):
+
+    list_id = get_orizon_lpm_list_id(client, list_name)
+    previous_list_id = False
+    if previous_list_name != False:
+        previous_list_id = get_orizon_lpm_list_id(client, previous_list_name)
+
+    delimiter_char = ';'
+
+    f  = open(file_name, "rb")
+    r = csv.reader(f, delimiter=delimiter_char)
+    rownum = 0
+    orizon_lpm_found = 0
+    orizon_lpm_not_found = 0
+    orizon_lpm_included = 0
+    ct = False
+    for row in r:
+
+        if rownum == 0:
+            if row[7] == 'CLASSE TERAPÊUTICA':
+                ct = True
+            rownum += 1
+            continue
+
+        i = autoIncrement(0, 1)
+
+        Laboratorio = row[i.next()]
+        Produto = row[i.next()]
+        Cod_Prod = row[i.next()]
+        Apresentacao_Do_Produto = row[i.next()]
+        EAN_Principal = row[i.next()]
+        # Vazio = row[i.next()]
+        PMC = row[i.next()].replace(",", ".")
+        Desconto = row[i.next()].replace(",", ".")
+        Preco_Venda = row[i.next()].replace(",", ".")
+        Categoria = row[i.next()]
+        Sub_Categoria = row[i.next()]
+        Classificacao = row[i.next()]
+        Sub_Classificacao = row[i.next()]
+        Descricao = row[i.next()]
+        Classe_Terapeutica = row[i.next()]
+        Sub_Classe_Terapeutica = row[i.next()]
+        Principio_Ativo = row[i.next()]
+
+        print(rownum, Cod_Prod)
+
+        clv_orizon_lpm = client.model('clv_orizon_lpm')
+        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod),])
+        orizon_lpm_id = orizon_lpm_browse.id
+
+        if orizon_lpm_id != []:
+            orizon_lpm_found += 1
+            orizon_lpm_id = orizon_lpm_id[0]
+            orizon_lpm_from = orizon_lpm_browse.read('from')[0]
+
+            clv_orizon_lpm_list_item = client.model('clv_orizon_lpm.list.item')
+            orizon_lpm_list_item_browse = \
+                clv_orizon_lpm_list_item.browse([('list_id', '=', previous_list_id),
+                                                 ('medicament_id', '=', orizon_lpm_id),
+                                                 ])
+            previous_list_item_id = orizon_lpm_list_item_browse.id
+
+            included = False
+            if previous_list_item_id == []:
+                orizon_lpm_included += 1
+                included = True
+
+            print('>>>>>', orizon_lpm_found, orizon_lpm_from, list_name, included)
+
+            values = {
+                'list_id': list_id,
+                'medicament_id': orizon_lpm_id,
+                'order': rownum,
+                'pmc': PMC,
+                'desconto': Desconto,
+                'preco_venda': Preco_Venda,
+                'included': included,
+                }
+            orizon_lpm_list_item = clv_orizon_lpm_list_item.create(values)
+        else:
+            orizon_lpm_not_found += 1
+
+        rownum += 1
+
+    f.close()
+
+    print('rownum: ', rownum - 1)
+    print('orizon_lpm_found: ', orizon_lpm_found)
+    print('orizon_lpm_not_found: ', orizon_lpm_not_found)
+    print('orizon_lpm_included: ', orizon_lpm_included)
+
 def get_arguments():
 
     global username
@@ -185,11 +292,17 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    file_name = '/opt/openerp/orizon_lpm/LPM_1509.csv'
-    from_ = 'LPM_1509'
-    print('-->', client, file_name, from_)
-    print('--> Executing clv_orizon_lpm_import_new()...')
-    clv_orizon_lpm_import_new(client, file_name, from_)
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1509.csv'
+    # from_ = 'LPM_1509'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1509'
+    # previous_list_name = 'LPM_1508'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1509.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
 
     print('--> clv_orizon_lpm.py')
     print('--> Execution time:', secondsToStr(time() - start))
