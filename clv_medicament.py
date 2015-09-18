@@ -28,6 +28,22 @@ from base import *
 import argparse
 import getpass
 
+def get_medicament_catalog_id(client, catalog_name):
+
+    clv_medicament_catalog = client.model('clv_medicament_catalog')
+    medicament_catalog_browse = clv_medicament_catalog.browse([('name', '=', catalog_name),])
+    medicament_catalog_id = medicament_catalog_browse.id
+
+    if medicament_catalog_id == []:
+        values = {
+            'name': catalog_name,
+            }
+        medicament_catalog_id = clv_medicament_catalog.create(values).id
+    else:
+        medicament_catalog_id = medicament_catalog_id[0]
+
+    return medicament_catalog_id
+
 def get_arguments():
 
     global username
