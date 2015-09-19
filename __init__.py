@@ -29,5 +29,6 @@ import clv_insured_mng
 import clv_medicament
 import clv_medicament_catalog
 import clv_medicament_group
+import clv_medicament_group_member
 import clv_medicament_list
 import clv_orizon_lpm
