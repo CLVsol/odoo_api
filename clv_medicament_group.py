@@ -28,6 +28,39 @@ from base import *
 import argparse
 import getpass
 
+def get_medicament_group_id(client, active_component, concentration = False, pres_form = False):
+
+    clv_medicament_group = client.model('clv_medicament_group')
+    medicament_group_browse = clv_medicament_group.browse([('active_component', '=', active_component),
+                                                           ('concentration', '=', concentration),
+                                                           ('pres_form', '=', pres_form),])
+    medicament_group_id = medicament_group_browse.id
+
+    clv_active_component = client.model('clv_medicament.active_component')
+    active_component_browse = clv_active_component.browse([('id', '=', active_component),])
+
+    clv_medicament_form = client.model('clv_medicament.form')
+    medicament_form_browse = clv_medicament_form.browse([('id', '=', pres_form),])
+
+    if medicament_group_id == []:
+        if pres_form != False:
+            name = active_component_browse.name[0] + ' ' + concentration + ' (' + medicament_form_browse.name[0] + ')'
+        else:
+            name = active_component_browse.name[0] + ' ' + concentration
+        values = {
+            'name': name,
+            'medicament_name': active_component_browse.name[0],
+            'active_component': active_component_browse.id[0],
+            'concentration': concentration,
+            'pres_form': medicament_form_browse.id[0],
+            'active': 1,
+            }
+        medicament_group_id = clv_medicament_group.create(values).id
+    else:
+        medicament_group_id = medicament_group_id[0]
+
+    return medicament_group_id
+
 def get_arguments():
 
     global username
