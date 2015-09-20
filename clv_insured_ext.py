@@ -411,6 +411,28 @@ def clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
     print('--> line_no: ', line_no)
 
+def clv_insured_ext_set_partner_orizon(client):
+
+    clv_insured_ext = client.model('clv_insured_ext')
+    insured_ext_browse = clv_insured_ext.browse([('partner_id', '=', False),])
+
+    i = 0
+    for insured_ext in insured_ext_browse:
+        i += 1
+
+        print(i, insured_ext.code, insured_ext.name)
+
+        res_partner = client.model('res.partner')
+        partner_browse = res_partner.browse([('name', '=', 'Orizon'),])
+        partner_id = partner_browse.id[0]
+
+        values = {
+            'partner_id': partner_id,
+            }
+        clv_insured_ext.write(insured_ext.id, values)
+
+    print('--> i: ', i)
+
 def get_arguments():
 
     global username
@@ -492,6 +514,10 @@ if __name__ == '__main__':
     # date_synchronization = '2015-09-16 21:00:00'
     # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
     # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
+
+    print('-->', client)
+    print('--> Executing clv_insured_ext_set_partner_orizon()...')
+    clv_insured_ext_set_partner_orizon(client)
 
     print('--> clv_insured_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
