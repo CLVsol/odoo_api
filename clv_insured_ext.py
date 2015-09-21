@@ -515,9 +515,9 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
     # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
-    print('-->', client)
-    print('--> Executing clv_insured_ext_set_partner_orizon()...')
-    clv_insured_ext_set_partner_orizon(client)
+    # print('-->', client)
+    # print('--> Executing clv_insured_ext_set_partner_orizon()...')
+    # clv_insured_ext_set_partner_orizon(client)
 
     print('--> clv_insured_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
