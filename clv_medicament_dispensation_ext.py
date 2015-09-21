@@ -54,12 +54,13 @@ def clv_medicament_dispensation_ext_import(client, file_name):
         # Matricula_Funcional = row[i.next()]
         # Limite_Subsidio = row[i.next()]
         Apresentacao_do_Produto = row[i.next()]
+        Cod_Prod = row[i.next()]
         Qtde = row[i.next()]
+        Autorizacao = row[i.next()]
+        Data_da_Venda = row[i.next()]
         Crm = row[i.next()]
         Uf_Crm = row[i.next()]
-        Cod_Prod = row[i.next()]
         # EAN = row[i.next()]
-        Data_da_Venda = row[i.next()]
         Cnpj = row[i.next()]
         # Razao_Social = row[i.next()]
         Nome_Fantasia = row[i.next()]
@@ -103,8 +104,8 @@ def clv_medicament_dispensation_ext_import(client, file_name):
             'dispensation_date': Data_da_Venda,
             'medicament_code': Cod_Prod,
             'medicament_description': Apresentacao_do_Produto,
-            'medicament_dispensation_card_code': code_form,
-            'medicament_dispensation_name': Nome_do_Beneficiario,
+            'insured_card_code': code_form,
+            'insured_name': Nome_do_Beneficiario,
             'prescriber_code': Crm,
             'pharmacy_code': Cnpj,
             'pharmacy_name': Nome_Fantasia,
@@ -112,6 +113,7 @@ def clv_medicament_dispensation_ext_import(client, file_name):
             'sale_value': Total_Venda,
             'subsidy_value': Total_Subsidio,
             'at_sight_value': Total_Pago_a_Vista,
+            'authorization_code': Autorizacao,
             }
         medicament_dispensation_ext_id = clv_medicament_dispensation_ext.create(values)
 
@@ -147,6 +149,38 @@ def clv_medicament_dispensation_ext_updt_pharmacy(client):
 
             values = {
                 'pharmacy_id': pharmacy_id[0],
+                }
+            clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+
+        else:
+            not_found += 1
+
+    print('i: ', i)
+    print('found: ', found)
+    print('not_found: ', not_found)
+
+def clv_medicament_dispensation_ext_updt_prescriber(client):
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('prescriber_id', '=', False),])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for dispensation_ext in dispensation_ext_browse:
+
+        i += 1
+        print(i, dispensation_ext.name, dispensation_ext.prescriber_code)
+
+        clv_professional = client.model('clv_professional')
+        prescriber_browse = clv_professional.browse([('professional_id', '=', dispensation_ext.prescriber_code),])
+        prescriber_id = prescriber_browse.id
+
+        if prescriber_id != []:
+            found += 1
+
+            values = {
+                'prescriber_id': prescriber_id[0],
                 }
             clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
 
@@ -207,14 +241,18 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_07_a_20_08.csv'
+    # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_05_a_20_09.csv'
     # print('-->', client, file_name)
     # print('--> Executing clv_medicament_dispensation_ext_import()...')
     # clv_medicament_dispensation_ext_import(client, file_name)
 
-    print('-->', client)
-    print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
-    clv_medicament_dispensation_ext_updt_pharmacy(client)
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
 
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
