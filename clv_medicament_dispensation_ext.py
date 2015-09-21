@@ -23,6 +23,7 @@ from __future__ import print_function
 import xmlrpclib
 from erppeek import *
 import csv
+import re
 
 from base import *
 import argparse
@@ -101,9 +102,12 @@ def clv_medicament_dispensation_ext_import(client, file_name):
             'name': False,
             'dispensation_date': Data_da_Venda,
             'medicament_code': Cod_Prod,
-            'insured_card_code': code_form,
+            'medicament_description': Apresentacao_do_Produto,
+            'medicament_dispensation_card_code': code_form,
+            'medicament_dispensation_name': Nome_do_Beneficiario,
             'prescriber_code': Crm,
             'pharmacy_code': Cnpj,
+            'pharmacy_name': Nome_Fantasia,
             'pack_quantity': Qtde_UN,
             'sale_value': Total_Venda,
             'subsidy_value': Total_Subsidio,
@@ -116,6 +120,42 @@ def clv_medicament_dispensation_ext_import(client, file_name):
     f.close()
 
     print('rownum: ', rownum - 1)
+
+def clv_medicament_dispensation_ext_updt_pharmacy(client):
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('pharmacy_id', '=', False),])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for dispensation_ext in dispensation_ext_browse:
+
+        val = re.sub('[^0-9]', '', dispensation_ext.pharmacy_code)
+        if len(val) == 14:
+            cnpj = "%s.%s.%s/%s-%s" % (val[0:2], val[2:5], val[5:8], val[8:12], val[12:14])
+
+        i += 1
+        print(i, dispensation_ext.name, cnpj)
+
+        clv_pharmacy = client.model('clv_pharmacy')
+        pharmacy_browse = clv_pharmacy.browse([('cnpj', '=', cnpj),])
+        pharmacy_id = pharmacy_browse.id
+
+        if pharmacy_id != []:
+            found += 1
+
+            values = {
+                'pharmacy_id': pharmacy_id[0],
+                }
+            clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+
+        else:
+            not_found += 1
+
+    print('i: ', i)
+    print('found: ', found)
+    print('not_found: ', not_found)
 
 def get_arguments():
 
@@ -167,10 +207,14 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_07_a_20_08.csv'
-    print('-->', client, file_name)
-    print('--> Executing clv_medicament_dispensation_ext_import()...')
-    clv_medicament_dispensation_ext_import(client, file_name)
+    # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_07_a_20_08.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import()...')
+    # clv_medicament_dispensation_ext_import(client, file_name)
+
+    print('-->', client)
+    print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    clv_medicament_dispensation_ext_updt_pharmacy(client)
 
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
