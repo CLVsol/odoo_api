@@ -223,6 +223,38 @@ def clv_medicament_dispensation_ext_updt_insured_card(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+def clv_medicament_dispensation_ext_updt_medicament_ref(client):
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('medicament_ref', '=', False),])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for dispensation_ext in dispensation_ext_browse:
+
+        i += 1
+        print(i, dispensation_ext.name, dispensation_ext.medicament_code)
+
+        clv_orizon_lpm = client.model('clv_orizon_lpm')
+        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', dispensation_ext.medicament_code),])
+        orizon_lpm_id = orizon_lpm_browse.id
+
+        if orizon_lpm_id != []:
+            found += 1
+
+            values = {
+                'medicament_ref': 'clv_orizon_lpm,' + str(orizon_lpm_id[0]),
+                }
+            clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+
+        else:
+            not_found += 1
+
+    print('i: ', i)
+    print('found: ', found)
+    print('not_found: ', not_found)
+
 def get_arguments():
 
     global username
@@ -289,6 +321,10 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
     # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref(client)
 
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
