@@ -29,9 +29,13 @@ from base import *
 import argparse
 import getpass
 
-def clv_medicament_dispensation_ext_import(client, file_name):
+def clv_medicament_dispensation_ext_import_orizon(client, file_name):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+
+    res_partner = client.model('res.partner')
+    partner_browse = res_partner.browse([('name', '=', 'Orizon'),])
+    partner_id = partner_browse.id[0]
 
     delimiter_char = ';'
 
@@ -114,6 +118,7 @@ def clv_medicament_dispensation_ext_import(client, file_name):
             'subsidy_value': Total_Subsidio,
             'at_sight_value': Total_Pago_a_Vista,
             'authorization_code': Autorizacao,
+            'partner_id': partner_id,
             }
         medicament_dispensation_ext_id = clv_medicament_dispensation_ext.create(values)
 
@@ -339,8 +344,8 @@ if __name__ == '__main__':
 
     # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_05_a_20_09.csv'
     # print('-->', client, file_name)
-    # print('--> Executing clv_medicament_dispensation_ext_import()...')
-    # clv_medicament_dispensation_ext_import(client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
 
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
