@@ -100,7 +100,7 @@ def clv_medicament_dispensation_ext_import(client, file_name):
         print(rownum, code_form, Nome_do_Beneficiario, Cod_Prod, Data_da_Venda, Cnpj, Crm, Uf_Crm)
 
         values = {
-            'name': False,
+            'name': '/',
             'dispensation_date': Data_da_Venda,
             'medicament_code': Cod_Prod,
             'medicament_description': Apresentacao_do_Produto,
