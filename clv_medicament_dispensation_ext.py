@@ -104,7 +104,8 @@ def clv_medicament_dispensation_ext_import_orizon(client, file_name):
         print(rownum, code_form, Nome_do_Beneficiario, Cod_Prod, Data_da_Venda, Cnpj, Crm, Uf_Crm)
 
         values = {
-            'name': '/',
+            # 'name': '/',
+            'name': False,
             'dispensation_date': Data_da_Venda,
             'medicament_code': Cod_Prod,
             'medicament_description': Apresentacao_do_Produto,
@@ -127,6 +128,25 @@ def clv_medicament_dispensation_ext_import_orizon(client, file_name):
     f.close()
 
     print('rownum: ', rownum - 1)
+
+def clv_medicament_dispensation_ext_updt_name(client):
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('name', '=', False),],
+                                                                     order='authorization_code')
+
+    i = 0
+    for dispensation_ext in dispensation_ext_browse:
+
+        i += 1
+        print(i, dispensation_ext.authorization_code, dispensation_ext.dispensation_date)
+
+        values = {
+            'name': '/',
+            }
+        clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+
+    print('i: ', i)
 
 def clv_medicament_dispensation_ext_updt_pharmacy(client):
 
@@ -346,6 +366,10 @@ if __name__ == '__main__':
     # print('-->', client, file_name)
     # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
     # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
 
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
