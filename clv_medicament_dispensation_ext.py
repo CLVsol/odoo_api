@@ -248,7 +248,7 @@ def clv_medicament_dispensation_ext_updt_insured_card(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
-def clv_medicament_dispensation_ext_updt_medicament_ref(client):
+def clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
     dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('medicament_ref', '=', False),])
@@ -436,16 +436,16 @@ if __name__ == '__main__':
     # clv_medicament_dispensation_ext_updt_insured_card(client)
 
     # print('-->', client)
-    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref()...')
-    # clv_medicament_dispensation_ext_updt_medicament_ref(client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
 
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
     # clv_medicament_dispensation_ext_updt_medicament(client)
 
-    print('-->', client)
-    print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
-    clv_medicament_dispensation_ext_updt_dispensation(client)
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
 
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
