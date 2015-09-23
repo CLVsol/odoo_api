@@ -312,6 +312,58 @@ def clv_medicament_dispensation_ext_updt_medicament(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+def clv_medicament_dispensation_ext_updt_dispensation(client):
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation')
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse(\
+        [('dispensation_id', '=', False),
+         ('pharmacy_id', '!=', False),
+         ('prescriber_id', '!=', False),
+         ('insured_card_id', '!=', False),
+         ('medicament', '!=', False),
+         ('dispensation_date', '!=', False),
+         ])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for dispensation_ext in dispensation_ext_browse:
+
+        i += 1
+        print(i, dispensation_ext.name, dispensation_ext.medicament_ref)
+
+        clv_medicament_dispensation = client.model('clv_medicament_dispensation')
+        medicament_dispensation_browse = clv_medicament_dispensation.browse(\
+            [('pharmacy_id', '=', dispensation_ext.pharmacy_id.id),
+             ('prescriber_id', '=', dispensation_ext.prescriber_id.id),
+             ('insured_card_id', '=', dispensation_ext.insured_card_id.id),
+             ('medicament', '=', dispensation_ext.medicament.id),
+             ('dispensation_date', '=', dispensation_ext.dispensation_date),
+             ])
+        dispensation_id = medicament_dispensation_browse.id
+
+        if dispensation_id != []:
+            found += 1
+
+            values = {
+                'dispensation_id': dispensation_id[0],
+                }
+            clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+
+            values = {
+                'dispensation_ext_id': dispensation_ext.id,
+                }
+            clv_medicament_dispensation.write(dispensation_id[0], values)
+
+        else:
+            not_found += 1
+
+    print('i: ', i)
+    print('found: ', found)
+    print('not_found: ', not_found)
+
 def get_arguments():
 
     global username
@@ -390,6 +442,10 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
     # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    print('-->', client)
+    print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    clv_medicament_dispensation_ext_updt_dispensation(client)
 
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
