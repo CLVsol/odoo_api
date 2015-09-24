@@ -185,9 +185,6 @@ def clv_medicament_dispensation_updt_refund_price(client):
         if dispensation.medicament_ref != False:
             found += 1
 
-            # clv_orizon_lpm = client.model('clv_orizon_lpm')
-            # orizon_lpm_browse = clv_orizon_lpm.browse([('id', '=', dispensation.medicament_ref.id),])
-
             print('>>>>>', dispensation.sale_value / dispensation.pack_quantity)
 
             values = {
@@ -201,6 +198,100 @@ def clv_medicament_dispensation_updt_refund_price(client):
     print('i: ', i)
     print('found: ', found)
     print('not_found: ', not_found)
+
+def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
+
+    headings_dispensation = ['no', 'prescription', 'template', 'name', 'dispensation_date', 'medicament_code', 
+                             'medicament', 'medicament_ref', 'max_retail_price', 'pack_quantity', 'refund_price', 
+                             'total_refund_price', 
+                             'sale_value', 'at_sight_value', 'insured_card', 'state', 'prescriber', 'pharmacy',
+                             'med_abc', 'cod_prod', 'insurance_client', 'reg_number', 'insured_name', 'category',
+                             'titular_name',
+                             ]
+    file_dispensation = open(file_path, 'wb')
+    writer_dispensation = csv.writer(file_dispensation, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
+    writer_dispensation.writerow(headings_dispensation)
+
+    clv_medicament_dispensation = client.model('clv_medicament_dispensation')
+    dispensation_browse = clv_medicament_dispensation.browse(
+        [('dispensation_date', '>=', start_date),
+         ('dispensation_date', '<=', end_date),
+         ], order='name')
+    i = 0
+    for dispensation in dispensation_browse:
+        i += 1
+
+        print(i, dispensation.dispensation_date)
+
+        if dispensation.template_id != False:
+            prescription = dispensation.template_id.prescription_id.name
+        else:
+            prescription = False
+        if dispensation.template_id != False:
+            template = dispensation.template_id.name
+        else:
+            template = False
+        name = dispensation.name
+        dispensation_date = dispensation.dispensation_date
+        medicament_code = dispensation.medicament.code
+        medicament = dispensation.medicament.name
+        if dispensation.medicament_ref != False:
+            medicament_ref = dispensation.medicament_ref.name
+        else:
+            medicament_ref = False
+        max_retail_price = dispensation.max_retail_price
+        pack_quantity = dispensation.pack_quantity
+        refund_price = dispensation.refund_price
+        sale_value = dispensation.sale_value
+        total_refund_price = dispensation.total_refund_price
+        at_sight_value = dispensation.at_sight_value
+        insured_card = dispensation.insured_card_id.name.encode("utf-8") + ' [' + \
+                       dispensation.insured_card_id.code + ']'
+        state = dispensation.insured_card_id.state
+        prescriber = dispensation.prescriber_id.name.encode("utf-8") + ' [' + \
+                     dispensation.prescriber_id.professional_id + ']'
+        pharmacy = dispensation.pharmacy_id.name.encode("utf-8")
+        if dispensation.medicament.abcfarma_id != False:
+            med_abc = dispensation.medicament.abcfarma_id.med_abc
+        else:
+            med_abc = False
+        if dispensation.medicament_ref != False:
+            cod_prod = dispensation.medicament_ref.cod_prod
+        else:
+            cod_prod = False
+        insurance_client = dispensation.insured_card_id.insured_id.insurance_client_id.name.encode("utf-8")
+        reg_number = dispensation.insured_card_id.insured_id.reg_number
+        insured_name = dispensation.insured_card_id.insured_id.name.encode("utf-8")
+        category_id = dispensation.insured_card_id.insured_id.category_ids
+        clv_insured_category = client.model('clv_insured.category')
+        insured_category_browse = clv_insured_category.browse([('id', '=', category_id.id),])
+        category_name = insured_category_browse[0].name
+        if dispensation.insured_card_id.insured_id.holder_id != False:
+            titular_name = dispensation.insured_card_id.insured_id.holder_id.name.encode("utf-8")
+        else:
+            # titular_name = False
+            titular_name = insured_name
+
+        print(i, prescription, template, name, dispensation_date, medicament_code, medicament, medicament_ref,
+              max_retail_price, pack_quantity,
+              refund_price, total_refund_price, insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
+              insurance_client, reg_number, insured_name, category_name, titular_name)
+
+        row_dispensation = [i, prescription, template, name, dispensation_date, medicament_code, medicament, 
+                            medicament_ref,
+                            str('{0:.2f}'.format(round(max_retail_price,2))).replace('.',','),
+                            pack_quantity, str('{0:.2f}'.format(round(refund_price,2))).replace('.',','),
+                            str('{0:.2f}'.format(round(total_refund_price,2))).replace('.',','), 
+                            str('{0:.2f}'.format(round(sale_value,2))).replace('.',','), 
+                            str('{0:.2f}'.format(round(at_sight_value,2))).replace('.',','), 
+                            insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
+                            insurance_client, reg_number, insured_name, category_name, titular_name
+                            ]
+        writer_dispensation.writerow(row_dispensation)
+
+    file_dispensation.close()
+
+    print('i: ', i)
 
 def get_arguments():
 
@@ -268,9 +359,16 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
     # clv_medicament_dispensation_updt_mrp(client)
     
-    print('-->', client)
-    print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
-    clv_medicament_dispensation_updt_refund_price(client)
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2015_09_21.csv"
+    # start_date = '2015-08-21'
+    # end_date = '2015-09-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
 
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
