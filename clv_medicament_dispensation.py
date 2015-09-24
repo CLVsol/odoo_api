@@ -132,6 +132,76 @@ def clv_medicament_dispensation_import_dispensation_ext_orizon(client):
 
     print('i: ', i)
 
+def clv_medicament_dispensation_updt_mrp(client):
+
+    clv_medicament_dispensation = client.model('clv_medicament_dispensation')
+    dispensation_browse = clv_medicament_dispensation.browse(\
+        [('max_retail_price', '=', 0.0),
+         ])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for dispensation in dispensation_browse:
+
+        i += 1
+        print(i, dispensation.name, dispensation.medicament, dispensation.medicament.abcfarma_id)
+
+        if dispensation.medicament.abcfarma_id != False:
+            found += 1
+            abcfarma = dispensation.medicament.abcfarma_id
+
+            print('>>>>>', abcfarma.med_abc, abcfarma.med_pco18)
+
+            values = {
+                'max_retail_price': abcfarma.med_pco18,
+                }
+            clv_medicament_dispensation.write(dispensation.id, values)
+
+        else:
+            not_found += 1
+
+    print('i: ', i)
+    print('found: ', found)
+    print('not_found: ', not_found)
+
+def clv_medicament_dispensation_updt_refund_price(client):
+
+    clv_medicament_dispensation = client.model('clv_medicament_dispensation')
+    dispensation_browse = clv_medicament_dispensation.browse(\
+        [('refund_price', '=', 0.0),
+         ('dispensation_ext_id', '!=', False),
+         ('at_sight_value', '=', 0.0),
+         ])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for dispensation in dispensation_browse:
+
+        i += 1
+        print(i, dispensation.name, dispensation.medicament_ref.id)
+
+        if dispensation.medicament_ref != False:
+            found += 1
+
+            # clv_orizon_lpm = client.model('clv_orizon_lpm')
+            # orizon_lpm_browse = clv_orizon_lpm.browse([('id', '=', dispensation.medicament_ref.id),])
+
+            print('>>>>>', dispensation.sale_value / dispensation.pack_quantity)
+
+            values = {
+                'refund_price': dispensation.sale_value / dispensation.pack_quantity,
+                }
+            clv_medicament_dispensation.write(dispensation.id, values)
+
+        else:
+            not_found += 1
+
+    print('i: ', i)
+    print('found: ', found)
+    print('not_found: ', not_found)
+
 def get_arguments():
 
     global username
@@ -193,6 +263,14 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
     # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+    
+    print('-->', client)
+    print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    clv_medicament_dispensation_updt_refund_price(client)
 
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
