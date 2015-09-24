@@ -65,6 +65,73 @@ def clv_medicament_dispensation_updt_medicament_ref_orizon(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+def clv_medicament_dispensation_updt_refund_price_orizon(client):
+
+    clv_medicament_dispensation = client.model('clv_medicament_dispensation')
+    dispensation_browse = clv_medicament_dispensation.browse(\
+        [('at_sight_value', '!=', 0.0),
+         ('refund_price', '!=', 0.0),
+         ])
+
+    i = 0
+    for dispensation in dispensation_browse:
+
+        i += 1
+        print(i, dispensation.name, dispensation.at_sight_value, dispensation.refund_price)
+
+        values = {
+            'refund_price': 0.0,
+            }
+        clv_medicament_dispensation.write(dispensation.id, values)
+
+    print('i: ', i)
+
+def clv_medicament_dispensation_import_dispensation_ext_orizon(client):
+
+    clv_medicament_dispensation = client.model('clv_medicament_dispensation')
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse(\
+        [('dispensation_id', '=', False),
+         ('pharmacy_id', '!=', False),
+         ('prescriber_id', '!=', False),
+         ('insured_card_id', '!=', False),
+         ('medicament', '!=', False),
+         ('dispensation_date', '!=', False),
+         ], order='name')
+
+    i = 0
+    for dispensation_ext in dispensation_ext_browse:
+
+        i += 1
+        print(i, dispensation_ext.name, dispensation_ext.dispensation_date)
+
+        values = {
+            'name': '/',
+            'dispensation_date': dispensation_ext.dispensation_date,
+            'medicament': dispensation_ext.medicament.id,
+            'max_retail_price': 0.0,
+            'pack_quantity': dispensation_ext.pack_quantity,
+            'refund_price': 0.0,
+            'sale_value': dispensation_ext.sale_value,
+            'at_sight_value': dispensation_ext.at_sight_value,
+            'insured_card_id': dispensation_ext.insured_card_id.id,
+            'prescriber_id': dispensation_ext.prescriber_id.id,
+            'pharmacy_id': dispensation_ext.pharmacy_id.id,
+            'dispenser': False,
+            'medicament_ref': 'clv_orizon_lpm,' + \
+                              str(dispensation_ext.medicament_ref.id),
+            'dispensation_ext_id': dispensation_ext.id,
+            }
+        medicament_dispensation_id = clv_medicament_dispensation.create(values)
+
+        values = {
+            'dispensation_id': medicament_dispensation_id.id,
+            }
+        clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+
+    print('i: ', i)
+
 def get_arguments():
 
     global username
@@ -115,9 +182,17 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    print('-->', client)
-    print('--> Executing clv_medicament_dispensation_updt_medicament_ref_orizon()...')
-    clv_medicament_dispensation_updt_medicament_ref_orizon(client)
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price_orizon()...')
+    # clv_medicament_dispensation_updt_refund_price_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
 
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
