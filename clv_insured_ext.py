@@ -414,7 +414,7 @@ def clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 def clv_insured_ext_set_partner_orizon(client):
 
     clv_insured_ext = client.model('clv_insured_ext')
-    insured_ext_browse = clv_insured_ext.browse([('partner_id', '=', False),])
+    insured_ext_browse = clv_insured_ext.browse([('partner_ids', '=', False),])
 
     i = 0
     for insured_ext in insured_ext_browse:
@@ -424,14 +424,114 @@ def clv_insured_ext_set_partner_orizon(client):
 
         res_partner = client.model('res.partner')
         partner_browse = res_partner.browse([('name', '=', 'Orizon'),])
-        partner_id = partner_browse.id[0]
+        partner_ids = partner_browse.id[0]
 
         values = {
-            'partner_id': partner_id,
+            'partner_ids': partner_ids,
             }
         clv_insured_ext.write(insured_ext.id, values)
 
     print('--> i: ', i)
+
+def clv_insured_ext_updt_from_insured_card_orizon(client):
+
+    clv_insured_ext = client.model('clv_insured_ext')
+
+    clv_insured_card = client.model('clv_insured_card')
+
+    insured_card_browse = clv_insured_card.browse([('state', '=', 'active'),])
+
+    i = 0
+    new = 0
+    synchronized = 0
+    not_synchronized = 0
+    for insured_card in insured_card_browse:
+        i += 1
+
+        partner = False
+        if insured_card.partner_ids.name != []:
+            partner = insured_card.partner_ids[0].name
+
+        print(i, insured_card.code, partner, insured_card.state, insured_card.name)
+
+        clv_insured = client.model('clv_insured')
+        insured_browse = clv_insured.browse([('id', '=', insured_card.insured_id.id),])
+
+        clv_address = client.model('clv_address')
+        address_browse = clv_address.browse([('id', '=', insured_browse.address_home_id.id[0]),])
+        zip_code = False
+        if address_browse.zip != []:
+            zip_code = address_browse.zip[0]
+
+        insured_ext_browse = clv_insured_ext.browse([('insured_card_id', '=', insured_card.id),])
+        if insured_ext_browse.id == []:
+            new += 1
+
+            values = {
+                'name': insured_card.name,
+                'code': insured_card.code,
+                'address_id': False,
+                'birthday': insured_browse.birthday[0],
+                'gender': insured_browse.gender[0],
+                'insured_id': insured_browse.id[0],
+                'insured_card_id': insured_card.id,
+                'cpf': insured_browse.cpf[0],
+                'zip_code': zip_code,
+                }
+            insured_ext_id = clv_insured_ext.create(values).id
+
+        else:
+            if insured_ext_browse[0].state == insured_card.state:
+                synchronized += 1
+            else:
+                not_synchronized += 1
+
+                if insured_ext_browse[0].synchronized:
+                    values = {
+                        'date_previous_synchronization': insured_ext_browse.date_synchronization[0],
+                        }
+                    clv_insured_ext.write(insured_ext_browse[0].id, values)
+
+                    values = {
+                        'synchronized': False,
+                        'date_synchronization': False,
+                        }
+                    clv_insured_ext.write(insured_ext_browse[0].id, values)
+
+    insured_card_browse = clv_insured_card.browse([('state', '=', 'canceled'),])
+
+    for insured_card in insured_card_browse:
+        i += 1
+
+        partner = False
+        if insured_card.partner_ids.name != []:
+            partner = insured_card.partner_ids[0].name
+
+        print(i, insured_card.code, partner, insured_card.state, insured_card.name)
+
+        insured_ext_browse = clv_insured_ext.browse([('insured_card_id', '=', insured_card.id),])
+        if insured_ext_browse.id != []:
+            if insured_ext_browse[0].state == insured_card.state:
+                synchronized += 1
+            else:
+                not_synchronized += 1
+
+                if insured_ext_browse[0].synchronized:
+                    values = {
+                        'date_previous_synchronization': insured_ext_browse.date_synchronization[0],
+                        }
+                    clv_insured_ext.write(insured_ext_browse[0].id, values)
+
+                    values = {
+                        'synchronized': False,
+                        'date_synchronization': False,
+                        }
+                    clv_insured_ext.write(insured_ext_browse[0].id, values)
+
+    print('--> i: ', i)
+    print('--> new: ', new)
+    print('--> synchronized: ', synchronized)
+    print('--> not_synchronized: ', not_synchronized)
 
 def get_arguments():
 
@@ -518,6 +618,21 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_insured_ext_set_partner_orizon()...')
     # clv_insured_ext_set_partner_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_ext_updt_from_insured_card_orizon()...')
+    # clv_insured_ext_updt_from_insured_card_orizon(client)
+
+    # print('-->', client)
+    # file_name = '/opt/openerp/orizon/USU1865_20150925_150903_I.TXT'
+    # print('--> Executing clv_insured_ext_syncronize_orizon(' + file_name + ')...')
+    # clv_insured_ext_syncronize_orizon(client, file_name)
+
+    # print('-->', client)
+    # file_name = '/opt/openerp/orizon/USU1865_20150925_150903_I.TXT'
+    # date_synchronization = '2015-09-25 21:00:00'
+    # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
+    # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
     print('--> clv_insured_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
