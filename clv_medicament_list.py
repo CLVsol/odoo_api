@@ -75,6 +75,37 @@ def clv_medicament_list_updt_medicament_orizon(client, list_name, list_version_n
     print('--> found: ', found)
     print('--> not_found: ', not_found)
 
+def clv_medicament_list_clear_subsidy_orizon(client, list_name, list_version_name):
+
+    clv_medicament_list = client.model('clv_medicament_list')
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    print('>>>>>', medicament_list_browse)
+
+    clv_medicament_list_version = client.model('clv_medicament_list.version')
+    medicament_list_version_browse = clv_medicament_list_version.browse(
+        [('list_id', '=', medicament_list_browse[0].id),
+         ('name', '=', list_version_name),
+         ])
+    print('>>>>>', medicament_list_version_browse)
+
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
+    medicament_list_item_browse = clv_medicament_list_item.browse(
+        [('list_version_id', '=', medicament_list_version_browse[0].id),
+         ('subsidy', '!=', 0.0),
+         ])
+
+    i = 0
+    for medicament_list_item in medicament_list_item_browse:
+        i += 1
+        print(i, medicament_list_item)
+
+        values = {
+            'subsidy': 0.0,
+            }
+        clv_medicament_list_item.write(medicament_list_item.id, values)
+
+    print('--> i: ', i)
+
 def get_arguments():
 
     global username
@@ -130,6 +161,12 @@ if __name__ == '__main__':
     # print('-->', client, list_name, list_version_name)
     # print('--> Executing clv_medicament_list_updt_medicament_orizon()...')
     # clv_medicament_list_updt_medicament_orizon(client, list_name, list_version_name)
+
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1508'
+    # print('-->', client, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_clear_subsidy_orizon()...')
+    # clv_medicament_list_clear_subsidy_orizon(client, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
