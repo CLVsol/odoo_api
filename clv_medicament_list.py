@@ -175,6 +175,93 @@ def clv_medicament_list_check_orizon(client, infile_name, list_name, list_versio
     print('--> found: ', found)
     print('--> not_found: ', not_found)
 
+def clv_medicament_list_check_2_orizon(client, infile_name, list_name, list_version_name):
+
+    clv_medicament_list = client.model('clv_medicament_list')
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    print('>>>>>', medicament_list_browse)
+
+    clv_medicament_list_version = client.model('clv_medicament_list.version')
+    medicament_list_version_browse = clv_medicament_list_version.browse(
+        [('list_id', '=', medicament_list_browse[0].id),
+         ('name', '=', list_version_name),
+         ])
+    print('>>>>>', medicament_list_version_browse)
+
+    delimiter_char = ';'
+
+    f  = open(infile_name, "rb")
+    r = csv.reader(f, delimiter=delimiter_char)
+    rownum = 0
+    found = 0
+    not_found = 0
+    for row in r:
+
+        if rownum == 0:
+            rownum += 1
+            continue
+
+        i = autoIncrement(0, 1)
+
+        Reembolso = row[i.next()]
+        Laboratorio = row[i.next()]
+        Produto = row[i.next()]
+        Cod_Prod = row[i.next()]
+        Apresentacao_Do_Produto = row[i.next()]
+        EAN_Principal = row[i.next()]
+        PMC = row[i.next()].replace(",", ".")
+        Desconto = row[i.next()].replace(",", ".")
+        Preco_Venda = row[i.next()].replace(",", ".")
+        Categoria = row[i.next()]
+        Sub_Categoria = row[i.next()]
+        Classificacao = row[i.next()]
+        Sub_Classificacao = row[i.next()]
+        Classe_Terapeutica = row[i.next()]
+        Sub_Classe_Terapeutica = row[i.next()]
+        Principio_Ativo = row[i.next()]
+
+        print(rownum, Cod_Prod, Apresentacao_Do_Produto)
+
+        clv_orizon_lpm = client.model('clv_orizon_lpm')
+        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod),
+                                                   ])
+        print('>>>>>', orizon_lpm_browse)
+
+        if orizon_lpm_browse.id == []:
+            continue
+
+        clv_medicament = client.model('clv_medicament')
+        medicament_browse = clv_medicament.browse([('orizon_lpm_id', '=', orizon_lpm_browse[0].id)])
+        print('>>>>>', medicament_browse)
+
+        if medicament_browse.id != []:
+            clv_medicament_list_item = client.model('clv_medicament_list.item')
+            medicament_list_item_browse = clv_medicament_list_item.browse(
+                [('list_version_id', '=', medicament_list_version_browse[0].id),
+                 ('medicament_id', '=', medicament_browse[0].id),
+                 ])
+            print('>>>>>', medicament_list_item_browse, medicament_list_item_browse.medicament_ref)
+            medicament_list_item_id = medicament_list_item_browse.id
+
+            if medicament_list_item_id != []:
+                found += 1
+                # values = {
+                #     'subsidy': 100.0,
+                #     }
+                # clv_medicament_list_item.write(medicament_list_item_id[0], values)
+            else:
+                not_found += 1
+        else:
+            not_found += 1
+
+        rownum += 1
+
+    f.close()
+
+    print('--> rownum: ', rownum - 1)
+    print('--> found: ', found)
+    print('--> not_found: ', not_found)
+
 def get_arguments():
 
     global username
@@ -243,6 +330,13 @@ if __name__ == '__main__':
     # print('-->', client, infile_name, list_name, list_version_name)
     # print('--> Executing clv_medicament_list_check_orizon()...')
     # clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name)
+
+    # infile_name = '/opt/openerp/orizon_lpm/Lista_483_LPM_Agosto_2015.csv'
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1508'
+    # print('-->', client, infile_name, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_check_2_orizon()...')
+    # clv_medicament_list_check_2_orizon(client, infile_name, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
