@@ -106,7 +106,7 @@ def clv_medicament_list_clear_subsidy_orizon(client, list_name, list_version_nam
 
     print('--> i: ', i)
 
-def clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name):
+def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_version_name):
 
     delimiter_char = ';'
 
@@ -175,7 +175,47 @@ def clv_medicament_list_check_orizon(client, infile_name, list_name, list_versio
     print('--> found: ', found)
     print('--> not_found: ', not_found)
 
-def clv_medicament_list_check_2_orizon(client, infile_name, list_name, list_version_name):
+def clv_medicament_list_clear_old_from(client, list_name, list_version_name, from_):
+
+    clv_medicament_list = client.model('clv_medicament_list')
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    print('>>>>>', medicament_list_browse)
+
+    clv_medicament_list_version = client.model('clv_medicament_list.version')
+    medicament_list_version_browse = clv_medicament_list_version.browse(
+        [('list_id', '=', medicament_list_browse[0].id),
+         ('name', '=', list_version_name),
+         ])
+    print('>>>>>', medicament_list_version_browse)
+
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
+    medicament_list_item_browse = clv_medicament_list_item.browse(
+        [('list_version_id', '=', medicament_list_version_browse[0].id),])
+
+    i = 0
+    unlinked = 0
+    not_unlinked = 0
+    for medicament_list_item in medicament_list_item_browse:
+        i += 1
+        print(i, medicament_list_item)
+
+        clv_orizon_lpm = client.model('clv_orizon_lpm')
+        orizon_lpm_browse = clv_orizon_lpm.browse([('id', '=', medicament_list_item.medicament_ref.id),
+                                                   ('from', '!=', from_),
+                                                   ])
+        print('>>>>>', orizon_lpm_browse)
+
+        if orizon_lpm_browse.id != []:
+            unlinked += 1
+            medicament_list_item.unlink()
+        else:
+            not_unlinked += 1
+
+    print('--> i: ', i)
+    print('--> unlinked: ', unlinked)
+    print('--> not_unlinked: ', not_unlinked)
+
+def clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name):
 
     clv_medicament_list = client.model('clv_medicament_list')
     medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
@@ -328,15 +368,22 @@ if __name__ == '__main__':
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
     # print('-->', client, infile_name, list_name, list_version_name)
-    # print('--> Executing clv_medicament_list_check_orizon()...')
-    # clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_set_subsidy_orizon()...')
+    # clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_version_name)
+
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1508'
+    # from_ = 'LPM_1509'
+    # print('-->', client, list_name, list_version_name, from_)
+    # print('--> Executing clv_medicament_list_clear_old_from()...')
+    # clv_medicament_list_clear_old_from(client, list_name, list_version_name, from_)
 
     # infile_name = '/opt/openerp/orizon_lpm/Lista_483_LPM_Agosto_2015.csv'
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
     # print('-->', client, infile_name, list_name, list_version_name)
-    # print('--> Executing clv_medicament_list_check_2_orizon()...')
-    # clv_medicament_list_check_2_orizon(client, infile_name, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_check_orizon()...')
+    # clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
