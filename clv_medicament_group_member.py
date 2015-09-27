@@ -36,7 +36,7 @@ def get_medicament_group_member_id(client, medicament_group_id, medicament_id, l
                                                                          ])
     medicament_group_member_id = medicament_group_member_browse.id
 
-    if medicament_group_member_ids == []:
+    if medicament_group_member_id == []:
         values = {
             'group_id': medicament_group_id,
             'medicament_id': medicament_id,
@@ -44,7 +44,7 @@ def get_medicament_group_member_id(client, medicament_group_id, medicament_id, l
             'order': 10,
             'active': 1,
             }
-        medicament_group_member_id = clv_medicament_group.create(values).id
+        medicament_group_member_id = clv_medicament_group_member.create(values).id
     else:
         medicament_group_member_id = medicament_group_member_id[0]
 
