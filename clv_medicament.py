@@ -137,6 +137,37 @@ def include_medicaments_into_groups(client, args):
 
     print('medicament_count: ', medicament_count)
 
+def clv_medicament_mark_verify_form_orizon_lpm(client):
+
+    args = [('excluded', '=', False),
+            ('medicament_ids', '!=', False),]
+    clv_orizon_lpm = client.model('clv_orizon_lpm')
+    orizon_lpm_browse = clv_orizon_lpm.browse(args)
+
+    orizon_lpm_count = 0
+    medicament_ok = 0
+    medicament_to_verify = 0
+    for orizon_lpm in orizon_lpm_browse:
+
+        orizon_lpm_count += 1
+        print(orizon_lpm_count, orizon_lpm.name.encode("utf-8"))
+
+        clv_medicament = client.model('clv_medicament')
+        medicament_browse = clv_medicament.browse([('id', '=', orizon_lpm.medicament_ids[0].id),
+                                                   ('state', '!=', 'active'),
+                                                   ('state', '!=', 'waiting'),
+                                                   ])
+        print('>>>>>', medicament_browse.id)
+
+        if medicament_browse.id != []:
+            medicament_to_verify += 1
+        else:
+            medicament_ok += 1
+
+    print('orizon_lpm_count: ', orizon_lpm_count)
+    print('medicament_to_verify: ', medicament_to_verify)
+    print('medicament_ok: ', medicament_ok)
+
 def get_arguments():
 
     global username
@@ -187,11 +218,15 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    medicament_args = [('is_product', '=', True),
-                       ('state', '=', 'waiting'),]
-    print('-->', client, medicament_args)
-    print('--> Executing include_medicaments_into_groups()...')
-    include_medicaments_into_groups(client, medicament_args)
+    # medicament_args = [('is_product', '=', True),
+    #                    ('state', '=', 'waiting'),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing include_medicaments_into_groups()...')
+    # include_medicaments_into_groups(client, medicament_args)
+
+    print('-->', client)
+    print('--> Executing clv_medicament_mark_verify_form_orizon_lpm()...')
+    clv_medicament_mark_verify_form_orizon_lpm(client)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
