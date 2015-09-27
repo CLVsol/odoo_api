@@ -169,6 +169,24 @@ def include_medicaments_into_groups(client, args):
 
     print('medicament_count: ', medicament_count)
 
+def clv_medicament_updt_code(client, args):
+
+    clv_medicament = client.model('clv_medicament')
+    medicament_browse = clv_medicament.browse(args)
+
+    medicament_count = 0
+    for medicament in medicament_browse:
+        medicament_count += 1
+
+        print(medicament_count, medicament.name)
+
+        values = {
+            'code': '/',
+            }
+        clv_medicament.write(medicament.id, values)
+
+    print('medicament_count: ', medicament_count)
+
 def clv_medicament_mark_verify_from_orizon_lpm(client):
 
     args = [('excluded', '=', False),
@@ -255,6 +273,11 @@ if __name__ == '__main__':
     # print('-->', client, medicament_args)
     # print('--> Executing include_medicaments_into_groups()...')
     # include_medicaments_into_groups(client, medicament_args)
+
+    # medicament_args = [('code', '=', False),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing clv_medicament_updt_code()...')
+    # clv_medicament_updt_code(client, medicament_args)
 
     # print('-->', client)
     # print('--> Executing clv_medicament_mark_verify_from_orizon_lpm()...')
