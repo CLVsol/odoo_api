@@ -29,13 +29,14 @@ import argparse
 import getpass
 
 from clv_medicament_group import *
+from clv_medicament_group_member import *
 
 def get_new_l0_medicament_active_component(client, active_component_id, concentration, pres_form, pres_form_2):
 
     new_medicament_id = 0
 
     clv_active_component = client.model('clv_medicament.active_component')
-    active_component_browse = clv_active_component.browse([('id', '=', active_component),])
+    active_component_browse = clv_active_component.browse([('id', '=', active_component_id),])
 
     clv_medicament_form = client.model('clv_medicament.form')
     medicament_form_browse = clv_medicament_form.browse([('id', '=', pres_form),])
@@ -63,8 +64,8 @@ def get_new_l0_medicament_active_component(client, active_component_id, concentr
             'code': False,
             'active_component': active_component_id,
             'concentration': concentration,
-            'pres_form': medicament_form_browse.name[0],
-            'pres_form_2': medicament_form_2_browse.name[0],
+            'pres_form': medicament_form_browse.id[0],
+            'pres_form_2': medicament_form_2_browse.id[0],
             'is_product': 0,
             'active': 1,
             }
@@ -77,7 +78,7 @@ def get_new_l0_medicament_name(client, medicament_name, active_component_id, con
     new_medicament_id = 0
 
     clv_active_component = client.model('clv_medicament.active_component')
-    active_component_browse = clv_active_component.browse([('id', '=', active_component),])
+    active_component_browse = clv_active_component.browse([('id', '=', active_component_id),])
 
     clv_medicament_form = client.model('clv_medicament.form')
     medicament_form_browse = clv_medicament_form.browse([('id', '=', pres_form),])
@@ -105,8 +106,8 @@ def get_new_l0_medicament_name(client, medicament_name, active_component_id, con
             'code': False,
             'active_component': active_component_id,
             'concentration': concentration,
-            'pres_form': medicament_form_browse.name[0],
-            'pres_form_2': medicament_form_2_browse.name[0],
+            'pres_form': medicament_form_browse.id[0],
+            'pres_form_2': medicament_form_2_browse.id[0],
             'is_product': 0,
             'active': 1,
             }
@@ -116,11 +117,42 @@ def get_new_l0_medicament_name(client, medicament_name, active_component_id, con
 
 def include_medicament_into_group(client, medicament):
 
-    medicament_group = get_medicament_group_id(client, medicament.active_component.id, 
-                                                       medicament.concentration, 
-                                                       medicament.pres_form_2.id)
+    medicament_group_id = get_medicament_group_id(client, medicament.active_component.id, 
+                                                          medicament.concentration, 
+                                                          medicament.pres_form_2.id)
 
-    print('>>>>>', medicament.code, medicament.name.encode("utf-8"), medicament_group)
+    print('>>>>>', medicament.code, medicament.name.encode("utf-8"), medicament_group_id)
+
+    medicament_group_member_l9 = get_medicament_group_member_id(client, medicament_group_id, 
+                                                                        medicament.id, 
+                                                                        9)
+
+    print('>>>>>', medicament_group_member_l9)
+
+    new_medicament_id = get_new_l0_medicament_active_component(client, medicament.active_component.id, 
+                                                                       medicament.concentration, 
+                                                                       medicament.pres_form.id, 
+                                                                       medicament.pres_form_2.id)
+    medicament_group_member_l0 = False
+    if new_medicament_id != 0:
+        medicament_group_member_l0 = get_medicament_group_member_id(client, medicament_group_id, 
+                                                                            new_medicament_id, 
+                                                                            0)
+
+    print('>>>>>', medicament_group_member_l0, medicament_group_member_l0)
+
+    new_medicament_id = get_new_l0_medicament_name(client, medicament.medicament_name,
+                                                           medicament.active_component.id, 
+                                                           medicament.concentration, 
+                                                           medicament.pres_form.id, 
+                                                           medicament.pres_form_2.id)
+    medicament_group_member_l0 = False
+    if new_medicament_id != 0:
+        medicament_group_member_l0 = get_medicament_group_member_id(client, medicament_group_id, 
+                                                                            new_medicament_id, 
+                                                                            0)
+
+    print('>>>>>', medicament_group_member_l0, medicament_group_member_l0)
 
 def include_medicaments_into_groups(client, args):
 
@@ -224,9 +256,9 @@ if __name__ == '__main__':
     # print('--> Executing include_medicaments_into_groups()...')
     # include_medicaments_into_groups(client, medicament_args)
 
-    print('-->', client)
-    print('--> Executing clv_medicament_mark_verify_from_orizon_lpm()...')
-    clv_medicament_mark_verify_from_orizon_lpm(client)
+    # print('-->', client)
+    # print('--> Executing clv_medicament_mark_verify_from_orizon_lpm()...')
+    # clv_medicament_mark_verify_from_orizon_lpm(client)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
