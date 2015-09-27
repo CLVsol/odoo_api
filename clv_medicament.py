@@ -187,6 +187,27 @@ def clv_medicament_updt_code(client, args):
 
     print('medicament_count: ', medicament_count)
 
+def clv_medicament_updt_state_active(client, args):
+
+    clv_medicament = client.model('clv_medicament')
+    medicament_browse = clv_medicament.browse(args)
+
+    medicament_count = 0
+    for medicament in medicament_browse:
+        medicament_count += 1
+
+        print(medicament_count, medicament.state, medicament.name)
+
+        if medicament.state == 'new':
+            client.exec_workflow('clv_medicament', 'button_revised', medicament.id)
+            client.exec_workflow('clv_medicament', 'button_waiting', medicament.id)
+            client.exec_workflow('clv_medicament', 'button_activate', medicament.id)
+
+        if medicament.state == 'waiting':
+            client.exec_workflow('clv_medicament', 'button_activate', medicament.id)
+
+    print('medicament_count: ', medicament_count)
+
 def clv_medicament_mark_verify_from_orizon_lpm(client):
 
     args = [('excluded', '=', False),
@@ -278,6 +299,17 @@ if __name__ == '__main__':
     # print('-->', client, medicament_args)
     # print('--> Executing clv_medicament_updt_code()...')
     # clv_medicament_updt_code(client, medicament_args)
+
+    # medicament_args = [('state', '=', 'new'),
+    #                    ('is_product', '=', False),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing clv_medicament_updt_state_active()...')
+    # clv_medicament_updt_state_active(client, medicament_args)
+
+    # medicament_args = [('state', '=', 'waiting'),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing clv_medicament_updt_state_active()...')
+    # clv_medicament_updt_state_active(client, medicament_args)
 
     # print('-->', client)
     # print('--> Executing clv_medicament_mark_verify_from_orizon_lpm()...')
