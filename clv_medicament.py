@@ -137,7 +137,7 @@ def include_medicaments_into_groups(client, args):
 
     print('medicament_count: ', medicament_count)
 
-def clv_medicament_mark_verify_form_orizon_lpm(client):
+def clv_medicament_mark_verify_from_orizon_lpm(client):
 
     args = [('excluded', '=', False),
             ('medicament_ids', '!=', False),]
@@ -225,8 +225,8 @@ if __name__ == '__main__':
     # include_medicaments_into_groups(client, medicament_args)
 
     print('-->', client)
-    print('--> Executing clv_medicament_mark_verify_form_orizon_lpm()...')
-    clv_medicament_mark_verify_form_orizon_lpm(client)
+    print('--> Executing clv_medicament_mark_verify_from_orizon_lpm()...')
+    clv_medicament_mark_verify_from_orizon_lpm(client)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
