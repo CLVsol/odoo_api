@@ -55,7 +55,7 @@ def get_new_l0_medicament_active_component(client, active_component_id, concentr
         name = active_component_browse.name[0] + ' (' + active_component_browse.name[0] + ') ' + \
                concentration + ' ' + medicament_form_2_browse.name[0]
 
-        print('>>>>>', '(new medicament)', name)
+        print('>>>>>', '(new medicament)', name.encode("utf-8"))
 
         values = {
             'name': name,
@@ -97,7 +97,7 @@ def get_new_l0_medicament_name(client, medicament_name, active_component_id, con
         name = medicament_name + ' (' + active_component_browse.name[0] + ') ' + \
                concentration + ' ' + medicament_form_2_browse.name[0]
 
-        print('>>>>>', '(new medicament)', name)
+        print('>>>>>', '(new medicament)', name.encode("utf-8"))
 
         values = {
             'name': name,
@@ -178,7 +178,7 @@ def clv_medicament_updt_code(client, args):
     for medicament in medicament_browse:
         medicament_count += 1
 
-        print(medicament_count, medicament.name)
+        print(medicament_count, medicament.name.encode("utf-8"))
 
         values = {
             'code': '/',
@@ -196,7 +196,7 @@ def clv_medicament_updt_state_active(client, args):
     for medicament in medicament_browse:
         medicament_count += 1
 
-        print(medicament_count, medicament.state, medicament.name)
+        print(medicament_count, medicament.state, medicament.name.encode("utf-8"))
 
         if medicament.state == 'new':
             client.exec_workflow('clv_medicament', 'button_revised', medicament.id)
