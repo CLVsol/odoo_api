@@ -399,6 +399,22 @@ def clv_insured_mng_check_crd_name(client):
     print('--> clear_tag: ', clear_tag)
     print('--> set_tag: ', set_tag)
 
+def clv_insured_mng_updt_state_revised(client, args):
+
+    clv_insured_mng = client.model('clv_insured_mng')
+    insured_mng_browse = clv_insured_mng.browse(args)
+
+    insured_mng_count = 0
+    for insured_mng in insured_mng_browse:
+        insured_mng_count += 1
+
+        print(insured_mng_count, insured_mng.state, insured_mng.name.encode("utf-8"))
+
+        if insured_mng.state == 'draft':
+            client.exec_workflow('clv_insured_mng', 'button_revised', insured_mng.id)
+
+    print('insured_mng_count: ', insured_mng_count)
+
 def get_arguments():
 
     global username
@@ -475,6 +491,11 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_insured_mng_check_crd_name()...')
     # clv_insured_mng_check_crd_name(client)
+
+    # insured_args = [('state', '=', 'draft'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_revised()...')
+    # clv_insured_mng_updt_state_revised(client, insured_args)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
