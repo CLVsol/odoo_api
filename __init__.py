@@ -24,6 +24,7 @@ import base
 import clv_abcfarma
 import clv_cmed
 import clv_insurance
+import clv_insurance_client.py
 import clv_insured_card
 import clv_insured_ext
 import clv_insured_mng
