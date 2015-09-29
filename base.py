@@ -26,3 +26,22 @@ def autoIncrement(start=0, step=1):
     while 1:
         yield i
         i += step
+
+def validate_cpf(cpf):
+
+    if not cpf.isdigit():
+        cpf = re.sub('[^0-9]', '', cpf)
+    if len(cpf) != 11:
+        return False
+    cpf = map(int, cpf)
+    new = cpf[:9]
+    while len(new) < 11:
+        r = sum([(len(new) + 1 - i) * v for i, v in enumerate(new)]) % 11
+        if r > 1:
+            f = 11 - r
+        else:
+            f = 0
+        new.append(f)
+    if new == cpf:
+        return True
+    return False
