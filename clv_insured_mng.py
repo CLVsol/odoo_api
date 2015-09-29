@@ -100,17 +100,17 @@ if __name__ == '__main__':
 
     print('-->', client)
 
-    print('--> Executing clv_insured_mng_unlink("draft")...')
-    clv_insured_mng_unlink(client, 'draft')
+    # print('--> Executing clv_insured_mng_unlink("draft")...')
+    # clv_insured_mng_unlink(client, 'draft')
 
-    print('--> Executing clv_insured_mng_unlink("revised")...')
-    clv_insured_mng_unlink(client, 'revised')
+    # print('--> Executing clv_insured_mng_unlink("revised")...')
+    # clv_insured_mng_unlink(client, 'revised')
 
-    print('--> Executing clv_insured_mng_unlink("done")...')
-    clv_insured_mng_unlink(client, 'done')
+    # print('--> Executing clv_insured_mng_unlink("done")...')
+    # clv_insured_mng_unlink(client, 'done')
 
-    print('--> Executing clv_insured_mng_unlink("canceled")...')
-    clv_insured_mng_unlink(client, 'canceled')
+    # print('--> Executing clv_insured_mng_unlink("canceled")...')
+    # clv_insured_mng_unlink(client, 'canceled')
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
