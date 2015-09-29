@@ -498,6 +498,74 @@ def clv_insured_mng_updt_insured_code(client):
             }
         clv_insured_mng.write(insured_mng.id, values)
 
+def clv_insured_mng_updt_insured_crd_code(client):
+
+    clv_insured_mng = client.model('clv_insured_mng')
+    insured_mng_browse = clv_insured_mng.browse([('state', '=', 'revised'),
+                                                 ('crd_code', '=', False),
+                                                 ])
+    i = 0
+    for insured_mng in insured_mng_browse:
+
+        i += 1
+        print(i, insured_mng.crd_name, insured_mng.crd_code)
+
+        values = {
+            'crd_code': '/',
+            }
+        clv_insured_mng.write(insured_mng.id, values)
+
+    insured_mng_browse = clv_insured_mng.browse([('state', '=', 'revised'),
+                                                 ('crd_code', '!=', False),
+                                                 ])
+    for insured_mng in insured_mng_browse:
+
+        crd_code = insured_mng.crd_code
+        code_form = crd_code
+
+        code_len = len(crd_code) - 2
+        while len(crd_code) < 16:
+            crd_code = '0' + crd_code
+        code_str = "%s.%s.%s.%s.%s-%s" % (str(crd_code[0]) + str(crd_code[1]),
+                                          str(crd_code[2]) + str(crd_code[3]) + str(crd_code[4]),
+                                          str(crd_code[5]) + str(crd_code[6]) + str(crd_code[7]),
+                                          str(crd_code[8]) + str(crd_code[9]) + str(crd_code[10]),
+                                          str(crd_code[11]) + str(crd_code[12]) + str(crd_code[13]),
+                                          str(crd_code[14]) + str(crd_code[15]))
+        if code_len <= 3:
+            code_form = code_str[18 - code_len:21]
+        elif code_len > 3 and code_len <= 6:
+            code_form = code_str[17 - code_len:21]
+        elif code_len > 6 and code_len <= 9:
+            code_form = code_str[16 - code_len:21]
+        elif code_len > 9 and code_len <= 12:
+            code_form = code_str[15 - code_len:21]
+        elif code_len > 12 and code_len <= 14:
+            code_form = code_str[14 - code_len:21]
+
+        i += 1
+        print(i, insured_mng.crd_name, insured_mng.crd_code, code_form)
+
+        values = {
+            'crd_code': code_form,
+            }
+        clv_insured_mng.write(insured_mng.id, values)
+
+    insured_mng_browse = clv_insured_mng.browse([('state', '=', 'revised'),
+                                                 ('crd_code', '=', '0'),
+                                                 ])
+    for insured_mng in insured_mng_browse:
+
+        i += 1
+        print(i, insured_mng.crd_name, insured_mng.crd_code)
+
+        values = {
+            'crd_code': '/',
+            }
+        clv_insured_mng.write(insured_mng.id, values)
+
+    print('--> i: ', i)
+
 def get_arguments():
 
     global username
@@ -587,6 +655,10 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_insured_mng_updt_insured_code()...')
     # clv_insured_mng_updt_insured_code(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
+    # clv_insured_mng_updt_insured_crd_code(client)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
