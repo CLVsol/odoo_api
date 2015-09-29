@@ -22,6 +22,7 @@ from dbfpy import dbf
 import openerplib
 import base
 import clv_abcfarma
+import clv_batch
 import clv_cmed
 import clv_insurance
 import clv_insurance_client
