@@ -415,6 +415,72 @@ def clv_insured_mng_updt_state_revised(client, args):
 
     print('insured_mng_count: ', insured_mng_count)
 
+def clv_insured_mng_check_insured(client):
+
+    tag_id_VerificarDuplicidadeDeBeneficiario = get_tag_id(\
+        client,
+        'Verificar Duplicidade de Beneficiário', 
+        'Registro cujo número de registro já está cadastrado. Verificar manualmente se o Beneficiário já está cadastrado.')
+
+    clv_insured = client.model('clv_insured')
+    clv_insured_mng_relation = client.model('clv_insured_mng.relation')
+
+    clv_insured_mng = client.model('clv_insured_mng')
+    insured_mng_browse = clv_insured_mng.browse([])
+    i = 0
+    for insured_mng in insured_mng_browse:
+        i += 1
+
+        print(i, insured_mng.reg_number, insured_mng.name, insured_mng.insurance_client_id)
+
+        insured_browse = clv_insured.browse(
+            [('insurance_client_id', '=', insured_mng.insurance_client_id.id),
+             ('name', '=', insured_mng.name),
+             ])
+        insured_ids = insured_browse.id
+
+        if insured_ids != []:
+            print('>>>>>', insured_ids)
+
+            values = {
+                'tag_ids': [(4, tag_id_VerificarDuplicidadeDeBeneficiario)],
+                }
+            clv_insured_mng.write(insured_mng.id, values)
+
+            for insured_id in insured_ids:
+                values = {
+                    "insured_mng_id": insured_mng_id,
+                    "insured_id": insured_id,
+                    }
+                relation_id = clv_insured_mng_relation.create(values).id
+
+        insured_browse = clv_insured.browse(
+            [('insurance_client_id', '=', insured_mng.insurance_client_id.id),
+             ('reg_number', '=', insured_browse.reg_number),
+             ])
+        insured_ids = insured_browse.id
+
+        if insured_ids != []:
+            print('>>>>>', insured_ids)
+
+            values = {
+                'tag_ids': [(4, tag_id_VerificarDuplicidadeDeBeneficiario)],
+                }
+            clv_insured_mng.write(insured_mng.id, values)
+
+            for insured_id in insured_ids:
+                values = {
+                    "insured_mng_id": insured_mng_id,
+                    "insured_id": insured_id,
+                    }
+                relation_id = clv_insured_mng_relation.create(values).id
+
+        # else:
+        #     values = {
+        #         'tag_ids': [(3, tag_id_VerificarDuplicidadeDeBeneficiario)],
+        #         }
+        #     clv_insured_mng.write(insured_mng.id, values)
+
 def get_arguments():
 
     global username
@@ -496,6 +562,10 @@ if __name__ == '__main__':
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_check_insured()...')
+    # clv_insured_mng_check_insured(client)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
