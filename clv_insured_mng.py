@@ -481,6 +481,23 @@ def clv_insured_mng_check_insured(client):
         #         }
         #     clv_insured_mng.write(insured_mng.id, values)
 
+def clv_insured_mng_updt_insured_code(client):
+
+    clv_insured_mng = client.model('clv_insured_mng')
+    insured_mng_browse = clv_insured_mng.browse([('state', '=', 'revised'),
+                                                 ('code', '=', False),
+                                                 ])
+    i = 0
+    for insured_mng in insured_mng_browse:
+
+        i += 1
+        print(i, insured_mng.name, insured_mng.code)
+
+        values = {
+            'code': '/',
+            }
+        clv_insured_mng.write(insured_mng.id, values)
+
 def get_arguments():
 
     global username
@@ -566,6 +583,10 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_code()...')
+    # clv_insured_mng_updt_insured_code(client)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
