@@ -33,6 +33,7 @@ import getpass
 from clv_insurance_client import *
 from clv_insurance import *
 from clv_insured import *
+from clv_tag import *
 
 def clv_insured_mng_unlink(client, status):
 
@@ -357,6 +358,47 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
                 }
             clv_insured_mng.write(insured_mng_id, values)
 
+def clv_insured_mng_check_crd_name(client):
+
+    tag_id_NomeCartaoMaiorQue35caracteres = get_tag_id(\
+        client,
+        'Nome do Cartão > 35 caracteres', 
+        'Registro cujo nome do cartão é maior do que 35 caracteres.')
+
+    clv_insured_mng = client.model('clv_insured_mng')
+    insured_mng_browse = clv_insured_mng.browse([])
+    i = 0
+    clear_tag = 0
+    set_tag = 0
+    for insured_mng in insured_mng_browse:
+
+        i += 1
+        print(i, insured_mng.name)
+
+        if len(insured_mng.crd_name) <= 35:
+            clear_tag += 1
+            values = {
+                'tag_ids': [(3, tag_id_NomeCartaoMaiorQue35caracteres)],
+                }
+            clv_insured_mng.write(insured_mng.id, values)
+        else:
+            if insured_mng.crd_name[0] == '[':
+                set_tag += 1
+                values = {
+                    'tag_ids': [(4, tag_id_NomeCartaoMaiorQue35caracteres)],
+                    }
+            else:
+                set_tag += 1
+                values = {
+                    'tag_ids': [(4,tag_id_NomeCartaoMaiorQue35caracteres)],
+                    'crd_name': '[' + str(len(insured_mng.crd_name)) + ']' + insured_mng.crd_name,
+                    }
+            clv_insured_mng.write(insured_mng.id, values)
+
+    print('--> i: ', i)
+    print('--> clear_tag: ', clear_tag)
+    print('--> set_tag: ', set_tag)
+
 def get_arguments():
 
     global username
@@ -429,6 +471,10 @@ if __name__ == '__main__':
     # print('-->', client, batch_name, file_name, client_name)
     # print('--> Executing clv_insured_mng_import()...')
     # clv_insured_mng_import(client, batch_name, file_name, client_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_check_crd_name()...')
+    # clv_insured_mng_check_crd_name(client)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
