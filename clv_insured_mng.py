@@ -619,66 +619,11 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
     i = 0
     for insured_mng in insured_mng_browse:
 
-        # insured_mng_fields = ['name', 'category_ids', 'crd_name', 'insurance_client_id', 'reg_number', 'insurance_id',
-        #                       'addr_name', 'addr_alias', 'addr_code', 'addr_notes', 'addr_street', 'addr_street2',
-        #                       'addr_zip', 'addr_city', 'addr_state_id', 'addr_country_id', 'addr_email', 'addr_phone',
-        #                       'addr_fax', 'addr_mobile',
-        #                       'addr_l10n_br_city_id', 'addr_district', 'addr_number',
-        #                       'cpf', 'rg', 'birthday', 'gender',
-        #                       'batch_name',
-        #                       'code', 'crd_code',
-        #                       ]
-        # insured_mng_data = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'read', insured_mng_id, 
-        #                                 insured_mng_fields)
-        # insured_mng_name = insured_mng_data['name'].encode("utf-8")
-        # category_ids = insured_mng_data['category_ids']
-        # crd_name = insured_mng_data['crd_name'].encode("utf-8")
-        # insurance_client_id = insured_mng_data['insurance_client_id']
-        # reg_number = insured_mng_data['reg_number']
-        # insurance_id = insured_mng_data['insurance_id']
-
-        # addr_name = insured_mng_data['addr_name']
-        # addr_alias = insured_mng_data['addr_alias']
-        # addr_code = insured_mng_data['addr_code']
-        # addr_notes = insured_mng_data['addr_notes']
-        # addr_street = insured_mng_data['addr_street']
-        # addr_street2 = insured_mng_data['addr_street2']
-        # addr_zip = insured_mng_data['addr_zip']
-        # addr_city = insured_mng_data['addr_city']
-        # addr_state_id = insured_mng_data['addr_state_id']
-        # if addr_state_id != False:
-        #     addr_state_id = addr_state_id[0]
-        # addr_country_id = insured_mng_data['addr_country_id']
-        # if addr_country_id != False:
-        #     addr_country_id = addr_country_id[0]
-        # addr_email = insured_mng_data['addr_email']
-        # addr_phone = insured_mng_data['addr_phone']
-        # addr_fax = insured_mng_data['addr_fax']
-        # addr_mobile = insured_mng_data['addr_mobile']
-
-        # addr_l10n_br_city_id = insured_mng_data['addr_l10n_br_city_id']
-        # if addr_l10n_br_city_id != False:
-        #     addr_l10n_br_city_id = addr_l10n_br_city_id[0]
-        # addr_district = insured_mng_data['addr_district']
-        # addr_number = insured_mng_data['addr_number']
-
-        # cpf = insured_mng_data['cpf']
-        # rg = insured_mng_data['rg']
-        # birthday = insured_mng_data['birthday']
-        # gender = insured_mng_data['gender']
-
-        # batch_name = insured_mng_data['batch_name']
-
-        # code = insured_mng_data['code']
-        # crd_code = insured_mng_data['crd_code']
-
         if insured_mng.batch_name == CLIENT_BATCH_NAME:
 
             if insured_cat_id_titular in insured_mng.category_ids.id:
                 i += 1
                 print(i, insured_mng.name)
-
-                # batch_id = 0
 
                 seq_N += 1
 
@@ -742,7 +687,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                     values = {
                         "name": insured_mng.crd_name,
                         "code": insured_mng.crd_code,
-                        "insured_id": insured_mng.insured_id,
+                        "insured_id": insured_id,
                         }
                     insured_card_id = clv_insured_card.create(values).id
 
@@ -754,443 +699,206 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                     values = {
                         "seq": seq_N,
                         "batch_id": batch_client_id,
-                        "insured_card_id": insured_mng.insured_card_id,
+                        "insured_card_id": insured_card_id,
                         }
                     insured_card_batch_id = clv_insured_card_batch.create(values).id
 
                     values = {
                         "seq": seq_N,
                         "batch_id": batch_id,
-                        "insured_card_id": insured_mng.insured_card_id,
+                        "insured_card_id": insured_card_id,
                         }
                     insured_card_batch_id = clv_insured_card_batch.create(values).id
 
                     values = {
                         "seq": seq_N,
                         "batch_id": batch_producao_id,
-                        "insured_card_id": insured_mng.insured_card_id,
+                        "insured_card_id": insured_card_id,
                         }
                     insured_card_batch_id = clv_insured_card_batch.create(values).id
 
-                # sock.exec_workflow(dbname, uid, data_admin_user_pw, "clv_insured_mng", "button_done", insured_mng_id)
+                client.exec_workflow('clv_insured_mng', 'button_done', insured_mng.id)
 
-                # args = [('reg_number', '=', reg_number), ('insurance_client_id', '=', insurance_client_id[0]),
-                #         ('state', '=', 'waiting'),]
-                # insured_mng_2_ids = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'search', args)
-                # for insured_mng_2_id in insured_mng_2_ids:
-                #     if insured_mng_2_id != insured_mng_id:
-                #         values = {
-                #             "holder_id": insured_id,
-                #             "address_home_id": address_id,
-                #             }
-                #         sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                      insured_mng_2_id, values)
+                insured_mng_browse_2 = clv_insured_mng.browse(\
+                    [('reg_number', '=', insured_mng.reg_number), 
+                     ('insurance_client_id', '=', insured_mng.insurance_client_id.id),
+                     ('state', '=', 'waiting'),
+                     ])
+                for insured_mng_2 in insured_mng_browse_2:
 
-                #         insured_mng_2_fields = ['name', 'category_ids', 'crd_name', 'insurance_client_id', 'reg_number', 
-                #                                 'insurance_id',
-                #                                 'cpf', 'rg', 'birthday', 'gender',
-                #                                 'batch_name',
-                #                                 'code', 'crd_code',
-                #                                 ]
-                #         insured_mng_2_data = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'read', 
-                #                                           insured_mng_2_id, insured_mng_2_fields)
-                #         insured_mng_2_name = insured_mng_2_data['name'].encode("utf-8")
-                #         category_2_ids = insured_mng_2_data['category_ids']
-                #         crd_name_2 = insured_mng_2_data['crd_name'].encode("utf-8")
-                #         insurance_client_2_id = insured_mng_2_data['insurance_client_id']
-                #         reg_number_2 = insured_mng_2_data['reg_number']
-                #         insurance_2_id = insured_mng_2_data['insurance_id']
+                    if insured_mng_2.id != insured_mng.id:
 
-                #         cpf_2 = insured_mng_2_data['cpf']
-                #         rg_2 = insured_mng_2_data['rg']
-                #         birthday_2 = insured_mng_2_data['birthday']
-                #         gender_2 = insured_mng_2_data['gender']
+                        values = {
+                            "holder_id": insured_id,
+                            "address_home_id": address_id,
+                            }
+                        clv_insured_mng.write(insured_mng_2.id, values)
+                        
+                        if (insured_cat_id_dependente in insured_mng_2.category_ids.id) or \
+                           (insured_cat_id_ascendente in insured_mng_2.category_ids.id):
 
-                #         batch_name_2 = insured_mng_2_data['batch_name']
+                            i += 1
+                            print('>>>>>', i, insured_mng_2.name)
 
-                #         code_2 = insured_mng_2_data['code']
-                #         crd_code_2 = insured_mng_2_data['crd_code']
+                            seq_N += 1
 
-                #         print '>>>>>', i, insured_mng_2_name, category_2_ids
+                            if insured_mng_2.insured_id == False:
 
-                #         if insured_cat_id_dependente in category_2_ids:
-                #             i += 1
-                #             print '>>>>>', i, insured_mng_2_name
+                                values = {
+                                    "name": insured_mng_2.name,
+                                    "code": insured_mng_2.code,
+                                    "address_home_id": address_id,
+                                    "insurance_client_id": insured_mng_2.insurance_client_id.id,
+                                    "reg_number": insured_mng_2.reg_number,
+                                    "insurance_id": insured_mng_2.insurance_id.id,
+                                    "category_ids": [(4, insured_cat_id_dependente)],
+                                    "holder_id": insured_id,
+                                    "cpf": insured_mng_2.cpf,
+                                    "rg": insured_mng_2.rg,
+                                    "birthday": insured_mng_2.birthday,
+                                    "gender": insured_mng_2.gender,
+                                    }
+                                insured_2_id = clv_insured.create(values).id
 
-                #             values = {
-                #                 "address_home_id": address_id,
-                #                 }
-                #             sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                          insured_mng_2_id, values)
+                                values = {
+                                    "insured_id": insured_2_id,
+                                    }
+                                clv_insured_mng.write(insured_mng_2.id, values)
 
-                #             values = {
-                #                 "name": insured_mng_2_name,
-                #                 "code": code_2,
-                #                 "address_home_id": address_id,
-                #                 "insurance_client_id": insurance_client_2_id[0],
-                #                 "reg_number": reg_number_2,
-                #                 "insurance_id": insurance_2_id[0],
-                #                 "category_ids": [(4, insured_cat_id_dependente)],
-                #                 "holder_id": insured_id,
-                #                 "cpf": cpf_2,
-                #                 "rg": rg_2,
-                #                 "birthday": birthday_2,
-                #                 "gender": gender_2,
-                #                 }
-                #             insured_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured', 
-                #                                         'create', values)
-                #             values = {
-                #                 "insured_id": insured_2_id,
-                #                 }
-                #             sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                         insured_mng_2_id, values)
+                            if insured_mng_2.insured_card_id == False:
 
-                #             values = {
-                #                 "name": crd_name_2,
-                #                 "code": crd_code_2,
-                #                 "insured_id": insured_2_id,
-                #                 }
-                #             insured_card_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_card', 
-                #                                             'create', values)
-                #             values = {
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                          insured_mng_2_id, values)
+                                values = {
+                                    "name": insured_mng_2.crd_name,
+                                    "code": insured_mng_2.crd_code,
+                                    "insured_id": insured_2_id,
+                                    }
+                                insured_card_2_id = clv_insured_card.create(values).id
 
-                #             seq_N += 1
+                                values = {
+                                    "insured_card_id": insured_card_2_id,
+                                    }
+                                clv_insured_mng.write(insured_mng_2.id, values)
 
-                #             values = {
-                #                 "seq": seq_N,
-                #                 "batch_id": batch_client_id,
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                  'clv_insured_card.batch', 
-                #                                                  'create', values)
-                #             values = {
-                #                 "seq": seq_N,
-                #                 "batch_id": batch_id,
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                  'clv_insured_card.batch', 
-                #                                                  'create', values)
-                #             values = {
-                #                 "seq": seq_N,
-                #                 "batch_id": batch_producao_id,
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                  'clv_insured_card.batch', 
-                #                                                  'create', values)
+                                values = {
+                                    "seq": seq_N,
+                                    "batch_id": batch_client_id,
+                                    "insured_card_id": insured_card_2_id,
+                                    }
+                                insured_card_batch_id = clv_insured_card_batch.create(values).id
 
-                #             sock.exec_workflow(dbname, uid, data_admin_user_pw, "clv_insured_mng", "button_done", 
-                #                                insured_mng_2_id)
+                                values = {
+                                    "seq": seq_N,
+                                    "batch_id": batch_id,
+                                    "insured_card_id": insured_card_2_id,
+                                    }
+                                insured_card_batch_id = clv_insured_card_batch.create(values).id
 
-                #         if insured_cat_id_ascendente in category_2_ids:
-                #             i += 1
-                #             print '>>>>>', i, insured_mng_2_name
+                                values = {
+                                    "seq": seq_N,
+                                    "batch_id": batch_producao_id,
+                                    "insured_card_id": insured_card_2_id,
+                                    }
+                                insured_card_batch_id = clv_insured_card_batch.create(values).id
 
-                #             values = {
-                #                 "address_home_id": address_id,
-                #                 }
-                #             sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                          insured_mng_2_id, values)
-
-                #             values = {
-                #                 "name": insured_mng_2_name,
-                #                 "code": code_2,
-                #                 "address_home_id": address_id,
-                #                 "insurance_client_id": insurance_client_2_id[0],
-                #                 "reg_number": reg_number_2,
-                #                 "insurance_id": insurance_2_id[0],
-                #                 "category_ids": [(4, insured_cat_id_ascendente)],
-                #                 "holder_id": insured_id,
-                #                 "cpf": cpf_2,
-                #                 "rg": rg_2,
-                #                 "birthday": birthday_2,
-                #                 "gender": gender_2,
-                #                 }
-                #             insured_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured', 
-                #                                         'create', values)
-                #             values = {
-                #                 "insured_id": insured_2_id,
-                #                 }
-                #             sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                         insured_mng_2_id, values)
-
-                #             values = {
-                #                 "name": crd_name_2,
-                #                 "code": crd_code_2,
-                #                 "insured_id": insured_2_id,
-                #                 }
-                #             insured_card_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_card', 
-                #                                             'create', values)
-                #             values = {
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                          insured_mng_2_id, values)
-
-                #             seq_N += 1
-
-                #             values = {
-                #                 "seq": seq_N,
-                #                 "batch_id": batch_client_id,
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                  'clv_insured_card.batch', 
-                #                                                  'create', values)
-                #             values = {
-                #                 "seq": seq_N,
-                #                 "batch_id": batch_id,
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                  'clv_insured_card.batch', 
-                #                                                  'create', values)
-                #             values = {
-                #                 "seq": seq_N,
-                #                 "batch_id": batch_producao_id,
-                #                 "insured_card_id": insured_card_2_id,
-                #                 }
-                #             insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                  'clv_insured_card.batch', 
-                #                                                  'create', values)
-
-                #             sock.exec_workflow(dbname, uid, data_admin_user_pw, "clv_insured_mng", "button_done", 
-                #                                insured_mng_2_id)
+                                client.exec_workflow('clv_insured_mng', 'button_done', insured_mng_2.id)
 
             else:
-                pass
 
-                # insured_mng_fields = ['state',]
-                # insured_mng_data = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'read', insured_mng_id, 
-                #                                 insured_mng_fields)
-                # state = insured_mng_data['state']
+                insured_mng_browse_3 = clv_insured_mng.browse([('id', '=', insured_mng.id),])
 
-                # if state == 'waiting':
-                #     args = [('insurance_client_id', '=', insurance_client_id[0]),
-                #             ('reg_number', '=', reg_number),
-                #             ]
-                #     old_insured_ids = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured', 
-                #                                    'search', args)
-                #     for old_insured_id in old_insured_ids:
+                if insured_mng_browse_3[0].state == 'waiting':
 
-                #         old_insured_fields = ['name', 'category_ids', 'address_id']
-                #         old_insured_data = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured', 'read', old_insured_id, 
-                #                                         old_insured_fields)
-                #         old_insured_name = old_insured_data['name'].encode("utf-8")
-                #         old_insured_category_ids = old_insured_data['category_ids']
-                #         old_insured_address_id = old_insured_data['address_id']
+                    insured_browse = clv_insured.browse(\
+                        [('reg_number', '=', insured_mng.reg_number), 
+                         ('insurance_client_id', '=', insured_mng.insurance_client_id.id),
+                         ])
+                    for insured in insured_browse:
 
-                #         if insured_cat_id_titular in old_insured_category_ids:
-                #             i += 1
-                #             print i, old_insured_name
+                        if insured_cat_id_titular in insured.category_ids.id:
 
-                #             args = [('insured_id', '=', old_insured_id),
-                #                     ]
-                #             old_insured_card_ids = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_card', 
-                #                                                'search', args)
-                #             old_insured_card_fields = ['name',]
-                #             old_insured_card_data = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_card', 'read', 
-                #                                                  old_insured_id, old_insured_card_fields)
-                #             old_insured_crd_name = old_insured_card_data['name'].encode("utf-8")
+                            print(0, insured.name)
 
-                #             batch_id = 0
+                            insured_card_browse = clv_insured_card.browse([('insured_id', '=', insured.id),])
 
-                #             seq_N += 1
+                            batch_id = get_batch_id(client,
+                                                    PREFIX + '-%0*d ' % (5, seq_N) + \
+                                                    insured_card_browse[0].name, 
+                                                    batch_cat_id_familiar, 
+                                                    [(4, batch_client_id)])
 
-                #             batch_id = get_batch_id(PREFIX + '-%0*d ' % (5, seq_N) + old_insured_crd_name, 
-                #                                     batch_cat_id_familiar, 
-                #                                     [(4, batch_client_id)])
+                            values = {
+                                "holder_id": insured.id,
+                                "address_home_id": insured.address_home_id.id,
+                                }
+                            clv_insured_mng.write(insured_mng.id, values)
 
-                #             insured_mng_2_id = insured_mng_id
-                #             values = {
-                #                 "holder_id": old_insured_id,
-                #                 "address_home_id": old_insured_address_id,
-                #                 }
-                #             sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                          insured_mng_2_id, values)
+                            if (insured_cat_id_dependente in insured_mng.category_ids.id) or \
+                               (insured_cat_id_ascendente in insured_mng.category_ids.id):
 
-                #             insured_mng_2_fields = ['name', 'category_ids', 'crd_name', 'insurance_client_id', 'reg_number', 
-                #                                     'insurance_id',
-                #                                     'cpf', 'rg', 'birthday', 'gender',
-                #                                     'batch_name',
-                #                                     'code', 'crd_code',
-                #                                     ]
-                #             insured_mng_2_data = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'read', 
-                #                                               insured_mng_2_id, insured_mng_2_fields)
-                #             insured_mng_2_name = insured_mng_2_data['name'].encode("utf-8")
-                #             category_2_ids = insured_mng_2_data['category_ids']
-                #             crd_name_2 = insured_mng_2_data['crd_name'].encode("utf-8")
-                #             insurance_client_2_id = insured_mng_2_data['insurance_client_id']
-                #             reg_number_2 = insured_mng_2_data['reg_number']
-                #             insurance_2_id = insured_mng_2_data['insurance_id']
+                                i += 1
+                                print('>>>>>', i, insured_mng.name)
 
-                #             cpf_2 = insured_mng_2_data['cpf']
-                #             rg_2 = insured_mng_2_data['rg']
-                #             birthday_2 = insured_mng_2_data['birthday']
-                #             gender_2 = insured_mng_2_data['gender']
+                                seq_N += 1
 
-                #             batch_name_2 = insured_mng_2_data['batch_name']
+                                if insured_mng_2.insured_id == False:
 
-                #             code_2 = insured_mng_2_data['code']
-                #             crd_code_2 = insured_mng_2_data['crd_code']
+                                    values = {
+                                        "name": insured_mng.name,
+                                        "code": insured_mng.code,
+                                        "address_home_id": insured.address_home_id.id,
+                                        "insurance_client_id": insured_mng.insurance_client_id.id,
+                                        "reg_number": insured_mng.reg_number,
+                                        "insurance_id": insured_mng.insurance_id.id,
+                                        "category_ids": [(4, insured_cat_id_dependente)],
+                                        "holder_id": insured.id,
+                                        "cpf": insured_mng.cpf,
+                                        "rg": insured_mng.rg,
+                                        "birthday": insured_mng.birthday,
+                                        "gender": insured_mng.gender,
+                                        }
+                                    insured_2_id = clv_insured.create(values).id
 
-                #             print '>>>>>', i, insured_mng_2_name, category_2_ids
+                                    values = {
+                                        "insured_id": insured_2_id,
+                                        }
+                                    clv_insured_mng.write(insured_mng.id, values)
 
-                #             if insured_cat_id_dependente in category_2_ids:
-                #                 i += 1
-                #                 print '>>>>>', i, insured_mng_2_name
+                                if insured_mng_2.insured_card_id == False:
 
-                #                 values = {
-                #                     "address_home_id": old_insured_address_id,
-                #                     }
-                #                 sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                              insured_mng_2_id, values)
+                                    values = {
+                                        "name": insured_mng.crd_name,
+                                        "code": insured_mng.crd_code,
+                                        "insured_id": insured_2_id,
+                                        }
+                                    insured_card_2_id = clv_insured_card.create(values).id
 
-                #                 values = {
-                #                     "name": insured_mng_2_name,
-                #                     "code": code_2,
-                #                     "address_home_id": old_insured_address_id,
-                #                     "insurance_client_id": insurance_client_2_id[0],
-                #                     "reg_number": reg_number_2,
-                #                     "insurance_id": insurance_2_id[0],
-                #                     "category_ids": [(4, insured_cat_id_dependente)],
-                #                     "holder_id": old_insured_id,
-                #                     "cpf": cpf_2,
-                #                     "rg": rg_2,
-                #                     "birthday": birthday_2,
-                #                     "gender": gender_2,
-                #                     }
-                #                 insured_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured', 
-                #                                             'create', values)
-                #                 values = {
-                #                     "insured_id": insured_2_id,
-                #                     }
-                #                 sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                             insured_mng_2_id, values)
+                                    values = {
+                                        "insured_card_id": insured_card_2_id,
+                                        }
+                                    clv_insured_mng.write(insured_mng.id, values)
 
-                #                 values = {
-                #                     "name": crd_name_2,
-                #                     "code": crd_code_2,
-                #                     "insured_id": insured_2_id,
-                #                     }
-                #                 insured_card_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_card', 
-                #                                                 'create', values)
-                #                 values = {
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                              insured_mng_2_id, values)
+                                    values = {
+                                        "seq": seq_N,
+                                        "batch_id": batch_client_id,
+                                        "insured_card_id": insured_card_2_id,
+                                        }
+                                    insured_card_batch_id = clv_insured_card_batch.create(values).id
 
-                #                 seq_N += 1
+                                    values = {
+                                        "seq": seq_N,
+                                        "batch_id": batch_id,
+                                        "insured_card_id": insured_card_2_id,
+                                        }
+                                    insured_card_batch_id = clv_insured_card_batch.create(values).id
 
-                #                 values = {
-                #                     "seq": seq_N,
-                #                     "batch_id": batch_client_id,
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                      'clv_insured_card.batch', 
-                #                                                      'create', values)
-                #                 values = {
-                #                     "seq": seq_N,
-                #                     "batch_id": batch_id,
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                      'clv_insured_card.batch', 
-                #                                                      'create', values)
-                #                 values = {
-                #                     "seq": seq_N,
-                #                     "batch_id": batch_producao_id,
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                      'clv_insured_card.batch', 
-                #                                                      'create', values)
+                                    values = {
+                                        "seq": seq_N,
+                                        "batch_id": batch_producao_id,
+                                        "insured_card_id": insured_card_2_id,
+                                        }
+                                    insured_card_batch_id = clv_insured_card_batch.create(values).id
 
-                #                 sock.exec_workflow(dbname, uid, data_admin_user_pw, "clv_insured_mng", "button_done", 
-                #                                    insured_mng_2_id)
-
-                #             if insured_cat_id_ascendente in category_2_ids:
-                #                 i += 1
-                #                 print '>>>>>', i, insured_mng_2_name
-
-                #                 values = {
-                #                     "address_home_id": old_insured_address_id,
-                #                     }
-                #                 sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                              insured_mng_2_id, values)
-
-                #                 values = {
-                #                     "name": insured_mng_2_name,
-                #                     "code": code_2,
-                #                     "address_home_id": old_insured_address_id,
-                #                     "insurance_client_id": insurance_client_2_id[0],
-                #                     "reg_number": reg_number_2,
-                #                     "insurance_id": insurance_2_id[0],
-                #                     "category_ids": [(4, insured_cat_id_ascendente)],
-                #                     "holder_id": old_insured_id,
-                #                     "cpf": cpf_2,
-                #                     "rg": rg_2,
-                #                     "birthday": birthday_2,
-                #                     "gender": gender_2,
-                #                     }
-                #                 insured_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured', 
-                #                                             'create', values)
-                #                 values = {
-                #                     "insured_id": insured_2_id,
-                #                     }
-                #                 sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                             insured_mng_2_id, values)
-
-                #                 values = {
-                #                     "name": crd_name_2,
-                #                     "code": crd_code_2,
-                #                     "insured_id": insured_2_id,
-                #                     }
-                #                 insured_card_2_id = sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_card', 
-                #                                                 'create', values)
-                #                 values = {
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 sock.execute(dbname, uid, data_admin_user_pw, 'clv_insured_mng', 'write', 
-                #                              insured_mng_2_id, values)
-
-                #                 seq_N += 1
-
-                #                 values = {
-                #                     "seq": seq_N,
-                #                     "batch_id": batch_client_id,
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                      'clv_insured_card.batch', 
-                #                                                      'create', values)
-                #                 values = {
-                #                     "seq": seq_N,
-                #                     "batch_id": batch_id,
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                      'clv_insured_card.batch', 
-                #                                                      'create', values)
-                #                 values = {
-                #                     "seq": seq_N,
-                #                     "batch_id": batch_producao_id,
-                #                     "insured_card_id": insured_card_2_id,
-                #                     }
-                #                 insured_card_batch_id = sock.execute(dbname, uid, data_admin_user_pw, 
-                #                                                      'clv_insured_card.batch', 
-                #                                                      'create', values)
-
-                #                 sock.exec_workflow(dbname, uid, data_admin_user_pw, "clv_insured_mng", "button_done", 
-                #                                    insured_mng_2_id)
+                                    client.exec_workflow('clv_insured_mng', 'button_done', insured_mng.id)
 
     print('--> i: ', i)
 
@@ -1244,54 +952,54 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("draft")...')
-    clv_insured_mng_unlink(client, 'draft')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("draft")...')
+    # clv_insured_mng_unlink(client, 'draft')
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("revised")...')
-    clv_insured_mng_unlink(client, 'revised')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("revised")...')
+    # clv_insured_mng_unlink(client, 'revised')
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("done")...')
-    clv_insured_mng_unlink(client, 'done')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("done")...')
+    # clv_insured_mng_unlink(client, 'done')
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("canceled")...')
-    clv_insured_mng_unlink(client, 'canceled')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("canceled")...')
+    # clv_insured_mng_unlink(client, 'canceled')
 
-    batch_name = 'HVC_20150928_01'
-    file_name = '/opt/openerp/biobox/data/HVC_20150928_01.txt'
-    client_name = 'HVC - Hospital Vera Cruz'
-    print('-->', client, batch_name, file_name, client_name)
-    print('--> Executing clv_insured_mng_import()...')
-    clv_insured_mng_import(client, batch_name, file_name, client_name)
+    # batch_name = 'HVC_20150928_01'
+    # file_name = '/opt/openerp/biobox/data/HVC_20150928_01.txt'
+    # client_name = 'HVC - Hospital Vera Cruz'
+    # print('-->', client, batch_name, file_name, client_name)
+    # print('--> Executing clv_insured_mng_import()...')
+    # clv_insured_mng_import(client, batch_name, file_name, client_name)
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_check_crd_name()...')
-    clv_insured_mng_check_crd_name(client)
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_check_crd_name()...')
+    # clv_insured_mng_check_crd_name(client)
 
-    insured_args = [('state', '=', 'draft'),]
-    print('-->', client, insured_args)
-    print('--> Executing clv_insured_mng_updt_state_revised()...')
-    clv_insured_mng_updt_state_revised(client, insured_args)
+    # insured_args = [('state', '=', 'draft'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_revised()...')
+    # clv_insured_mng_updt_state_revised(client, insured_args)
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_check_insured()...')
-    clv_insured_mng_check_insured(client)
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_check_insured()...')
+    # clv_insured_mng_check_insured(client)
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_updt_insured_code()...')
-    clv_insured_mng_updt_insured_code(client)
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_code()...')
+    # clv_insured_mng_updt_insured_code(client)
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
-    clv_insured_mng_updt_insured_crd_code(client)
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
+    # clv_insured_mng_updt_insured_crd_code(client)
 
-    insured_args = [('state', '=', 'revised'),]
-    print('-->', client, insured_args)
-    print('--> Executing clv_insured_mng_updt_state_waiting()...')
-    clv_insured_mng_updt_state_waiting(client, insured_args)
+    # insured_args = [('state', '=', 'revised'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_waiting()...')
+    # clv_insured_mng_updt_state_waiting(client, insured_args)
 
     seq_N = 0
     PREFIX = '2015-09-28'
