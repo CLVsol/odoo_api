@@ -44,6 +44,94 @@ def get_insured_category_id(client, category_name):
 
     return insured_category_id
 
+def clv_insured_export(client, file_path):
+
+    clv_insurance_client = client.model('clv_insurance_client')
+    insurance_client_browse = clv_insurance_client.browse(\
+        [('name', '=', 'VCAS - Vera Cruz Associação de Saúde'),])
+    client_id_VCAS = insurance_client_browse[0].id
+
+    clv_insurance_client = client.model('clv_insurance_client')
+    insurance_client_browse = clv_insurance_client.browse(\
+        [('name', '=', 'HVC - Hospital Vera Cruz'),])
+    client_id_HVC = insurance_client_browse[0].id
+
+    headings_insured = ['no', 
+                        'name', 'code',
+                        'birthday', 'gender',
+                        'insured_category',
+                        'insurance_client', 'reg_number',
+                        'insurance', 
+                        'state',
+                        'date_activation',
+                         ]
+    file_insured = open(file_path, 'wb')
+    writer_insured = csv.writer(file_insured, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
+    writer_insured.writerow(headings_insured)
+
+    clv_insured = client.model('clv_insured')
+    insured_browse = clv_insured.browse([('state', '!=', 'canceled'),
+                                         ('date_inclusion', '<=', '2015-09-30'),
+                                         ('insurance_client_id', '=', client_id_VCAS),])
+
+    i = 0
+    for insured in insured_browse:
+        i += 1
+
+        name = insured.name.encode("utf-8")
+        code = insured.code
+        birthday = insured.birthday
+        gender = insured.gender
+        insured_category = insured.category_ids[0].name.encode("utf-8")
+        insurance_client = insured.insurance_client_id.name.encode("utf-8")
+        reg_number = insured.reg_number
+        insurance = insured.insurance_id.name.encode("utf-8")
+        state = insured.state
+        date_inclusion = insured.date_inclusion
+
+        print(i, insured.name.encode("utf-8"))
+        row_insured = [i, 
+                       name, code,
+                       birthday, gender,
+                       insured_category,
+                       insurance_client, reg_number,
+                       insurance,
+                       state,
+                       date_inclusion,
+                       ]
+        writer_insured.writerow(row_insured)
+
+    insured_browse = clv_insured.browse([('state', '!=', 'canceled'),
+                                         ('date_inclusion', '<=', '2015-09-30'),
+                                         ('insurance_client_id', '=', client_id_HVC),])
+    # i = 0
+    for insured in insured_browse:
+        i += 1
+        name = insured.name.encode("utf-8")
+        code = insured.code
+        birthday = insured.birthday
+        gender = insured.gender
+        insured_category = insured.category_ids[0].name.encode("utf-8")
+        insurance_client = insured.insurance_client_id.name.encode("utf-8")
+        reg_number = insured.reg_number
+        insurance = insured.insurance_id.name.encode("utf-8")
+        state = insured.state
+        date_inclusion = insured.date_inclusion
+
+        print(i, insured.name.encode("utf-8"))
+        row_insured = [i, 
+                       name, code,
+                       birthday, gender,
+                       insured_category,
+                       insurance_client, reg_number,
+                       insurance,
+                       state,
+                       date_inclusion,
+                       ]
+        writer_insured.writerow(row_insured)
+
+    file_insured.close()
+
 def get_arguments():
 
     global username
@@ -93,6 +181,11 @@ if __name__ == '__main__':
     print('--> clv_insured.py...')
 
     client = erppeek.Client(server, dbname, username, password)
+
+    # file_path = '/opt/openerp/biobox/data/insured_2015_09_30.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_insured_export()...')
+    # clv_insured_export(client, file_path)
 
     print('--> clv_insured.py')
     print('--> Execution time:', secondsToStr(time() - start))
