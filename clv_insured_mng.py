@@ -902,6 +902,25 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
 
     print('--> i: ', i)
 
+def clv_insured_updt_state_processing(client, args):
+
+    clv_insured = client.model('clv_insured')
+
+    clv_insured_card = client.model('clv_insured_card')
+    insured_card_browse = clv_insured_card.browse(args)
+
+    i = 0
+    for insured_card in insured_card_browse:
+
+        insured = clv_insured.browse([('id', '=', insured_card.insured_id.id),])[0]
+
+        if insured.state == 'new':
+            i += 1
+            print(i, insured.name, insured.state)
+            client.exec_workflow('clv_insured', 'button_process', insured.id)
+
+    print('i: ', i)
+    
 def get_arguments():
 
     global username
@@ -1017,6 +1036,11 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
+
+    insured_card_args = [('state', '=', 'processing'),]
+    print('-->', client, insured_card_args)
+    print('--> Executing clv_insured_updt_state_processing()...')
+    clv_insured_updt_state_processing(client, insured_card_args)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
