@@ -589,6 +589,8 @@ def clv_insured_mng_updt_insured_crd_code(client):
 
 def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME):
 
+    date_inclusion = PREFIX
+
     insured_cat_id_titular = get_insured_category_id(client, 'Titular')
     insured_cat_id_dependente = get_insured_category_id(client, 'Dependente')
     insured_cat_id_ascendente = get_insured_category_id(client, 'Ascendente')
@@ -674,6 +676,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                         "rg": insured_mng.rg,
                         "birthday": insured_mng.birthday,
                         "gender": insured_mng.gender,
+                        "date_inclusion": date_inclusion,
                         }
                     insured_id = clv_insured.create(values).id
                     
@@ -757,6 +760,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                                     "rg": insured_mng_2.rg,
                                     "birthday": insured_mng_2.birthday,
                                     "gender": insured_mng_2.gender,
+                                    "date_inclusion": date_inclusion,
                                     }
                                 insured_2_id = clv_insured.create(values).id
 
@@ -855,6 +859,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                                         "rg": insured_mng.rg,
                                         "birthday": insured_mng.birthday,
                                         "gender": insured_mng.gender,
+                                        "date_inclusion": date_inclusion,
                                         }
                                     insured_2_id = clv_insured.create(values).id
 
