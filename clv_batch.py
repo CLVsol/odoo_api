@@ -64,6 +64,76 @@ def get_batch_category_id(client, batch_category_name):
 
     return batch_category_id
 
+def clv_batch_updt_state_processing(client, args):
+
+    clv_insured_card = client.model('clv_insured_card')
+    clv_insured_card_batch = client.model('clv_insured_card.batch')
+
+    clv_batch = client.model('clv_batch')
+    batch_browse = clv_batch.browse(args)
+
+    i = 0
+    for batch in batch_browse:
+
+        i += 1
+        print(i, batch.name.encode("utf-8"))
+
+        client.exec_workflow('clv_batch', 'button_process', batch.id)
+
+        for derived_batch in batch.derived_batch_ids:
+
+            if derived_batch.state == 'draft':
+                i += 1
+                print('>>>>', i, derived_batch.name.encode("utf-8"))
+
+                client.exec_workflow('clv_batch', 'button_process', derived_batch.id)
+
+                for derived_batch_2 in derived_batch.derived_batch_ids:
+
+                    if derived_batch_2.state == 'draft':
+                        i += 1
+                        print('>>>>>>>>', i, derived_batch_2.name.encode("utf-8"))
+
+                        client.exec_workflow('clv_batch', 'button_process', derived_batch_2.id)
+
+                        for insured_card_batch in derived_batch_2.insured_card_batch_ids:
+
+                            insured_card_batch_browse = clv_insured_card_batch.browse(\
+                                [('id', '=', insured_card_batch.id),])
+                            insured_card_browse = clv_insured_card.browse(\
+                                [('id', '=', insured_card_batch_browse[0].insured_card_id.id),])
+
+                            if insured_card_browse[0].state == 'new':
+                                i += 1
+                                print('>>>>>>>>>>>>', i, insured_card_browse[0].name.encode("utf-8"))
+                                client.exec_workflow('clv_insured_card', 
+                                                     'button_process', 
+                                                     insured_card_browse[0].id)
+
+                for insured_card_batch in derived_batch.insured_card_batch_ids:
+
+                    insured_card_batch_browse = clv_insured_card_batch.browse(\
+                        [('id', '=', insured_card_batch.id),])
+                    insured_card_browse = clv_insured_card.browse(\
+                        [('id', '=', insured_card_batch_browse[0].insured_card_id.id),])
+
+                    if insured_card_browse[0].state == 'new':
+                        i += 1
+                        print('>>>>>>>>', i, insured_card_browse[0].name.encode("utf-8"))
+                        client.exec_workflow('clv_insured_card', 'button_process', insured_card_browse[0].id)
+
+        for insured_card_batch in batch.insured_card_batch_ids:
+
+            insured_card_batch_browse = clv_insured_card_batch.browse(\
+                [('id', '=', insured_card_batch.id),])
+            insured_card_browse = clv_insured_card.browse(\
+                [('id', '=', insured_card_batch_browse[0].insured_card_id.id),])
+
+            if insured_card_browse[0].state == 'new':
+                i += 1
+                print('>>>>', i, insured_card_browse[0].name.encode("utf-8"))
+                client.exec_workflow('clv_insured_card', 'button_process', insured_card_browse[0].id)
+
 def get_arguments():
 
     global username

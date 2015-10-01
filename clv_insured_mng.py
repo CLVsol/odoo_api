@@ -1001,13 +1001,22 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
 
-    seq_N = 0
-    PREFIX = '2015-09-28'
-    PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    CLIENT_BATCH_NAME = 'HVC_20150928_01'
-    print('-->', client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
-    print('--> Executing clv_insured_mng_create_insured()...')
-    clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+    # seq_N = 0
+    # PREFIX = '2015-09-28'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # CLIENT_BATCH_NAME = 'HVC_20150928_01'
+    # print('-->', client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+    # print('--> Executing clv_insured_mng_create_insured()...')
+    # clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+
+    # PREFIX = '2015-09-28'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # batch_args = [('state', '=', 'draft'), 
+    #               ('name', '=', PRODUCTION_BATCH_NAME),
+    #               ]
+    # print('-->', client)
+    # print('--> Executing clv_batch_updt_state_processing()...')
+    # clv_batch_updt_state_processing(client, batch_args)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
