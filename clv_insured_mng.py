@@ -921,6 +921,59 @@ def clv_insured_updt_state_processing(client, args):
 
     print('i: ', i)
     
+def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME):
+
+    headings_insured_card = ['seq', 
+                             'name', 'code',
+                             'insurance', 'insurance_client',
+                             ]
+    file_insured_card = open(file_path, 'wb')
+    writer_insured_card = csv.writer(file_insured_card, 
+                                     delimiter = ';', 
+                                     quotechar = '"', 
+                                     quoting=csv.QUOTE_ALL)
+    writer_insured_card.writerow(headings_insured_card)
+
+    clv_insured_card = client.model('clv_insured_card')
+    clv_insured = client.model('clv_insured')
+
+    clv_batch = client.model('clv_batch')
+    batch_browse = clv_batch.browse(\
+        [('state', '=', 'processing'), 
+         ('name', '=', PRODUCTION_BATCH_NAME),
+         ])
+
+    i = 0
+    for batch in batch_browse:
+
+        print(batch.name.encode("utf-8"))
+
+        for insured_card_batch in batch.insured_card_batch_ids:
+
+            i += 1
+
+            insured_card = clv_insured_card.browse(
+                [('id', '=', insured_card_batch.insured_card_id.id),])[0]
+
+            insured = clv_insured.browse(
+                [('id', '=', insured_card.insured_id.id),])[0]
+
+            seq = insured_card_batch.seq
+            crd_name = insured_card.name.encode("utf-8")
+            crd_code = insured_card.code
+            insurance = insured.insurance_id.name.encode("utf-8")
+            insurance_client = insured.insurance_client_id.name.encode("utf-8")
+
+            print(i, seq, crd_name, crd_code, insurance, insurance_client)
+
+            row_insured_card = [seq, 
+                                crd_name, crd_code,
+                                insurance, insurance_client,
+                                ]
+            writer_insured_card.writerow(row_insured_card)
+
+    file_insured_card.close()
+
 def get_arguments():
 
     global username
@@ -1037,10 +1090,17 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    insured_card_args = [('state', '=', 'processing'),]
-    print('-->', client, insured_card_args)
-    print('--> Executing clv_insured_updt_state_processing()...')
-    clv_insured_updt_state_processing(client, insured_card_args)
+    # insured_card_args = [('state', '=', 'processing'),]
+    # print('-->', client, insured_card_args)
+    # print('--> Executing clv_insured_updt_state_processing()...')
+    # clv_insured_updt_state_processing(client, insured_card_args)
+
+    # PREFIX = '2015-09-28'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
+    # print('-->', client, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_insured_card_export_producao()...')
+    # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
