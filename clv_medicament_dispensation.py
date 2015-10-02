@@ -214,7 +214,8 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
 
     clv_medicament_dispensation = client.model('clv_medicament_dispensation')
     dispensation_browse = clv_medicament_dispensation.browse(
-        [('dispensation_date', '>=', start_date),
+        [('state', '!=', 'canceled'),
+         ('dispensation_date', '>=', start_date),
          ('dispensation_date', '<=', end_date),
          ], order='name')
     i = 0
@@ -365,6 +366,13 @@ if __name__ == '__main__':
 
     # file_path = "/opt/openerp/biobox/data/bb_dispensation_2015_09_21.csv"
     # start_date = '2015-08-21'
+    # end_date = '2015-09-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2015_05_21_a_09_20.csv"
+    # start_date = '2015-05-21'
     # end_date = '2015-09-20'
     # print('-->', client, file_path, start_date, end_date)
     # print('--> Executing clv_medicament_dispensation_export()...')
