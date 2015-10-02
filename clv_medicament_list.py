@@ -23,10 +23,48 @@ from __future__ import print_function
 import xmlrpclib
 from erppeek import *
 import csv
+from filedict import *
 
 from base import *
 import argparse
 import getpass
+
+def get_medicament_list_mericament_ref(client, list_name, list_version_name, filename):
+
+    d = filedict.FileDict(filename = filename)
+
+    clv_medicament_list = client.model('clv_medicament_list')
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    print('>>>>>', medicament_list_browse)
+
+    clv_medicament_list_version = client.model('clv_medicament_list.version')
+    medicament_list_version_browse = clv_medicament_list_version.browse(
+        [('list_id', '=', medicament_list_browse[0].id),
+         ('name', '=', list_version_name),
+         ])
+    print('>>>>>', medicament_list_version_browse)
+
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
+    medicament_list_item_browse = clv_medicament_list_item.browse(
+        [('list_version_id', '=', medicament_list_version_browse[0].id),
+         ])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for medicament_list_item in medicament_list_item_browse:
+        i += 1
+        print(i, medicament_list_item.medicament_ref.id, 
+                 medicament_list_item.medicament_ref.cod_prod,
+                 medicament_list_item.medicament_ref.name.encode("utf-8"))
+
+        d[medicament_list_item.medicament_ref.id] = \
+            [medicament_list_item.medicament_ref.cod_prod,
+             medicament_list_item.medicament_ref.name.encode("utf-8")]
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not_found: ', not_found)
 
 def clv_medicament_list_updt_medicament_orizon(client, list_name, list_version_name):
 
@@ -351,6 +389,13 @@ if __name__ == '__main__':
     print('--> clv_medicament_list.py...')
 
     client = erppeek.Client(server, dbname, username, password)
+
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1508'
+    # filename = "data/medicamnet_ref_list_Orizon_483_0_5k_1508"
+    # print('-->', client, list_name, list_version_name, filename)
+    # print('--> Executing get_medicament_list_mericament_ref()...')
+    # get_medicament_list_mericament_ref(client, list_name, list_version_name, filename)
 
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
