@@ -29,7 +29,7 @@ from base import *
 import argparse
 import getpass
 
-def get_medicament_list_mericament_ref(client, list_name, list_version_name, filename):
+def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, filename):
 
     d = filedict.FileDict(filename = filename)
 
@@ -54,13 +54,14 @@ def get_medicament_list_mericament_ref(client, list_name, list_version_name, fil
     not_found = 0
     for medicament_list_item in medicament_list_item_browse:
         i += 1
-        print(i, medicament_list_item.medicament_ref.id, 
+        print(i, medicament_list_item.id,
+                 medicament_list_item.medicament_ref.id, 
                  medicament_list_item.medicament_ref.cod_prod,
                  medicament_list_item.medicament_ref.name.encode("utf-8"))
 
-        d[medicament_list_item.medicament_ref.id] = \
-            [medicament_list_item.medicament_ref.cod_prod,
-             medicament_list_item.medicament_ref.name.encode("utf-8")]
+        # d[medicament_list_item.medicament_ref.cod_prod] = [medicament_list_item.id]
+
+        print('>>>>>', d[medicament_list_item.medicament_ref.cod_prod])
 
     print('--> i: ', i)
     print('--> found: ', found)
@@ -392,10 +393,10 @@ if __name__ == '__main__':
 
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
-    # filename = "data/medicamnet_ref_list_Orizon_483_0_5k_1508"
+    # filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
     # print('-->', client, list_name, list_version_name, filename)
-    # print('--> Executing get_medicament_list_mericament_ref()...')
-    # get_medicament_list_mericament_ref(client, list_name, list_version_name, filename)
+    # print('--> Executing export_medicament_list_id_from_mericament_ref_code_orizon()...')
+    # export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, filename)
 
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
