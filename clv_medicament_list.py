@@ -414,13 +414,13 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_list_clear_old_from()...')
     # clv_medicament_list_clear_old_from(client, list_name, list_version_name, from_)
 
-    infile_name = '/opt/openerp/orizon_lpm/Lista_483_LPM_Agosto_2015.csv'
-    list_name = 'Orizon 483 (0,5k)'
-    list_version_name = '1508'
-    list_id_filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
-    print('-->', client, infile_name, list_name, list_version_name, list_id_filename)
-    print('--> Executing clv_medicament_list_check_orizon()...')
-    clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name, list_id_filename)
+    # infile_name = '/opt/openerp/orizon_lpm/Lista_483_LPM_Agosto_2015.csv'
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1508'
+    # list_id_filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
+    # print('-->', client, infile_name, list_name, list_version_name, list_id_filename)
+    # print('--> Executing clv_medicament_list_check_orizon()...')
+    # clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name, list_id_filename)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
