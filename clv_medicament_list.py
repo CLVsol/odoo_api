@@ -50,8 +50,6 @@ def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name,
          ])
 
     i = 0
-    found = 0
-    not_found = 0
     for medicament_list_item in medicament_list_item_browse:
         i += 1
         print(i, medicament_list_item.id,
@@ -59,13 +57,11 @@ def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name,
                  medicament_list_item.medicament_ref.cod_prod,
                  medicament_list_item.medicament_ref.name.encode("utf-8"))
 
-        # d[medicament_list_item.medicament_ref.cod_prod] = [medicament_list_item.id]
+        d[medicament_list_item.medicament_ref.cod_prod] = [medicament_list_item.id]
 
         print('>>>>>', d[medicament_list_item.medicament_ref.cod_prod])
 
     print('--> i: ', i)
-    print('--> found: ', found)
-    print('--> not_found: ', not_found)
 
 def clv_medicament_list_updt_medicament_orizon(client, list_name, list_version_name):
 
@@ -391,12 +387,12 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    # list_name = 'Orizon 483 (0,5k)'
-    # list_version_name = '1508'
-    # filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
-    # print('-->', client, list_name, list_version_name, filename)
-    # print('--> Executing export_medicament_list_id_from_mericament_ref_code_orizon()...')
-    # export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, filename)
+    list_name = 'Orizon 483 (0,5k)'
+    list_version_name = '1508'
+    filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
+    print('-->', client, list_name, list_version_name, filename)
+    print('--> Executing export_medicament_list_id_from_mericament_ref_code_orizon()...')
+    export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, filename)
 
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
