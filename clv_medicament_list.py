@@ -29,9 +29,9 @@ from base import *
 import argparse
 import getpass
 
-def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, filename):
+def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, list_id_filename):
 
-    d = filedict.FileDict(filename = filename)
+    d = filedict.FileDict(filename = list_id_filename)
 
     clv_medicament_list = client.model('clv_medicament_list')
     medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
@@ -59,7 +59,8 @@ def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name,
 
         d[medicament_list_item.medicament_ref.cod_prod] = [medicament_list_item.id]
 
-        print('>>>>>', d[medicament_list_item.medicament_ref.cod_prod])
+        print('>>>>>', medicament_list_item.medicament_ref.cod_prod, 
+                       d[medicament_list_item.medicament_ref.cod_prod])
 
     print('--> i: ', i)
 
@@ -141,7 +142,9 @@ def clv_medicament_list_clear_subsidy_orizon(client, list_name, list_version_nam
 
     print('--> i: ', i)
 
-def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_version_name):
+def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_version_name, list_id_filename):
+
+    d = filedict.FileDict(filename = list_id_filename)
 
     delimiter_char = ';'
 
@@ -177,21 +180,13 @@ def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_
              ])
         print('>>>>>', medicament_list_version_browse)
 
-        clv_orizon_lpm = client.model('clv_orizon_lpm')
-        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', cod_prod),])
-        print('>>>>>', orizon_lpm_browse)
-
-        clv_medicament = client.model('clv_medicament')
-        medicament_browse = clv_medicament.browse([('orizon_lpm_id', '=', orizon_lpm_browse[0].id),])
-        print('>>>>>', medicament_browse)
-
         clv_medicament_list_item = client.model('clv_medicament_list.item')
-        medicament_list_item_browse = clv_medicament_list_item.browse(
-            [('list_version_id', '=', medicament_list_version_browse[0].id),
-             ('medicament_id', '=', medicament_browse[0].id),
-             ])
-        print('>>>>>', medicament_list_item_browse, medicament_list_item_browse.medicament_ref)
-        medicament_list_item_id = medicament_list_item_browse.id
+
+        print('>>>>>', cod_prod, d[int(cod_prod)])
+        try:
+            medicament_list_item_id = d[int(cod_prod)]
+        except:
+            medicament_list_item_id = []
 
         if medicament_list_item_id != []:
             found += 1
@@ -387,12 +382,12 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    list_name = 'Orizon 483 (0,5k)'
-    list_version_name = '1508'
-    filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
-    print('-->', client, list_name, list_version_name, filename)
-    print('--> Executing export_medicament_list_id_from_mericament_ref_code_orizon()...')
-    export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, filename)
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1508'
+    # list_id_filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
+    # print('-->', client, list_name, list_version_name, list_id_filename)
+    # print('--> Executing export_medicament_list_id_from_mericament_ref_code_orizon()...')
+    # export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, list_id_filename)
 
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
@@ -409,9 +404,10 @@ if __name__ == '__main__':
     # infile_name = '/opt/openerp/orizon_lpm/Lista_483_0_5k_LPM_1508.csv'
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
-    # print('-->', client, infile_name, list_name, list_version_name)
+    # list_id_filename = "data/cod_prod_list_id_for_Orizon_483_0_5k_1508"
+    # print('-->', client, infile_name, list_name, list_version_name, list_id_filename)
     # print('--> Executing clv_medicament_list_set_subsidy_orizon()...')
-    # clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_version_name)
+    # clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_version_name, list_id_filename)
 
     # list_name = 'Orizon 483 (0,5k)'
     # list_version_name = '1508'
