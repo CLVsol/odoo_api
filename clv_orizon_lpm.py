@@ -123,7 +123,7 @@ def clv_orizon_lpm_import_new(client, file_name, from_):
     for orizon_lpm in orizon_lpm_browse:
         excluded += 1
 
-        print(excluded, orizon_lpm.codigo_ggrem)
+        print(excluded, orizon_lpm.cod_prod)
 
         values = {
             'excluded': True,
@@ -301,6 +301,18 @@ if __name__ == '__main__':
     # list_name = 'LPM_1509'
     # previous_list_name = 'LPM_1508'
     # file_name = '/opt/openerp/orizon_lpm/LPM_1509.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1510.csv'
+    # from_ = 'LPM_1510'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1510'
+    # previous_list_name = 'LPM_1509'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1510.csv'
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
 
