@@ -92,7 +92,8 @@ def clv_medicament_dispensation_import_dispensation_ext_orizon(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
     dispensation_ext_browse = clv_medicament_dispensation_ext.browse(\
-        [('dispensation_id', '=', False),
+        [('state', '=', 'draft'),
+         ('dispensation_id', '=', False),
          ('pharmacy_id', '!=', False),
          ('prescriber_id', '!=', False),
          ('insured_card_id', '!=', False),
@@ -129,6 +130,8 @@ def clv_medicament_dispensation_import_dispensation_ext_orizon(client):
             'dispensation_id': medicament_dispensation_id.id,
             }
         clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+
+        client.exec_workflow('clv_medicament_dispensation_ext', 'button_waiting', dispensation_ext.id)
 
     print('i: ', i)
 
@@ -377,6 +380,10 @@ if __name__ == '__main__':
     # print('-->', client, file_path, start_date, end_date)
     # print('--> Executing clv_medicament_dispensation_export()...')
     # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    print('-->', client)
+    print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    clv_medicament_dispensation_import_dispensation_ext_orizon(client)
 
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
