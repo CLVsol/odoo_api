@@ -29,6 +29,24 @@ from base import *
 import argparse
 import getpass
 
+def clv_medicament_dispensation_ext_updt_state_waiting(client, args):
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    medicament_dispensation_ext_browse = clv_medicament_dispensation_ext.browse(args)
+
+    count = 0
+    for medicament_dispensation_ext in medicament_dispensation_ext_browse:
+        count += 1
+
+        print(count, medicament_dispensation_ext.state, medicament_dispensation_ext.name)
+
+        if medicament_dispensation_ext.state == 'draft':
+            client.exec_workflow('clv_medicament_dispensation_ext', 
+                                 'button_waiting', 
+                                 medicament_dispensation_ext.id)
+
+    print('count: ', count)
+
 def clv_medicament_dispensation_ext_import_orizon(client, file_name):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
@@ -446,6 +464,11 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
     # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # dispensation_args = [('state', '=', 'draft'),]
+    # print('-->', client, dispensation_args)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_state_waiting()...')
+    # clv_medicament_dispensation_ext_updt_state_waiting(client, dispensation_args)
 
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
