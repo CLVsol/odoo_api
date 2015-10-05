@@ -150,7 +150,9 @@ def clv_medicament_dispensation_ext_import_orizon(client, file_name):
 def clv_medicament_dispensation_ext_updt_name(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('name', '=', False),],
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
+                                                                      ('name', '=', False),
+                                                                      ],
                                                                      order='authorization_code')
 
     i = 0
@@ -169,7 +171,9 @@ def clv_medicament_dispensation_ext_updt_name(client):
 def clv_medicament_dispensation_ext_updt_pharmacy(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('pharmacy_id', '=', False),])
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
+                                                                      ('pharmacy_id', '=', False),
+                                                                      ])
 
     i = 0
     found = 0
@@ -205,7 +209,9 @@ def clv_medicament_dispensation_ext_updt_pharmacy(client):
 def clv_medicament_dispensation_ext_updt_prescriber(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('prescriber_id', '=', False),])
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
+                                                                      ('prescriber_id', '=', False),
+                                                                      ])
 
     i = 0
     found = 0
@@ -237,7 +243,9 @@ def clv_medicament_dispensation_ext_updt_prescriber(client):
 def clv_medicament_dispensation_ext_updt_insured_card(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('insured_card_id', '=', False),])
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
+                                                                      ('insured_card_id', '=', False),
+                                                                      ])
 
     i = 0
     found = 0
@@ -269,7 +277,8 @@ def clv_medicament_dispensation_ext_updt_insured_card(client):
 def clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('medicament_ref', '=', False),])
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
+                                                                      ('medicament_ref', '=', False),])
 
     i = 0
     found = 0
@@ -301,7 +310,8 @@ def clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client):
 def clv_medicament_dispensation_ext_updt_medicament(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('medicament', '=', False),])
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
+                                                                      ('medicament', '=', False),])
 
     i = 0
     found = 0
@@ -336,7 +346,8 @@ def clv_medicament_dispensation_ext_updt_dispensation(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
     dispensation_ext_browse = clv_medicament_dispensation_ext.browse(\
-        [('dispensation_id', '=', False),
+        [('state', '=', 'draft'),
+         ('dispensation_id', '=', False),
          ('pharmacy_id', '!=', False),
          ('prescriber_id', '!=', False),
          ('insured_card_id', '!=', False),
@@ -469,6 +480,39 @@ if __name__ == '__main__':
     # print('-->', client, dispensation_args)
     # print('--> Executing clv_medicament_dispensation_ext_updt_state_waiting()...')
     # clv_medicament_dispensation_ext_updt_state_waiting(client, dispensation_args)
+
+    # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_09_a_27_09.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
 
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
