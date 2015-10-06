@@ -36,3 +36,4 @@ import clv_medicament_group
 import clv_medicament_group_member
 import clv_medicament_list
 import clv_orizon_lpm
+import res_users
