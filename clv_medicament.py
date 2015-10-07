@@ -30,6 +30,7 @@ import getpass
 
 from clv_medicament_group import *
 from clv_medicament_group_member import *
+from clv_tag import *
 
 def get_new_l0_medicament_active_component(client, active_component_id, concentration, pres_form, pres_form_2):
 
@@ -239,6 +240,57 @@ def clv_medicament_mark_verify_from_orizon_lpm(client):
     print('medicament_to_verify: ', medicament_to_verify)
     print('medicament_ok: ', medicament_ok)
 
+def clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, args):
+
+    tag_id_Verificar = get_tag_id(\
+        client,
+        'Verificar', 
+        'Registros que necessitam de algum tipo de verificação.')
+
+    clv_medicament_list = client.model('clv_medicament_list')
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    print('>>>>>', medicament_list_browse)
+
+    clv_medicament_list_version = client.model('clv_medicament_list.version')
+    medicament_list_version_browse = clv_medicament_list_version.browse(
+        [('list_id', '=', medicament_list_browse[0].id),
+         ('name', '=', list_version_name),
+         ])
+    print('>>>>>', medicament_list_version_browse)
+
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
+    medicament_list_item_browse = clv_medicament_list_item.browse(
+        [('list_version_id', '=', medicament_list_version_browse[0].id),
+         ] + args)
+
+    list_item_count = 0
+    medicament_ok = 0
+    medicament_to_verify = 0
+    for list_item in medicament_list_item_browse:
+
+        list_item_count += 1
+        print(list_item_count, list_item.medicament_id.name.encode("utf-8"))
+
+        clv_medicament = client.model('clv_medicament')
+        medicament_browse = clv_medicament.browse([('id', '=', list_item.medicament_id.id),
+                                                   ('state', '!=', 'active'),
+                                                   ('state', '!=', 'waiting'),
+                                                   ])
+        print('>>>>>', medicament_browse.id)
+
+        if medicament_browse.id != []:
+            medicament_to_verify += 1
+            values = {
+                'tag_ids': [(4, tag_id_Verificar)],
+                }
+            clv_medicament.write(medicament_browse[0].id, values)
+        else:
+            medicament_ok += 1
+
+    print('list_item_count: ', list_item_count)
+    print('medicament_to_verify: ', medicament_to_verify)
+    print('medicament_ok: ', medicament_ok)
+
 def get_arguments():
 
     global username
@@ -314,6 +366,15 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_mark_verify_from_orizon_lpm()...')
     # clv_medicament_mark_verify_from_orizon_lpm(client)
+
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1508'
+    # list_args = [('subsidy', '=', 100.0),
+    #              ('discount', '!=', False),
+    #              ]
+    # print('-->', client, list_name, list_version_name, list_args)
+    # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
+    # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
