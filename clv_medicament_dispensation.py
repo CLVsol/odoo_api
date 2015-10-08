@@ -381,9 +381,9 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_dispensation_export()...')
     # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
 
-    print('-->', client)
-    print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
-    clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
 
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
