@@ -979,6 +979,84 @@ def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME):
 
     file_insured_card.close()
 
+def clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME):
+
+    headings_insured = ['no', 
+                        'batch_producao', 'batch_client', 'batch_familiar',
+                        'reg_number', 'crd_code', 'crd_name',
+                         ]
+    file_insured = open(file_path, 'wb')
+    writer_insured = csv.writer(file_insured, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
+    writer_insured.writerow(headings_insured)
+
+    clv_insured_card = client.model('clv_insured_card')
+    clv_insured = client.model('clv_insured')
+
+    clv_batch = client.model('clv_batch')
+    batch_browse = clv_batch.browse(\
+        [('state', '=', 'checking'), 
+         ('name', '=', PRODUCTION_BATCH_NAME),
+         ])
+
+    i = 0
+    card_count = 0
+    for batch in batch_browse:
+
+        batch_producao = batch.name.encode("utf-8")
+
+        i += 1
+        print(i, batch.name, batch.derived_batch_ids)
+
+        print(batch.name.encode("utf-8"))
+
+        for derived_batch in batch.derived_batch_ids:
+
+            batch_client = derived_batch.name.encode("utf-8")
+
+            if derived_batch.state == 'checking':
+                i += 1
+                print('>>>>', i, derived_batch.name.encode("utf-8"))
+
+                for derived_batch_2 in derived_batch.derived_batch_ids:
+
+                    batch_familiar = derived_batch_2.name.encode("utf-8")
+
+                    if derived_batch_2.state == 'checking':
+                        i += 1
+                        print('>>>>>>>>', i, derived_batch_2.name.encode("utf-8"))
+
+                        for insured_card_batch in derived_batch_2.insured_card_batch_ids:
+                            i += 1
+
+                            insured_card = clv_insured_card.browse(
+                                [('id', '=', insured_card_batch.insured_card_id.id),])[0]
+
+                            insured = clv_insured.browse(
+                                [('id', '=', insured_card.insured_id.id),])[0]
+
+                            crd_name = insured_card.name.encode("utf-8")
+                            crd_code = insured_card.code
+                            reg_number = insured.reg_number
+                            category = insured.category_ids[0].name
+
+                            if insured_card.state == 'processing':
+                                card_count += 1
+                                print('>>>>>>>>>>>>', i, 
+                                                      batch_producao, batch_client, batch_familiar, 
+                                                      reg_number, crd_code, crd_name,
+                                                      category)
+
+                                row_insured = [card_count, 
+                                               batch_producao, batch_client, batch_familiar,
+                                               reg_number, crd_code, crd_name,
+                                               ]
+                                writer_insured.writerow(row_insured)
+
+    file_insured.close()
+
+    print('i: ', i)
+    print('card_count: ', card_count)
+
 def get_arguments():
 
     global username
@@ -1111,6 +1189,13 @@ if __name__ == '__main__':
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
+
+    PREFIX = '2015-09-28'
+    PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
+    print('-->', client, file_path, PRODUCTION_BATCH_NAME)
+    print('--> Executing clv_batch_producao_export_protocolo()...')
+    clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
