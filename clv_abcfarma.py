@@ -378,6 +378,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_abcfarma_import_new()...')
     # clv_abcfarma_import_new(client, file_name, from_)
 
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_10.dbf'
+    # from_ = 'TABELA_2015_10'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_abcfarma_import_new()...')
+    # clv_abcfarma_import_new(client, file_name, from_)
+
     # list_name = 'TABELA_2014_01'
     # previous_list_name = False
     # file_name = '/opt/openerp/abcfarma/TABELA_2014_01.dbf'
@@ -495,6 +501,18 @@ if __name__ == '__main__':
     # list_name = 'TABELA_2015_08'
     # previous_list_name = 'TABELA_2015_07'
     # file_name = '/opt/openerp/abcfarma/TABELA_2015_08.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_09'
+    # previous_list_name = 'TABELA_2015_08'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_09.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_10'
+    # previous_list_name = 'TABELA_2015_09'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_10.dbf'
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
 
