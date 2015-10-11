@@ -1190,12 +1190,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
 
-    PREFIX = '2015-09-28'
-    PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
-    print('-->', client, file_path, PRODUCTION_BATCH_NAME)
-    print('--> Executing clv_batch_producao_export_protocolo()...')
-    clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
+    # PREFIX = '2015-09-28'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
+    # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_batch_producao_export_protocolo()...')
+    # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
