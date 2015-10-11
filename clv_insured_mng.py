@@ -1005,7 +1005,7 @@ def clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME
         batch_producao = batch.name.encode("utf-8")
 
         i += 1
-        print(i, batch.name, batch.derived_batch_ids)
+        print(i, batch.name.encode("utf-8"), batch.derived_batch_ids)
 
         print(batch.name.encode("utf-8"))
 
