@@ -134,6 +134,22 @@ def clv_batch_updt_state_processing(client, args):
                 print('>>>>', i, insured_card_browse[0].name.encode("utf-8"))
                 client.exec_workflow('clv_insured_card', 'button_process', insured_card_browse[0].id)
 
+def clv_batch_updt_state_checking(client, args):
+
+    clv_batch = client.model('clv_batch')
+    batch_browse = clv_batch.browse(args)
+
+    batch_count = 0
+    for batch in batch_browse:
+        batch_count += 1
+
+        print(batch_count, batch.state, batch.name.encode("utf-8"))
+
+        if batch.state == 'processing':
+            client.exec_workflow('clv_batch', 'button_check', batch.id)
+
+    print('batch_count: ', batch_count)
+
 def get_arguments():
 
     global username
