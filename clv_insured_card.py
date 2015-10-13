@@ -50,6 +50,31 @@ def clv_insured_card_include_partner_orizon(client):
 
     print('--> i: ', i)
 
+def clv_insured_card_updt_state_active(client, args):
+
+    clv_insured_card = client.model('clv_insured_card')
+    insured_card_browse = clv_insured_card.browse(args)
+
+    insured_card_count = 0
+    for insured_card in insured_card_browse:
+
+        if insured_card.state == 'processing':
+            for batch in insured_card.insured_card_batch_ids.batch_id:
+
+                if batch.category_id.name == "Grupo Familiar" and \
+                   batch.state == 'done':
+
+                    insured_card_count += 1
+                    print(insured_card_count, insured_card.code, insured_card.state, 
+                                              insured_card.name.encode("utf-8"))
+                    client.exec_workflow('clv_insured_card', 'button_activate', insured_card.id)
+
+                    if insured_card.insured_id.state == 'processing':
+
+                        client.exec_workflow('clv_insured', 'button_activate', insured_card.insured_id.id)
+
+    print('insured_card_count: ', insured_card_count)
+
 def get_arguments():
 
     global username

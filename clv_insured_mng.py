@@ -33,6 +33,7 @@ import getpass
 from clv_insurance_client import *
 from clv_insurance import *
 from clv_insured import *
+from clv_insured_card import *
 from clv_tag import *
 from clv_batch import *
 
@@ -1208,6 +1209,11 @@ if __name__ == '__main__':
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
+
+    # card_args = [('state', '=', 'processing'),]
+    # print('-->', client, card_args)
+    # print('--> Executing clv_insured_card_updt_state_active()...')
+    # clv_insured_card_updt_state_active(client, card_args)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
