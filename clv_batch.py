@@ -150,6 +150,22 @@ def clv_batch_updt_state_checking(client, args):
 
     print('batch_count: ', batch_count)
 
+def clv_batch_updt_state_done(client, args):
+
+    clv_batch = client.model('clv_batch')
+    batch_browse = clv_batch.browse(args)
+
+    batch_count = 0
+    for batch in batch_browse:
+        batch_count += 1
+
+        print(batch_count, batch.state, batch.name.encode("utf-8"))
+
+        if batch.state == 'checking':
+            client.exec_workflow('clv_batch', 'button_done', batch.id)
+
+    print('batch_count: ', batch_count)
+
 def get_arguments():
 
     global username

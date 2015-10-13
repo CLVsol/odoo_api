@@ -1197,5 +1197,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_producao_export_protocolo()...')
     # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
 
+    batch_args = [('state', '=', 'checking'), 
+                  ('name_category', '=', 'Grupo Familiar'),
+                  ]
+    print('-->', client, batch_args)
+    print('--> Executing clv_batch_updt_state_done()...')
+    clv_batch_updt_state_done(client, batch_args)
+
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
