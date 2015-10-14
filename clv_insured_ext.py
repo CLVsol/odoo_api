@@ -639,13 +639,13 @@ if __name__ == '__main__':
     # clv_insured_ext_updt_from_insured_card_orizon(client)
 
     # print('-->', client)
-    # file_name = '/opt/openerp/orizon/USU1865_20151013_151001_I.TXT'
+    # file_name = '/opt/openerp/orizon/USU1865_20151014_151001_I.TXT'
     # print('--> Executing clv_insured_ext_syncronize_orizon(' + file_name + ')...')
     # clv_insured_ext_syncronize_orizon(client, file_name)
 
     # print('-->', client)
-    # file_name = '/opt/openerp/orizon/USU1865_20151013_151001_I.TXT'
-    # date_synchronization = '2015-10-13 21:00:00'
+    # file_name = '/opt/openerp/orizon/USU1865_20151014_151001_I.TXT'
+    # date_synchronization = '2015-10-14 21:00:00'
     # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
     # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
