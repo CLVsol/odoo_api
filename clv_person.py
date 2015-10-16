@@ -34,10 +34,18 @@ def get_arguments():
     global password
     global dbname
 
+    global remote_username
+    global remote_password
+    global remote_dbname
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--user', action="store", dest="username")
     parser.add_argument('--pw', action="store", dest="password")
     parser.add_argument('--db', action="store", dest="dbname")
+
+    parser.add_argument('--ruser', action="store", dest="remote_username")
+    parser.add_argument('--rpw', action="store", dest="remote_password")
+    parser.add_argument('--rdb', action="store", dest="remote_dbname")
 
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
@@ -57,17 +65,42 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+    if args.remote_dbname != None:
+        remote_dbname = args.remote_dbname
+    elif remote_dbname == '*':
+        remote_dbname = raw_input('remote_dbname: ')
+
+    if args.remote_username != None:
+        remote_username = args.remote_username
+    elif remote_username == '*':
+        remote_username = raw_input('remote_username: ')
+
+    if args.remote_password != None:
+        remote_password = args.remote_password
+    elif remote_password == '*':
+        remote_password = getpass.getpass('remote_password: ')
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # password = 'paswword' 
+    password = '*' 
 
     dbname = 'odoo'
     # dbname = '*'
+
+    remote_server = 'http://192.168.25.112:8069'
+
+    # remote_username = 'username'
+    remote_username = '*'
+    # remote_password = 'paswword' 
+    remote_password = '*' 
+
+    remote_dbname = 'odoo'
+    # remote_dbname = '*'
 
     get_arguments()
 
@@ -77,6 +110,7 @@ if __name__ == '__main__':
     print('--> clv_person.py...')
 
     client = erppeek.Client(server, dbname, username, password)
+    remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
 
     print('--> clv_person.py')
     print('--> Execution time:', secondsToStr(time() - start))
