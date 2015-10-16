@@ -28,6 +28,26 @@ from base import *
 import argparse
 import getpass
 
+def clv_person_unlink(client, args):
+
+    clv_person = client.model('clv_person')
+    person_browse = clv_person.browse(args)
+
+    i = 0
+    for person in person_browse:
+        i += 1
+        print(i, person.name.encode("utf-8"))
+
+        history = client.model('clv_person.history')
+        history_browse = history.browse([('person_id', '=', person.id),])
+        history_ids = history_browse.id
+        print('>>>>>', history_ids)
+
+        history.unlink(history_ids)
+        clv_person.unlink(person.id)
+
+    print('--> i: ', i)
+
 def get_arguments():
 
     global username
@@ -111,6 +131,11 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
     remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
+
+    # person_args = []
+    # print('-->', client, person_args)
+    # print('--> Executing clv_person_unlink("new")...')
+    # clv_person_unlink(client, person_args)
 
     print('--> clv_person.py')
     print('--> Execution time:', secondsToStr(time() - start))
