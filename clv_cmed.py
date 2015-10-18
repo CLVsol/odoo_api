@@ -39,11 +39,15 @@ def clv_cmed_import_new(client, infile_name, from_):
     rownum = 0
     found = 0
     not_found = 0
+    rg = False
     ct = False
     for row in r:
 
         if rownum == 0:
-            if row[7] == 'CLASSE TERAPÊUTICA':
+            if row[4] == 'REGISTRO':
+                rg = True
+            if (row[7] == 'CLASSE TERAPÊUTICA') or \
+               (row[8] == 'CLASSE TERAPÊUTICA'):
                 ct = True
             rownum += 1
             continue
@@ -54,6 +58,10 @@ def clv_cmed_import_new(client, infile_name, from_):
         CNPJ = row[i.next()]
         LABORATORIO = row[i.next()]
         CODIGO_GGREM = row[i.next()]
+        if rg:
+            REGISTRO = row[i.next()]
+        else:
+            REGISTRO = False
         EAN = row[i.next()]
         PRODUTO = row[i.next()]
         APRESENTACAO = row[i.next()]
@@ -91,6 +99,8 @@ def clv_cmed_import_new(client, infile_name, from_):
             'cnpj': CNPJ,
             'latoratorio': LABORATORIO,
             'codigo_ggrem': CODIGO_GGREM,
+            'codigo_ggrem_2': CODIGO_GGREM,
+            'registro': REGISTRO,
             'ean': EAN,
             'produto': PRODUTO,
             'apresentacao': APRESENTACAO,
@@ -128,6 +138,8 @@ def clv_cmed_import_new(client, infile_name, from_):
 
         rownum += 1
 
+    rownum -= 1
+
     clv_cmed = client.model('clv_cmed')
     cmed_browse = clv_cmed.browse([('excluded', '=', False),
                                    ('from', '!=', from_),])
@@ -144,6 +156,7 @@ def clv_cmed_import_new(client, infile_name, from_):
 
     f.close()
 
+    print('--> rownum: ', rownum)
     print('--> found: ', found)
     print('--> not_found: ', not_found)
     print('--> excluded: ', excluded)
@@ -498,6 +511,12 @@ if __name__ == '__main__':
 
     # infile_name = '/opt/openerp/cmed/CMED_2015_08_21.csv'
     # from_ = 'CMED_2015_08_21'
+    # print('-->', client, infile_name, from_)
+    # print('--> Executing clv_cmed_import_new()...')
+    # clv_cmed_import_new(client, infile_name, from_)
+
+    # infile_name = '/opt/openerp/cmed/CMED_2015_09_28.csv'
+    # from_ = 'CMED_2015_09_28'
     # print('-->', client, infile_name, from_)
     # print('--> Executing clv_cmed_import_new()...')
     # clv_cmed_import_new(client, infile_name, from_)
