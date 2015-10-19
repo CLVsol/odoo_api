@@ -28,6 +28,35 @@ from base import *
 import argparse
 import getpass
 
+def clv_address_unlink(client, args):
+
+    clv_address = client.model('clv_address')
+    address_browse = clv_address.browse(args)
+
+    i = 0
+    deleted = 0
+    not_deleted = 0
+    for address in address_browse:
+        i += 1
+        print(i, address.name.encode("utf-8"))
+
+        history = client.model('clv_address.history')
+        history_browse = history.browse([('address_id', '=', address.id),])
+        history_ids = history_browse.id
+        print('>>>>>', history_ids)
+
+        history.unlink(history_ids)
+        try:
+            clv_address.unlink(address.id)
+            deleted += 1
+        except:
+            print('>>>>>', 'Not deleted!')
+            not_deleted += 1
+
+    print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
 def get_arguments():
 
     global username
