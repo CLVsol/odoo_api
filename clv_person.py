@@ -102,19 +102,6 @@ def clv_person_import_remote(remote_client, local_client):
             else:
                 address_id = address_id[0]
 
-        # if person.spouse_id != False:
-        #     print('>>>>>', person.spouse_id.name.encode("utf-8"))
-        #     spouse_count += 1
-        # if person.father_id != False:
-        #     print('>>>>>', person.father_id.name.encode("utf-8"))
-        #     father_count += 1
-        # if person.mother_id != False:
-        #     print('>>>>>', person.mother_id.name.encode("utf-8"))
-        #     mother_count += 1
-        # if person.responsible_id != False:
-        #     print('>>>>>', person.responsible_id.name.encode("utf-8"))
-        #     responsible_count += 1
-
         values = {
             'name': person.name,
             'code': person.code,
