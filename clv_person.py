@@ -28,12 +28,16 @@ from base import *
 import argparse
 import getpass
 
+from clv_address import *
+
 def clv_person_unlink(client, args):
 
     clv_person = client.model('clv_person')
     person_browse = clv_person.browse(args)
 
     i = 0
+    deleted = 0
+    not_deleted = 0
     for person in person_browse:
         i += 1
         print(i, person.name.encode("utf-8"))
@@ -44,9 +48,129 @@ def clv_person_unlink(client, args):
         print('>>>>>', history_ids)
 
         history.unlink(history_ids)
-        clv_person.unlink(person.id)
+        try:
+            clv_person.unlink(person.id)
+            deleted += 1
+        except:
+            print('>>>>>', 'Not deleted!')
+            not_deleted += 1
 
     print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
+def clv_person_import_remote(remote_client, local_client):
+
+    clv_address = local_client.model('clv_address')
+    local_clv_person = local_client.model('clv_person')
+
+    remote_clv_person = remote_client.model('clv_person')
+    remote_person_browse = remote_clv_person.browse([])
+
+    i = 0
+    person_count = 0
+    address_count = 0
+    spouse_count = 0
+    father_count = 0
+    mother_count = 0
+    responsible_count = 0
+    for person in remote_person_browse:
+        person_count += 1
+
+        print(person_count, person.code, person.name.encode("utf-8"), person.tag_ids, person.category_ids)
+        print('>>>>>', person.gender, person.birthday)
+        address_id = False
+        if person.address_id != False:
+            print('>>>>>', person.address_id.name.encode("utf-8"))
+            if person.address_id.street != False:
+                print('>>>>>>>>>>', person.address_id.street.encode("utf-8"), 
+                                    person.address_id.number)
+            if person.address_id.district != False:
+                print('>>>>>>>>>>', person.address_id.district.encode("utf-8"))
+
+            address_id = clv_address.browse([('name', '=', person.address_id.name),]).id
+
+            if address_id == []:
+                values = {
+                    'name': person.address_id.name,
+                    'street': person.address_id.street,
+                    'number': person.address_id.number,
+                    'district': person.address_id.district,
+                    }
+                address_id = clv_address.create(values).id
+                address_count += 1
+            else:
+                address_id = address_id[0]
+
+        # if person.spouse_id != False:
+        #     print('>>>>>', person.spouse_id.name.encode("utf-8"))
+        #     spouse_count += 1
+        # if person.father_id != False:
+        #     print('>>>>>', person.father_id.name.encode("utf-8"))
+        #     father_count += 1
+        # if person.mother_id != False:
+        #     print('>>>>>', person.mother_id.name.encode("utf-8"))
+        #     mother_count += 1
+        # if person.responsible_id != False:
+        #     print('>>>>>', person.responsible_id.name.encode("utf-8"))
+        #     responsible_count += 1
+
+        values = {
+            'name': person.name,
+            'code': person.code,
+            'birthday': person.birthday,
+            'gender': person.gender,
+            'address_id': address_id,
+            }
+        local_person_id = local_clv_person.create(values).id
+
+    i = 0
+    for person in remote_person_browse:
+        i += 1
+
+        local_person = local_clv_person.browse([('code', '=', person.code),])[0]
+        print(i, local_person.code, local_person.name.encode("utf-8"))
+
+        if person.spouse_id != False:
+            spouse_count += 1
+            spouse = local_clv_person.browse([('code', '=', person.spouse_id.code),])[0]
+            print('>>>>> spouse', spouse.code, spouse.name.encode("utf-8"))
+            values = {
+                'spouse_id': spouse.id,
+                }
+            local_clv_person.write(local_person.id, values)
+        if person.father_id != False:
+            father_count += 1
+            father = local_clv_person.browse([('code', '=', person.father_id.code),])[0]
+            print('>>>>> father', father.code, father.name.encode("utf-8"))
+            values = {
+                'father_id': father.id,
+                }
+            local_clv_person.write(local_person.id, values)
+        if person.mother_id != False:
+            mother_count += 1
+            mother = local_clv_person.browse([('code', '=', person.mother_id.code),])[0]
+            print('>>>>> mother', mother.code, mother.name.encode("utf-8"))
+            values = {
+                'mother_id': mother.id,
+                }
+            local_clv_person.write(local_person.id, values)
+        if person.responsible_id != False:
+            responsible_count += 1
+            responsible = local_clv_person.browse([('code', '=', person.responsible_id.code),])[0]
+            print('>>>>> responsible', responsible.code, responsible.name.encode("utf-8"))
+            values = {
+                'responsible_id': responsible.id,
+                }
+            local_clv_person.write(local_person.id, values)
+
+    print('i: ', i)
+    print('person_count: ', person_count)
+    print('address_count: ', address_count)
+    print('spouse_count: ', spouse_count)
+    print('father_count: ', father_count)
+    print('mother_count: ', mother_count)
+    print('responsible_count: ', responsible_count)
 
 def get_arguments():
 
@@ -136,6 +260,15 @@ if __name__ == '__main__':
     # print('-->', client, person_args)
     # print('--> Executing clv_person_unlink("new")...')
     # clv_person_unlink(client, person_args)
+
+    # address_args = []
+    # print('-->', client, address_args)
+    # print('--> Executing clv_address_unlink("new")...')
+    # clv_address_unlink(client, address_args)
+
+    # print('-->', remote_client, client)
+    # print('--> Executing clv_person_import_remote()...')
+    # clv_person_import_remote(remote_client, client)
 
     print('--> clv_person.py')
     print('--> Execution time:', secondsToStr(time() - start))
