@@ -108,6 +108,7 @@ def clv_person_import_remote(remote_client, local_client):
             'birthday': person.birthday,
             'gender': person.gender,
             'address_id': address_id,
+            'date_inclusion': person.date_inclusion,
             }
         local_person_id = local_clv_person.create(values).id
 
