@@ -28,6 +28,8 @@ from base import *
 import argparse
 import getpass
 
+from clv_address import *
+
 def clv_family_unlink(client, args):
 
     clv_family = client.model('clv_family')
@@ -56,6 +58,56 @@ def clv_family_unlink(client, args):
     print('--> i: ', i)
     print('--> deleted: ', deleted)
     print('--> not_deleted: ', not_deleted)
+
+def clv_family_import_remote(remote_client, local_client):
+
+    clv_address = local_client.model('clv_address')
+    local_clv_family = local_client.model('clv_family')
+
+    remote_clv_family = remote_client.model('clv_family')
+    remote_family_browse = remote_clv_family.browse([])
+
+    family_count = 0
+    address_count = 0
+    for family in remote_family_browse:
+        family_count += 1
+
+        print(family_count, family.code, family.name.encode("utf-8"), 
+                            family.tag_ids, family.category_ids)
+
+        address_id = False
+        if family.address_id != False:
+            print('>>>>>', family.address_id.name.encode("utf-8"))
+            if family.address_id.street != False:
+                print('>>>>>>>>>>', family.address_id.street.encode("utf-8"), 
+                                    family.address_id.number)
+            if family.address_id.district != False:
+                print('>>>>>>>>>>', family.address_id.district.encode("utf-8"))
+
+            address_id = clv_address.browse([('name', '=', family.address_id.name),]).id
+
+            if address_id == []:
+                values = {
+                    'name': family.address_id.name,
+                    'street': family.address_id.street,
+                    'number': family.address_id.number,
+                    'district': family.address_id.district,
+                    }
+                address_id = clv_address.create(values).id
+                address_count += 1
+            else:
+                address_id = address_id[0]
+
+        values = {
+            'name': family.name,
+            'code': family.code,
+            'address_id': address_id,
+            'date_inclusion': family.date_inclusion,
+            }
+        local_family_id = local_clv_family.create(values).id
+
+    print('family_count: ', family_count)
+    print('address_count: ', address_count)
 
 def get_arguments():
 
@@ -145,6 +197,15 @@ if __name__ == '__main__':
     # print('-->', client, family_args)
     # print('--> Executing clv_family_unlink("new")...')
     # clv_family_unlink(client, family_args)
+
+    # address_args = []
+    # print('-->', client, address_args)
+    # print('--> Executing clv_address_unlink("new")...')
+    # clv_address_unlink(client, address_args)
+
+    # print('-->', remote_client, client)
+    # print('--> Executing clv_family_import_remote()...')
+    # clv_family_import_remote(remote_client, client)
 
     print('--> clv_family.py')
     print('--> Execution time:', secondsToStr(time() - start))
