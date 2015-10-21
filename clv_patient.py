@@ -28,6 +28,8 @@ from base import *
 import argparse
 import getpass
 
+from clv_patient import *
+
 def clv_patient_unlink(client, args):
 
     clv_patient = client.model('clv_patient')
@@ -57,6 +59,24 @@ def clv_patient_unlink(client, args):
     print('--> deleted: ', deleted)
     print('--> not_deleted: ', not_deleted)
 
+def get_patient_category_id(client, patient_category_name, patient_category_code='/'):
+
+    clv_patient_category = client.model('clv_patient.category')
+    patient_category_browse = clv_patient_category.browse(\
+        [('name', '=', patient_category_name),])
+    patient_category_id = patient_category_browse.id
+
+    if patient_category_id == []:
+        values = {
+            "name": patient_category_name,
+            "code": patient_category_code,
+            }
+        patient_category_id = clv_patient_category.create(values).id
+    else:
+        patient_category_id = patient_category_id[0]
+
+    return patient_category_id
+
 def clv_patient_import_remote(remote_client, local_client):
 
     local_clv_person = local_client.model('clv_person')
@@ -80,6 +100,13 @@ def clv_patient_import_remote(remote_client, local_client):
             'patient_date_inclusion': patient.patient_date_inclusion,
             }
         local_patient_id = local_clv_patient.create(values).id
+
+        for category in patient.category_ids:
+            patient_cat_id = get_patient_category_id(client, category.name, category.code)
+            values = {
+                'category_ids': [(4, patient_cat_id)],
+                }
+            local_clv_patient.write(local_patient_id, values)
 
     print('patient_count: ', patient_count)
 
@@ -147,7 +174,7 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
-    remote_server = 'http://192.168.25.112:8069'
+    remote_server = 'http://192.168.25.105:8069'
 
     # remote_username = 'username'
     remote_username = '*'
@@ -167,14 +194,14 @@ if __name__ == '__main__':
     client = erppeek.Client(server, dbname, username, password)
     remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
 
-    patient_args = []
-    print('-->', client, patient_args)
-    print('--> Executing clv_patient_unlink("new")...')
-    clv_patient_unlink(client, patient_args)
+    # patient_args = []
+    # print('-->', client, patient_args)
+    # print('--> Executing clv_patient_unlink("new")...')
+    # clv_patient_unlink(client, patient_args)
 
-    print('-->', remote_client, client)
-    print('--> Executing clv_patient_import_remote()...')
-    clv_patient_import_remote(remote_client, client)
+    # print('-->', remote_client, client)
+    # print('--> Executing clv_patient_import_remote()...')
+    # clv_patient_import_remote(remote_client, client)
 
     print('--> clv_patient.py')
     print('--> Execution time:', secondsToStr(time() - start))
