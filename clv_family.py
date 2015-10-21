@@ -28,6 +28,35 @@ from base import *
 import argparse
 import getpass
 
+def clv_family_unlink(client, args):
+
+    clv_family = client.model('clv_family')
+    family_browse = clv_family.browse(args)
+
+    i = 0
+    deleted = 0
+    not_deleted = 0
+    for family in family_browse:
+        i += 1
+        print(i, family.name.encode("utf-8"))
+
+        history = client.model('clv_family.history')
+        history_browse = history.browse([('family_id', '=', family.id),])
+        history_ids = history_browse.id
+        print('>>>>>', history_ids)
+
+        history.unlink(history_ids)
+        try:
+            clv_family.unlink(family.id)
+            deleted += 1
+        except:
+            print('>>>>>', 'Not deleted!')
+            not_deleted += 1
+
+    print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
 def get_arguments():
 
     global username
@@ -111,6 +140,11 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
     remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
+
+    # family_args = []
+    # print('-->', client, family_args)
+    # print('--> Executing clv_family_unlink("new")...')
+    # clv_family_unlink(client, family_args)
 
     print('--> clv_family.py')
     print('--> Execution time:', secondsToStr(time() - start))
