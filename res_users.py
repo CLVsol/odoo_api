@@ -68,16 +68,59 @@ def res_users_export(client, file_path):
 
     print('--> i: ', i)
 
+def res_users_import_remote(remote_client, local_client):
+
+    local_res_users = local_client.model('res.users')
+
+    remote_res_users = remote_client.model('res.users')
+    remote_users_browse = remote_res_users.browse([])
+
+    user_count = 0
+    created = 0
+    for user in remote_users_browse:
+        user_count += 1
+
+        print(user_count, user.login, user.name.encode("utf-8"), 
+                          user.email)
+
+        user_id = local_res_users.browse([('login', '=', user.login),]).id
+
+        if user_id == []:
+            values = {
+                'name': user.name,
+                'login': user.login,
+                'password_crypt': user.password_crypt,
+                'email': user.email,
+                'phone': user.phone,
+                'email': user.email,
+                'mobile': user.mobile,
+                }
+            user_id = local_res_users.create(values).id
+            created += 1
+        else:
+            user_id = user_id[0]
+
+    print('user_count: ', user_count)
+    print('created: ', created)
+
 def get_arguments():
 
     global username
     global password
     global dbname
 
+    global remote_username
+    global remote_password
+    global remote_dbname
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--user', action="store", dest="username")
     parser.add_argument('--pw', action="store", dest="password")
     parser.add_argument('--db', action="store", dest="dbname")
+
+    parser.add_argument('--ruser', action="store", dest="remote_username")
+    parser.add_argument('--rpw', action="store", dest="remote_password")
+    parser.add_argument('--rdb', action="store", dest="remote_dbname")
 
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
@@ -97,10 +140,24 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+    if args.remote_dbname != None:
+        remote_dbname = args.remote_dbname
+    elif remote_dbname == '*':
+        remote_dbname = raw_input('remote_dbname: ')
+
+    if args.remote_username != None:
+        remote_username = args.remote_username
+    elif remote_username == '*':
+        remote_username = raw_input('remote_username: ')
+
+    if args.remote_password != None:
+        remote_password = args.remote_password
+    elif remote_password == '*':
+        remote_password = getpass.getpass('remote_password: ')
+
 if __name__ == '__main__':
 
-    # server = 'http://localhost:8069'
-    server = 'http://192.168.25.112:8069'
+    server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
@@ -110,6 +167,16 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
+    remote_server = 'http://192.168.25.105:8069'
+
+    # remote_username = 'username'
+    remote_username = '*'
+    # remote_password = 'paswword' 
+    remote_password = '*' 
+
+    remote_dbname = 'odoo'
+    # remote_dbname = '*'
+
     get_arguments()
 
     from time import time
@@ -118,11 +185,16 @@ if __name__ == '__main__':
     print('--> res_users.py...')
 
     client = erppeek.Client(server, dbname, username, password)
+    remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
 
     # file_path = 'data/jcafb_res_users.csv'
     # print('-->', client, file_path)
     # print('--> Executing res_users_export()...')
     # res_users_export(client, file_path)
+
+    print('-->', remote_client, client)
+    print('--> Executing res_users_import_remote()...')
+    res_users_import_remote(remote_client, client)
 
     print('--> res_users.py')
     print('--> Execution time:', secondsToStr(time() - start))
