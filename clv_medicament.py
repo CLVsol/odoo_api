@@ -320,17 +320,33 @@ def clv_medicament_export(client, file_path):
         name = medicament.name.encode("utf-8")
         ean13 = medicament.ean13
         code = medicament.code
-        medicament_name = medicament.medicament_name
+        if medicament.medicament_name != False:
+            medicament_name = medicament.medicament_name.encode("utf-8")
+        else:
+            medicament_name = False
         concentration = medicament.concentration
-        presentation = medicament.presentation
-        pres_form_2 = medicament.pres_form_2
+        if medicament.presentation != False:
+            presentation = medicament.presentation.encode("utf-8")
+        else:
+            presentation = False
+        if medicament.pres_form_2 != False:
+            pres_form_2 = medicament.pres_form_2.name.encode("utf-8")
+        else:
+            pres_form_2 = False
         pres_quantity = medicament.pres_quantity
         pres_quantity_unit = medicament.pres_quantity_unit
         is_fraction = medicament.is_fraction
         state = medicament.state
 
-        active_component = medicament.active_component
-        manufacturer = medicament.manufacturer
+        if medicament.active_component != False:
+            active_component = medicament.active_component.name.encode("utf-8")
+        else:
+            active_component = False
+
+        if medicament.manufacturer != False:
+            manufacturer = medicament.manufacturer.name.encode("utf-8")
+        else:
+            manufacturer = False
 
         if medicament.abcfarma_id != False:
             med_abc = medicament.abcfarma_id.med_abc
@@ -357,15 +373,7 @@ def clv_medicament_export(client, file_path):
         else:
             gm_cod_prod_fabricante = False
 
-        print(medicament_count, state, name, ean13, code, medicament_name, 
-                                active_component, concentration, presentation, 
-                                pres_form_2, pres_quantity, pres_quantity_unit, 
-                                manufacturer,
-                                med_abc, 
-                                codigo_ggrem, codigo_ggrem_2, 
-                                orizon_cod_prod, 
-                                gm_cod_prod_fabricante,
-                                is_fraction)
+        print(medicament_count, code, name)
         row_medicament = [medicament_count, 
                           state, name, ean13, code, medicament_name, 
                           active_component, concentration, presentation, 
