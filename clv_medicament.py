@@ -291,6 +291,98 @@ def clv_medicament_mark_verify_from_medicament_list(client, list_name, list_vers
     print('medicament_to_verify: ', medicament_to_verify)
     print('medicament_ok: ', medicament_ok)
 
+def clv_medicament_export(client, file_path):
+
+    headings_medicament = ['no', 
+                           'state', 'name', 'ean13', 'code', 'medicament_name', 
+                           'active_component', 'concentration', 'presentation', 
+                           'pres_form_2', 'pres_quantity', 'pres_quantity_unit', 
+                           'manufacturer',
+                           'med_abc', 
+                           'codigo_ggrem', 'codigo_ggrem_2', 
+                           'orizon_cod_prod', 
+                           'gm_cod_prod_fabricante',
+                           'is_fraction',
+                           ]
+    file_medicament = open(file_path, 'wb')
+    writer_medicament = csv.writer(file_medicament, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
+    writer_medicament.writerow(headings_medicament)
+
+    clv_medicament = client.model('clv_medicament')
+    medicament_browse = clv_medicament.browse([('is_product', '=', True),])
+
+    medicament_count = 0
+    for medicament in medicament_browse:
+        # if medicament_count == 100:
+        #     break
+        medicament_count += 1
+
+        name = medicament.name.encode("utf-8")
+        ean13 = medicament.ean13
+        code = medicament.code
+        medicament_name = medicament.medicament_name
+        concentration = medicament.concentration
+        presentation = medicament.presentation
+        pres_form_2 = medicament.pres_form_2
+        pres_quantity = medicament.pres_quantity
+        pres_quantity_unit = medicament.pres_quantity_unit
+        is_fraction = medicament.is_fraction
+        state = medicament.state
+
+        active_component = medicament.active_component
+        manufacturer = medicament.manufacturer
+
+        if medicament.abcfarma_id != False:
+            med_abc = medicament.abcfarma_id.med_abc
+        else:
+            med_abc = False
+
+        if medicament.cmed_id != False:
+            codigo_ggrem = medicament.cmed_id.codigo_ggrem
+        else:
+            codigo_ggrem = False
+
+        if medicament.cmed_id != False:
+            codigo_ggrem_2 = medicament.cmed_id.codigo_ggrem_2
+        else:
+            codigo_ggrem_2 = False
+
+        if medicament.orizon_lpm_id != False:
+            orizon_cod_prod = medicament.orizon_lpm_id.cod_prod
+        else:
+            orizon_cod_prod = False
+
+        if medicament.gm_id != False:
+            gm_cod_prod_fabricante = medicament.gm_id.cod_prod_fabricante
+        else:
+            gm_cod_prod_fabricante = False
+
+        print(medicament_count, state, name, ean13, code, medicament_name, 
+                                active_component, concentration, presentation, 
+                                pres_form_2, pres_quantity, pres_quantity_unit, 
+                                manufacturer,
+                                med_abc, 
+                                codigo_ggrem, codigo_ggrem_2, 
+                                orizon_cod_prod, 
+                                gm_cod_prod_fabricante,
+                                is_fraction)
+        row_medicament = [medicament_count, 
+                          state, name, ean13, code, medicament_name, 
+                          active_component, concentration, presentation, 
+                          pres_form_2, pres_quantity, pres_quantity_unit, 
+                          manufacturer,
+                          med_abc, 
+                          codigo_ggrem, codigo_ggrem_2, 
+                          orizon_cod_prod, 
+                          gm_cod_prod_fabricante,
+                          is_fraction,
+                          ]
+        writer_medicament.writerow(row_medicament)
+
+    file_medicament.close()
+
+    print('medicament_count: ', medicament_count)
+
 def get_arguments():
 
     global username
@@ -375,6 +467,11 @@ if __name__ == '__main__':
     # print('-->', client, list_name, list_version_name, list_args)
     # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
     # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
+
+    file_path = '/opt/openerp/biobox/data/medicament_2015_10_28.csv'
+    print('-->', client, file_path)
+    print('--> Executing clv_medicament_export()...')
+    clv_medicament_export(client, file_path)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
