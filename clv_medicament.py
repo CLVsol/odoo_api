@@ -476,10 +476,10 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
     # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
 
-    file_path = '/opt/openerp/biobox/data/medicament_2015_10_28.csv'
-    print('-->', client, file_path)
-    print('--> Executing clv_medicament_export()...')
-    clv_medicament_export(client, file_path)
+    # file_path = '/opt/openerp/biobox/data/medicament_2015_10_28.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_medicament_export()...')
+    # clv_medicament_export(client, file_path)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
