@@ -70,6 +70,10 @@ def res_users_export(client, file_path):
 
 def res_users_import_remote(remote_client, local_client):
 
+    #
+    # NOTE: Only user 'admin' can execute this procedure.
+    #
+
     local_res_users = local_client.model('res.users')
 
     remote_res_users = remote_client.model('res.users')
@@ -89,7 +93,7 @@ def res_users_import_remote(remote_client, local_client):
             values = {
                 'name': user.name,
                 'login': user.login,
-                'password_crypt': user.password_crypt,
+                # 'password_crypt': user.password_crypt,
                 'email': user.email,
                 'phone': user.phone,
                 'email': user.email,
@@ -167,7 +171,7 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
-    remote_server = 'http://192.168.25.105:8069'
+    remote_server = 'http://192.168.25.112:8069'
 
     # remote_username = 'username'
     remote_username = '*'
@@ -192,9 +196,9 @@ if __name__ == '__main__':
     # print('--> Executing res_users_export()...')
     # res_users_export(client, file_path)
 
-    print('-->', remote_client, client)
-    print('--> Executing res_users_import_remote()...')
-    res_users_import_remote(remote_client, client)
+    # print('-->', remote_client, client)
+    # print('--> Executing res_users_import_remote()...')
+    # res_users_import_remote(remote_client, client)
 
     print('--> res_users.py')
     print('--> Execution time:', secondsToStr(time() - start))
