@@ -101,24 +101,24 @@ def clv_insured_export_VC(client, file_path, date_inclusion):
                        ]
         writer_insured.writerow(row_insured)
 
-    insured_browse = clv_insured.browse([('state', '!=', 'canceled'),
-                                         ('date_inclusion', '<=', date_inclusion),
-                                         ('insurance_client_id', '=', client_id_HVC),])
-    # i = 0
-    for insured in insured_browse:
-        i += 1
-        name = insured.name.encode("utf-8")
-        code = insured.code
-        birthday = insured.birthday
-        gender = insured.gender
-        insured_category = insured.category_ids[0].name.encode("utf-8")
-        insurance_client = insured.insurance_client_id.name.encode("utf-8")
-        reg_number = insured.reg_number
-        insurance = insured.insurance_id.name.encode("utf-8")
-        state = insured.state
-        date_inclusion = insured.date_inclusion
+    insured_browse_2 = clv_insured.browse([('state', '!=', 'canceled'),
+                                           ('date_inclusion', '<=', date_inclusion),
+                                           ('insurance_client_id', '=', client_id_HVC),])
+    j = 0
+    for insured_2 in insured_browse_2:
+        j += 1
+        name = insured_2.name.encode("utf-8")
+        code = insured_2.code
+        birthday = insured_2.birthday
+        gender = insured_2.gender
+        insured_category = insured_2.category_ids[0].name.encode("utf-8")
+        insurance_client = insured_2.insurance_client_id.name.encode("utf-8")
+        reg_number = insured_2.reg_number
+        insurance = insured_2.insurance_id.name.encode("utf-8")
+        state = insured_2.state
+        date_inclusion = insured_2.date_inclusion
 
-        print(i, insured.name.encode("utf-8"))
+        print(j, insured_2.name.encode("utf-8"))
         row_insured = [i, 
                        name, code,
                        birthday, gender,
@@ -131,6 +131,9 @@ def clv_insured_export_VC(client, file_path, date_inclusion):
         writer_insured.writerow(row_insured)
 
     file_insured.close()
+
+    print('i: ', i)
+    print('j: ', j)
 
 def get_arguments():
 
