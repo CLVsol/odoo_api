@@ -44,17 +44,12 @@ def get_insured_category_id(client, category_name):
 
     return insured_category_id
 
-def clv_insured_export_VC(client, file_path, date_inclusion):
+def clv_insured_export_VCAS(client, file_path, date_inclusion):
 
     clv_insurance_client = client.model('clv_insurance_client')
     insurance_client_browse = clv_insurance_client.browse(\
         [('name', '=', 'VCAS - Vera Cruz Associação de Saúde'),])
     client_id_VCAS = insurance_client_browse[0].id
-
-    clv_insurance_client = client.model('clv_insurance_client')
-    insurance_client_browse = clv_insurance_client.browse(\
-        [('name', '=', 'HVC - Hospital Vera Cruz'),])
-    client_id_HVC = insurance_client_browse[0].id
 
     headings_insured = ['no', 
                         'name', 'code',
@@ -101,24 +96,51 @@ def clv_insured_export_VC(client, file_path, date_inclusion):
                        ]
         writer_insured.writerow(row_insured)
 
-    insured_browse_2 = clv_insured.browse([('state', '!=', 'canceled'),
-                                           ('date_inclusion', '<=', date_inclusion),
-                                           ('insurance_client_id', '=', client_id_HVC),])
-    j = 0
-    for insured_2 in insured_browse_2:
-        j += 1
-        name = insured_2.name.encode("utf-8")
-        code = insured_2.code
-        birthday = insured_2.birthday
-        gender = insured_2.gender
-        insured_category = insured_2.category_ids[0].name.encode("utf-8")
-        insurance_client = insured_2.insurance_client_id.name.encode("utf-8")
-        reg_number = insured_2.reg_number
-        insurance = insured_2.insurance_id.name.encode("utf-8")
-        state = insured_2.state
-        date_inclusion = insured_2.date_inclusion
+    file_insured.close()
 
-        print(j, insured_2.name.encode("utf-8"))
+    print('i: ', i)
+
+def clv_insured_export_HVC(client, file_path, date_inclusion):
+
+    clv_insurance_client = client.model('clv_insurance_client')
+    insurance_client_browse = clv_insurance_client.browse(\
+        [('name', '=', 'HVC - Hospital Vera Cruz'),])
+    client_id_HVC = insurance_client_browse[0].id
+
+    headings_insured = ['no', 
+                        'name', 'code',
+                        'birthday', 'gender',
+                        'insured_category',
+                        'insurance_client', 'reg_number',
+                        'insurance', 
+                        'state',
+                        'date_activation',
+                         ]
+    file_insured = open(file_path, 'wb')
+    writer_insured = csv.writer(file_insured, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
+    writer_insured.writerow(headings_insured)
+
+    clv_insured = client.model('clv_insured')
+    insured_browse = clv_insured.browse([('state', '!=', 'canceled'),
+                                         ('date_inclusion', '<=', date_inclusion),
+                                         ('insurance_client_id', '=', client_id_HVC),])
+
+    i = 0
+    for insured in insured_browse:
+        i += 1
+
+        name = insured.name.encode("utf-8")
+        code = insured.code
+        birthday = insured.birthday
+        gender = insured.gender
+        insured_category = insured.category_ids[0].name.encode("utf-8")
+        insurance_client = insured.insurance_client_id.name.encode("utf-8")
+        reg_number = insured.reg_number
+        insurance = insured.insurance_id.name.encode("utf-8")
+        state = insured.state
+        date_inclusion = insured.date_inclusion
+
+        print(i, insured.name.encode("utf-8"))
         row_insured = [i, 
                        name, code,
                        birthday, gender,
@@ -133,7 +155,6 @@ def clv_insured_export_VC(client, file_path, date_inclusion):
     file_insured.close()
 
     print('i: ', i)
-    print('j: ', j)
 
 def get_arguments():
 
@@ -190,11 +211,17 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_export()...')
     # clv_insured_export(client, file_path)
 
-    # file_path = '/opt/openerp/biobox/data/insured_2015_10_31.csv'
+    # file_path = '/opt/openerp/biobox/data/insured_VCAS_2015_10_31.csv'
     # date_inclusion = '2015-10-31'
     # print('-->', client, file_path, date_inclusion)
-    # print('--> Executing clv_insured_export_VC()...')
-    # clv_insured_export_VC(client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_VCAS()...')
+    # clv_insured_export_VCAS(client, file_path, date_inclusion)
+
+    # file_path = '/opt/openerp/biobox/data/insured_HVC_2015_10_31.csv'
+    # date_inclusion = '2015-10-31'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_HVC()...')
+    # clv_insured_export_HVC(client, file_path, date_inclusion)
 
     print('--> clv_insured.py')
     print('--> Execution time:', secondsToStr(time() - start))
