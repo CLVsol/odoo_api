@@ -30,23 +30,23 @@ import getpass
 
 from clv_address import *
 
-def get_family_person_role_id(client, role_name, role_description):
+def get_family_member_role_id(client, role_name, role_description):
 
-    clv_family_person_role = client.model('clv_family.person_role')
-    family_person_role_browse = clv_family_person_role.browse(\
+    clv_family_member_role = client.model('clv_family.member_role')
+    family_member_role_browse = clv_family_member_role.browse(\
         [('name', '=', role_name),])
-    family_person_role_id = family_person_role_browse.id
+    family_member_role_id = family_member_role_browse.id
 
-    if family_person_role_id == []:
+    if family_member_role_id == []:
         values = {
             "name": role_name,
             "description": role_description,
             }
-        family_person_role_id = clv_family_person_role.create(values).id
+        family_member_role_id = clv_family_member_role.create(values).id
     else:
-        family_person_role_id = family_person_role_id[0]
+        family_member_role_id = family_member_role_id[0]
 
-    return family_person_role_id
+    return family_member_role_id
 
 def clv_family_unlink(client, args):
 
@@ -127,22 +127,22 @@ def clv_family_import_remote(remote_client, local_client):
     print('family_count: ', family_count)
     print('address_count: ', address_count)
 
-def clv_family_person_import_remote(remote_client, local_client):
+def clv_family_member_import_remote(remote_client, local_client):
 
     clv_family = local_client.model('clv_family')
     clv_person = local_client.model('clv_person')
 
-    local_clv_family_person = local_client.model('clv_family.person')
+    local_clv_family_member = local_client.model('clv_family.member')
 
     remote_clv_family_person = remote_client.model('clv_family.person')
-    remote_family_person_browse = remote_clv_family_person.browse([\
+    remote_family_member_browse = remote_clv_family_person.browse([\
         ('family_id', '!=', False),
         ('person_id', '!=', False),
         ('role', '!=', False),
         ])
 
     person_count = 0
-    for family_person in remote_family_person_browse:
+    for family_person in remote_family_member_browse:
         person_count += 1
 
         print(person_count, family_person.family_id.name.encode("utf-8"), 
@@ -155,15 +155,15 @@ def clv_family_person_import_remote(remote_client, local_client):
         person_id = clv_person.browse(\
             [('name', '=', family_person.person_id.name),])[0].id
 
-        role_id = get_family_person_role_id(client, family_person.role.name, 
+        role_id = get_family_member_role_id(client, family_person.role.name, 
                                                     family_person.role.description)
 
         values = {
             'family_id': family_id,
-            'person_id': person_id,
+            'member_id': person_id,
             'role': role_id,
             }
-        local_family_person_id = local_clv_family_person.create(values).id
+        local_family_member_id = local_clv_family_member.create(values).id
 
     print('person_count: ', person_count)
 
@@ -231,7 +231,7 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
-    remote_server = 'http://192.168.25.105:8069'
+    remote_server = 'http://192.168.25.112:8069'
 
     # remote_username = 'username'
     remote_username = '*'
@@ -266,8 +266,8 @@ if __name__ == '__main__':
     # clv_family_import_remote(remote_client, client)
 
     # print('-->', remote_client, client)
-    # print('--> Executing clv_family_person_import_remote()...')
-    # clv_family_person_import_remote(remote_client, client)
+    # print('--> Executing clv_family_member_import_remote()...')
+    # clv_family_member_import_remote(remote_client, client)
 
     print('--> clv_family.py')
     print('--> Execution time:', secondsToStr(time() - start))
