@@ -174,7 +174,7 @@ if __name__ == '__main__':
     dbname = 'odoo'
     # dbname = '*'
 
-    remote_server = 'http://192.168.25.105:8069'
+    remote_server = 'http://192.168.48.129:8069'
 
     # remote_username = 'username'
     remote_username = '*'
