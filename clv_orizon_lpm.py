@@ -316,5 +316,17 @@ if __name__ == '__main__':
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
 
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1511.csv'
+    # from_ = 'LPM_1511'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1511'
+    # previous_list_name = 'LPM_1510'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1511.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
     print('--> clv_orizon_lpm.py')
     print('--> Execution time:', secondsToStr(time() - start))
