@@ -524,7 +524,7 @@ if __name__ == '__main__':
 
     # list_name = 'TABELA_2015_11'
     # previous_list_name = 'TABELA_2015_10'
-    # file_name = '/opt/openerp/abcfarma/TABELA_2015_10.dbf'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_11.dbf'
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
 
