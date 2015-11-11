@@ -490,14 +490,14 @@ if __name__ == '__main__':
 
     # list_name = 'CPqD - Anexo'
     # list_version_name = '1500'
-    # list_args = []
+    # list_args = [('medicament_id', '!=', False),]
     # print('-->', client, list_name, list_version_name, list_args)
     # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
     # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
 
     # list_name = 'Econômico'
     # list_version_name = '1401'
-    # list_args = []
+    # list_args = [('medicament_id', '!=', False),]
     # print('-->', client, list_name, list_version_name, list_args)
     # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
     # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
