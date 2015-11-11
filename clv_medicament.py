@@ -488,5 +488,19 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
     # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
 
+    # list_name = 'CPqD - Anexo'
+    # list_version_name = '1500'
+    # list_args = []
+    # print('-->', client, list_name, list_version_name, list_args)
+    # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
+    # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
+
+    # list_name = 'Econômico'
+    # list_version_name = '1401'
+    # list_args = []
+    # print('-->', client, list_name, list_version_name, list_args)
+    # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
+    # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
+
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
