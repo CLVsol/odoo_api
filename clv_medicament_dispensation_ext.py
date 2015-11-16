@@ -547,6 +547,8 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
     # clv_medicament_dispensation_ext_updt_dispensation(client)
 
+    #######################################
+
     # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_10_a_31_10.csv'
     # print('-->', client, file_name)
     # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
