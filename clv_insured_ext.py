@@ -696,6 +696,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
     # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
+    #######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_ext_updt_from_insured_card_orizon()...')
+    # clv_insured_ext_updt_from_insured_card_orizon(client)
+
     # print('-->', client)
     # file_name = '/opt/openerp/orizon/USU1865_20151116_151102_I.TXT'
     # print('--> Executing clv_insured_ext_syncronize_orizon(' + file_name + ')...')
