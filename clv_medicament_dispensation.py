@@ -23,6 +23,8 @@ from __future__ import print_function
 import xmlrpclib
 from erppeek import *
 import csv
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 from base import *
 import argparse
@@ -202,6 +204,23 @@ def clv_medicament_dispensation_updt_refund_price(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+def _age(client, insured_card_code, dispensation_date):
+
+    clv_insured_card = client.model('clv_insured_card')
+    insured_card = clv_insured_card.browse([('name', '=', 'insured_card_code'),])[0]
+    birthday = insured_card.insured_id.birthday
+
+    if birthday:
+        dob = datetime.strptime(birthday,'%Y-%m-%d')
+        delta=relativedelta (dispensation_date, dob)
+        age = str(delta.years) +"y "+ str(delta.months) +"m "+ str(delta.days)+"d"
+    else:
+        age = "No Date of Birth!"
+
+    print('>>>>>', birthday, dispensation_date, age)
+
+    return age
+
 def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
 
     headings_dispensation = ['no', 'prescription', 'template', 'name', 'dispensation_date', 'medicament_code', 
@@ -209,7 +228,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
                              'total_refund_price', 
                              'sale_value', 'at_sight_value', 'insured_card', 'state', 'prescriber', 'pharmacy',
                              'med_abc', 'cod_prod', 'insurance_client', 'reg_number', 'insured_name', 'category',
-                             'titular_name',
+                             'titular_name', 'age',
                              ]
     file_dispensation = open(file_path, 'wb')
     writer_dispensation = csv.writer(file_dispensation, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
@@ -225,7 +244,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
     for dispensation in dispensation_browse:
         i += 1
 
-        print(i, dispensation.dispensation_date)
+        print(i, dispensation.dispensation_date, dispensation.name)
 
         if dispensation.template_id != False:
             prescription = dispensation.template_id.prescription_id.name
@@ -276,10 +295,13 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
             # titular_name = False
             titular_name = insured_name
 
+        insured_card_code = dispensation.insured_card_id.name
+        age = _age(client, insured_card_code, dispensation_date)
+
         print(i, prescription, template, name, dispensation_date, medicament_code, medicament, medicament_ref,
               max_retail_price, pack_quantity,
               refund_price, total_refund_price, insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
-              insurance_client, reg_number, insured_name, category_name, titular_name)
+              insurance_client, reg_number, insured_name, category_name, titular_name, age)
 
         row_dispensation = [i, prescription, template, name, dispensation_date, medicament_code, medicament, 
                             medicament_ref,
@@ -289,7 +311,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
                             str('{0:.2f}'.format(round(sale_value,2))).replace('.',','), 
                             str('{0:.2f}'.format(round(at_sight_value,2))).replace('.',','), 
                             insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
-                            insurance_client, reg_number, insured_name, category_name, titular_name
+                            insurance_client, reg_number, insured_name, category_name, titular_name, age
                             ]
         writer_dispensation.writerow(row_dispensation)
 
