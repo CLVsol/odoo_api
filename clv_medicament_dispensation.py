@@ -214,7 +214,7 @@ def _age(birthday, now):
     if birthday:
         birthday = datetime.strptime(birthday, '%Y-%m-%d')
         now = datetime.strptime(now, '%Y-%m-%d')
-        delta = relativedelta (birthday, now)
+        delta = relativedelta(birthday, now)
         age = str(delta.years) + "y " + str(delta.months) + "m " + str(delta.days) + "d"
     else:
         age = "No Date of Birth!"
