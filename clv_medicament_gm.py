@@ -38,22 +38,22 @@ def clv_medicament_updt_clv_medicament_gs(client):
     found = 0
     for medicament in medicament_browse:
         i += 1
-        print(i, name)
+        print(i, medicament.name.encode('utf-8'))
 
-        if gm_id is not False:
+        if medicament.gm_id is not False:
             found += 1
 
             cod_prod_fabricante = medicament.gm_id.cod_prod_fabricante
 
             medicament_gm_browse = clv_medicament_gm.browse([('cod_prod_fabricante', '=', cod_prod_fabricante), ])
-            medicament_gm_id = medicament_gm_browse.id[0]
+            medicament_gm_id = medicament_gm_browse[0].id
 
             print('>>>>>', medicament_gm_id)
 
-        #     values = {
-        #             'medicament_gm_id': medicament_gm_id,
-        #             }
-        #     sock.execute(base.dbname, uid, data_admin_user_pw, 'clv_medicament', 'write', medicament_id, values)
+            values = {
+                'medicament_gm_id': medicament_gm_id,
+                }
+            clv_medicament.write(medicament.id, values)
 
     print('i: ', i)
     print('found: ', found)
@@ -110,9 +110,9 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    print('-->', client)
-    print('--> Executing clv_medicament_updt_clv_medicament_gs()...')
-    clv_medicament_updt_clv_medicament_gs(client)
+    # print('-->', client)
+    # print('--> Executing clv_medicament_updt_clv_medicament_gs()...')
+    # clv_medicament_updt_clv_medicament_gs(client)
 
     print('--> clv_medicament_gs.py')
     print('--> Execution time:', secondsToStr(time() - start))
