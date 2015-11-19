@@ -298,11 +298,21 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
             # titular_name = False
             titular_name = insured_name
 
-        active_component = dispensation.medicament.active_component
-        active_component_code = dispensation.medicament.active_component.code
+        if dispensation.medicament.active_component is not False:
+            active_component = dispensation.medicament.active_component.name.encode("utf-8")
+            active_component_code = dispensation.medicament.active_component.code
+        else:
+            active_component = False
+            active_component_code = False
         concentration = dispensation.medicament.concentration
-        pres_form = dispensation.medicament.pres_form
-        pres_form_2 = dispensation.medicament.pres_form_2
+        if dispensation.medicament.pres_form is not False:
+            pres_form = dispensation.medicament.pres_form.name.encode("utf-8")
+        else:
+            pres_form = False
+        if dispensation.medicament.pres_form_2 is not False:
+            pres_form_2 = dispensation.medicament.pres_form_2.name.encode("utf-8")
+        else:
+            pres_form_2 = False
 
         birthday = dispensation.insured_card_id.insured_id.birthday
         age = _age(dispensation_date, birthday)
