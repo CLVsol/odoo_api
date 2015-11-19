@@ -224,16 +224,17 @@ def _age(birthday, now):
 
 def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
 
-    headings_dispensation = ['no', 'prescription', 'template', 'name', 'dispensation_date', 'medicament_code', 
-                             'medicament', 'medicament_ref', 'max_retail_price', 'pack_quantity', 'refund_price', 
-                             'total_refund_price', 
+    headings_dispensation = ['no', 'prescription', 'template', 'name', 'dispensation_date', 'medicament_code',
+                             'medicament', 'medicament_ref', 'max_retail_price', 'pack_quantity', 'refund_price',
+                             'total_refund_price',
                              'sale_value', 'at_sight_value', 'insured_card', 'state', 'prescriber', 'pharmacy',
                              'med_abc', 'cod_prod', 'insurance_client', 'reg_number', 'insured_name', 'category',
-                             'titular_name', 
+                             'titular_name',
+                             'active_component', 'concentration', 'pres_form', 'pres_form_2',
                              'birthday', 'age',
                              ]
     file_dispensation = open(file_path, 'wb')
-    writer_dispensation = csv.writer(file_dispensation, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
+    writer_dispensation = csv.writer(file_dispensation, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
     writer_dispensation.writerow(headings_dispensation)
 
     clv_medicament_dispensation = client.model('clv_medicament_dispensation')
@@ -248,11 +249,11 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
 
         print(i, dispensation.dispensation_date, dispensation.name)
 
-        if dispensation.template_id != False:
+        if dispensation.template_id is not False:
             prescription = dispensation.template_id.prescription_id.name
         else:
             prescription = False
-        if dispensation.template_id != False:
+        if dispensation.template_id is not False:
             template = dispensation.template_id.name
         else:
             template = False
@@ -260,7 +261,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
         dispensation_date = dispensation.dispensation_date
         medicament_code = dispensation.medicament.code
         medicament = dispensation.medicament.name
-        if dispensation.medicament_ref != False:
+        if dispensation.medicament_ref is not False:
             medicament_ref = dispensation.medicament_ref.name
         else:
             medicament_ref = False
@@ -270,17 +271,17 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
         sale_value = dispensation.sale_value
         total_refund_price = dispensation.total_refund_price
         at_sight_value = dispensation.at_sight_value
-        insured_card = dispensation.insured_card_id.name.encode("utf-8") + ' [' + \
-                       dispensation.insured_card_id.code + ']'
+        insured_card = dispensation.insured_card_id.name.encode("utf-8") + \
+            ' [' + dispensation.insured_card_id.code + ']'
         state = dispensation.insured_card_id.state
-        prescriber = dispensation.prescriber_id.name.encode("utf-8") + ' [' + \
-                     dispensation.prescriber_id.professional_id + ']'
+        prescriber = dispensation.prescriber_id.name.encode("utf-8") + \
+            ' [' + dispensation.prescriber_id.professional_id + ']'
         pharmacy = dispensation.pharmacy_id.name.encode("utf-8")
-        if dispensation.medicament.abcfarma_id != False:
+        if dispensation.medicament.abcfarma_id is not False:
             med_abc = dispensation.medicament.abcfarma_id.med_abc
         else:
             med_abc = False
-        if dispensation.medicament_ref != False:
+        if dispensation.medicament_ref is not False:
             cod_prod = dispensation.medicament_ref.cod_prod
         else:
             cod_prod = False
@@ -289,13 +290,18 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
         insured_name = dispensation.insured_card_id.insured_id.name.encode("utf-8")
         category_id = dispensation.insured_card_id.insured_id.category_ids
         clv_insured_category = client.model('clv_insured.category')
-        insured_category_browse = clv_insured_category.browse([('id', '=', category_id.id),])
+        insured_category_browse = clv_insured_category.browse([('id', '=', category_id.id), ])
         category_name = insured_category_browse[0].name
-        if dispensation.insured_card_id.insured_id.holder_id != False:
+        if dispensation.insured_card_id.insured_id.holder_id is not False:
             titular_name = dispensation.insured_card_id.insured_id.holder_id.name.encode("utf-8")
         else:
             # titular_name = False
             titular_name = insured_name
+
+        active_component = dispensation.medicament.active_component_id.name
+        concentration = dispensation.medicament.concentration
+        pres_form = dispensation.medicament.pres_form
+        pres_form_2 = dispensation.medicament.pres_form_2
 
         birthday = dispensation.insured_card_id.insured_id.birthday
         age = _age(dispensation_date, birthday)
@@ -303,18 +309,19 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
         print(i, prescription, template, name, dispensation_date, medicament_code, medicament, medicament_ref,
               max_retail_price, pack_quantity,
               refund_price, total_refund_price, insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
-              insurance_client, reg_number, insured_name, category_name, titular_name, 
+              insurance_client, reg_number, insured_name, category_name, titular_name,
+              active_component, concentration, pres_form, pres_form_2,
               birthday, age)
 
-        row_dispensation = [i, prescription, template, name, dispensation_date, medicament_code, medicament, 
+        row_dispensation = [i, prescription, template, name, dispensation_date, medicament_code, medicament,
                             medicament_ref,
-                            str('{0:.2f}'.format(round(max_retail_price,2))).replace('.',','),
-                            pack_quantity, str('{0:.2f}'.format(round(refund_price,2))).replace('.',','),
-                            str('{0:.2f}'.format(round(total_refund_price,2))).replace('.',','), 
-                            str('{0:.2f}'.format(round(sale_value,2))).replace('.',','), 
-                            str('{0:.2f}'.format(round(at_sight_value,2))).replace('.',','), 
+                            str('{0:.2f}'.format(round(max_retail_price, 2))).replace('.', ','),
+                            pack_quantity, str('{0:.2f}'.format(round(refund_price, 2))).replace('.' ','),
+                            str('{0:.2f}'.format(round(total_refund_price, 2))).replace('.', ','),
+                            str('{0:.2f}'.format(round(sale_value, 2))).replace('.', ','),
+                            str('{0:.2f}'.format(round(at_sight_value, 2))).replace('.', ','),
                             insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
-                            insurance_client, reg_number, insured_name, category_name, titular_name, 
+                            insurance_client, reg_number, insured_name, category_name, titular_name,
                             birthday, age
                             ]
         writer_dispensation.writerow(row_dispensation)
