@@ -230,7 +230,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
                              'sale_value', 'at_sight_value', 'insured_card', 'state', 'prescriber', 'pharmacy',
                              'med_abc', 'cod_prod', 'insurance_client', 'reg_number', 'insured_name', 'category',
                              'titular_name',
-                             'active_component', 'concentration', 'pres_form', 'pres_form_2',
+                             'active_component', 'active_component_code', 'concentration', 'pres_form', 'pres_form_2',
                              'birthday', 'age',
                              ]
     file_dispensation = open(file_path, 'wb')
@@ -298,7 +298,8 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
             # titular_name = False
             titular_name = insured_name
 
-        active_component = dispensation.medicament.active_component_id.name
+        active_component = dispensation.medicament.active_component
+        active_component_code = dispensation.medicament.active_component.code
         concentration = dispensation.medicament.concentration
         pres_form = dispensation.medicament.pres_form
         pres_form_2 = dispensation.medicament.pres_form_2
@@ -310,18 +311,19 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
               max_retail_price, pack_quantity,
               refund_price, total_refund_price, insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
               insurance_client, reg_number, insured_name, category_name, titular_name,
-              active_component, concentration, pres_form, pres_form_2,
+              active_component, active_component_code, concentration, pres_form, pres_form_2,
               birthday, age)
 
         row_dispensation = [i, prescription, template, name, dispensation_date, medicament_code, medicament,
                             medicament_ref,
                             str('{0:.2f}'.format(round(max_retail_price, 2))).replace('.', ','),
-                            pack_quantity, str('{0:.2f}'.format(round(refund_price, 2))).replace('.' ','),
+                            pack_quantity, str('{0:.2f}'.format(round(refund_price, 2))).replace('.', ','),
                             str('{0:.2f}'.format(round(total_refund_price, 2))).replace('.', ','),
                             str('{0:.2f}'.format(round(sale_value, 2))).replace('.', ','),
                             str('{0:.2f}'.format(round(at_sight_value, 2))).replace('.', ','),
                             insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
                             insurance_client, reg_number, insured_name, category_name, titular_name,
+                            active_component, active_component_code, concentration, pres_form, pres_form_2,
                             birthday, age
                             ]
         writer_dispensation.writerow(row_dispensation)
