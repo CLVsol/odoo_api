@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-################################################################################
-#                                                                              #
-# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol                  #
-#                                                                              #
-# This program is free software: you can redistribute it and/or modify         #
-# it under the terms of the GNU Affero General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or            #
-# (at your option) any later version.                                          #
-#                                                                              #
-# This program is distributed in the hope that it will be useful,              #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
-# GNU Affero General Public License for more details.                          #
-#                                                                              #
-# You should have received a copy of the GNU Affero General Public License     #
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
-################################################################################
+###############################################################################
+#                                                                             #
+# Copyright (C) 2015-Today  Carlos Eduardo Vercelino - CLVsol                 #
+#                                                                             #
+# This program is free software: you can redistribute it and/or modify        #
+# it under the terms of the GNU Affero General Public License as published by #
+# the Free Software Foundation, either version 3 of the License, or           #
+# (at your option) any later version.                                         #
+#                                                                             #
+# This program is distributed in the hope that it will be useful,             #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of              #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               #
+# GNU Affero General Public License for more details.                         #
+#                                                                             #
+# You should have received a copy of the GNU Affero General Public License    #
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.       #
+###############################################################################
 
 from __future__ import print_function
 
@@ -96,7 +96,7 @@ def res_users_import_remote(remote_client, local_client):
                 # 'password_crypt': user.password_crypt,
                 'email': user.email,
                 'phone': user.phone,
-                'email': user.email,
+                # 'email': user.email,
                 'mobile': user.mobile,
                 }
             user_id = local_res_users.create(values).id
@@ -173,10 +173,10 @@ if __name__ == '__main__':
 
     remote_server = 'http://192.168.25.112:8069'
 
-    # remote_username = 'username'
-    remote_username = '*'
-    # remote_password = 'paswword' 
-    remote_password = '*' 
+    remote_username = 'username'
+    # remote_username = '*'
+    remote_password = 'paswword' 
+    # remote_password = '*' 
 
     remote_dbname = 'odoo'
     # remote_dbname = '*'
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     print('--> res_users.py...')
 
     client = erppeek.Client(server, dbname, username, password)
-    remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
+    # remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
 
     # file_path = 'data/jcafb_res_users.csv'
     # print('-->', client, file_path)
