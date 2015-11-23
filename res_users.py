@@ -170,6 +170,35 @@ def res_users_import_jcafb(client, file_path):
     print('--> rownum: ', rownum - 1)
 
 
+def res_users_reset_password_jcafb(client):
+
+    res_users = client.model('res.users')
+
+    hr_employee = client.model('hr.employee')
+    hr_employee_browse = hr_employee.browse([])
+
+    i = 0
+    found = 0
+    not_found = 0
+    for employee in hr_employee_browse:
+        i += 1
+        user = employee.user_id
+        if user.login == 'admin':
+            not_found += 1
+        else:
+            found += 1
+            print(i, user.name.encode("utf-8"), user.login, user.email)
+            values = {
+                "password": employee.code,
+                "tz": 'America/Sao_Paulo',
+                }
+            res_users.write(user.id, values)
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not_found: ', not_found)
+
+
 def get_arguments():
 
     global username
@@ -268,6 +297,10 @@ if __name__ == '__main__':
     # print('-->', client, file_path)
     # print('--> Executing res_users_import_jcafb()...')
     # res_users_import_jcafb(client, file_path)
+
+    # print('-->', client)
+    # print('--> Executing res_users_reset_password_jcafb()...')
+    # res_users_reset_password_jcafb(client)
 
     print('--> res_users.py')
     print('--> Execution time:', secondsToStr(time() - start))
