@@ -20,7 +20,6 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 import csv
 
@@ -28,12 +27,13 @@ from base import *
 import argparse
 import getpass
 
+
 def res_users_export(client, file_path):
 
     headings_res_users = ['no', 'user_id',
                           'name', 'login', 'password_crypt', 'email',
                           'phone', 'mobile',
-                           ]
+                          ]
     file_res_users = open(file_path, 'wb')
     writer_res_users = csv.writer(file_res_users, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
     writer_res_users.writerow(headings_res_users)
@@ -67,6 +67,7 @@ def res_users_export(client, file_path):
     file_res_users.close()
 
     print('--> i: ', i)
+
 
 def res_users_import_remote(remote_client, local_client):
 
@@ -106,6 +107,68 @@ def res_users_import_remote(remote_client, local_client):
 
     print('user_count: ', user_count)
     print('created: ', created)
+
+
+def res_users_import_jcafb(client, file_path):
+
+    #
+    # NOTE: Only user 'admin' can execute this procedure.
+    #
+
+    delimiter_char = ';'
+
+    f = open(file_path, "rb")
+    r = csv.reader(f, delimiter=delimiter_char)
+
+    res_users = client.model('res.users')
+    hr_employee = client.model('hr.employee')
+    hr_job = client.model('hr.job')
+
+    rownum = 0
+    for row in r:
+
+        if rownum == 0:
+            rownum += 1
+            continue
+
+        i = autoIncrement(0, 1)
+
+        Nomes = row[i.next()]
+        Emails = row[i.next()]
+        Funcao = row[i.next()]
+
+        print(rownum, Nomes, Emails, Funcao)
+
+        values = {
+            'name': Nomes,
+            'login': Emails,
+            # 'password_crypt': user.password_crypt,
+            'email': Emails,
+            # 'phone': user.phone,
+            # 'mobile': user.mobile,
+            }
+        user_id = res_users.create(values).id
+
+        hr_job_id = hr_job.browse([('name', '=', Funcao), ])[0].id
+
+        values = {
+            'name': Nomes,
+            'work_email': Emails,
+            # 'work_phone': user.phone,
+            # 'mobile_phone': user.mobile,
+            'job_id': hr_job_id,
+            'user_id': user_id,
+            }
+        employee_id = hr_employee.create(values).id
+
+        print('>>>>>', user_id, employee_id)
+
+        rownum += 1
+
+    f.close()
+
+    print('--> rownum: ', rownum - 1)
+
 
 def get_arguments():
 
@@ -159,14 +222,15 @@ def get_arguments():
     elif remote_password == '*':
         remote_password = getpass.getpass('remote_password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -175,8 +239,8 @@ if __name__ == '__main__':
 
     remote_username = 'username'
     # remote_username = '*'
-    remote_password = 'paswword' 
-    # remote_password = '*' 
+    remote_password = 'paswword'
+    # remote_password = '*'
 
     remote_dbname = 'odoo'
     # remote_dbname = '*'
@@ -199,6 +263,11 @@ if __name__ == '__main__':
     # print('-->', remote_client, client)
     # print('--> Executing res_users_import_remote()...')
     # res_users_import_remote(remote_client, client)
+
+    # file_path = '/opt/openerp/jcafb/data/JCAFB_users.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing res_users_import_jcafb()...')
+    # res_users_import_jcafb(client, file_path)
 
     print('--> res_users.py')
     print('--> Execution time:', secondsToStr(time() - start))
