@@ -60,6 +60,23 @@ def hr_employee_updt_from_res_users_updt_jcafb(client):
     print('--> not_found: ', not_found)
 
 
+def hr_employee_updt_code(client):
+
+    hr_employee = client.model('hr.employee')
+    hr_employee_browse = hr_employee.browse([])
+
+    i = 0
+    for employee in hr_employee_browse:
+        i += 1
+        print(i, employee.name.encode("utf-8"), employee.user_id.login, employee.user_id.email)
+        values = {
+            "code": '/',
+            }
+        hr_employee.write(employee.id, values)
+
+    print('--> i: ', i)
+
+
 def get_arguments():
 
     global username
@@ -89,6 +106,7 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
@@ -113,6 +131,10 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing hr_employee_updt_from_res_users_updt_jcafb()...')
     # hr_employee_updt_from_res_users_updt_jcafb(client)
+
+    # print('-->', client)
+    # print('--> Executing hr_employee_updt_code()...')
+    # hr_employee_updt_code(client)
 
     print('--> hr_employee.py')
     print('--> Execution time:', secondsToStr(time() - start))
