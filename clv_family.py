@@ -20,15 +20,15 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
-import csv
 
 from base import *
 import argparse
 import getpass
 
 from clv_address import *
+from clv_tag import *
+
 
 def get_family_member_role_id(client, role_name, role_description):
 
@@ -48,6 +48,7 @@ def get_family_member_role_id(client, role_name, role_description):
 
     return family_member_role_id
 
+
 def clv_family_unlink(client, args):
 
     clv_family = client.model('clv_family')
@@ -61,7 +62,7 @@ def clv_family_unlink(client, args):
         print(i, family.name.encode("utf-8"))
 
         history = client.model('clv_family.history')
-        history_browse = history.browse([('family_id', '=', family.id),])
+        history_browse = history.browse([('family_id', '=', family.id), ])
         history_ids = history_browse.id
         print('>>>>>', history_ids)
 
@@ -76,6 +77,7 @@ def clv_family_unlink(client, args):
     print('--> i: ', i)
     print('--> deleted: ', deleted)
     print('--> not_deleted: ', not_deleted)
+
 
 def clv_family_import_remote(remote_client, local_client):
 
@@ -127,6 +129,7 @@ def clv_family_import_remote(remote_client, local_client):
     print('family_count: ', family_count)
     print('address_count: ', address_count)
 
+
 def clv_family_member_import_remote(remote_client, local_client):
 
     clv_family = local_client.model('clv_family')
@@ -166,6 +169,30 @@ def clv_family_member_import_remote(remote_client, local_client):
         local_family_member_id = local_clv_family_member.create(values).id
 
     print('person_count: ', person_count)
+
+
+def clv_family_mark_aExcluir(client, args):
+
+    tag_id_Verificar = get_tag_id(
+        client,
+        'aExcluir',
+        'Registro a ser excluído.')
+
+    clv_family = client.model('clv_family')
+    family_browse = clv_family.browse(args)
+
+    i = 0
+    for family in family_browse:
+        i += 1
+        print(i, family.name.encode("utf-8"))
+
+        values = {
+            'tag_ids': [(4, tag_id_Verificar)],
+            }
+        clv_family.write(family.id, values)
+
+    print('--> i: ', i)
+
 
 def get_arguments():
 
@@ -219,24 +246,25 @@ def get_arguments():
     elif remote_password == '*':
         remote_password = getpass.getpass('remote_password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
 
     remote_server = 'http://192.168.25.112:8069'
 
-    # remote_username = 'username'
-    remote_username = '*'
-    # remote_password = 'paswword' 
-    remote_password = '*' 
+    remote_username = 'username'
+    # remote_username = '*'
+    remote_password = 'paswword'
+    # remote_password = '*'
 
     remote_dbname = 'odoo'
     # remote_dbname = '*'
@@ -249,7 +277,7 @@ if __name__ == '__main__':
     print('--> clv_family.py...')
 
     client = erppeek.Client(server, dbname, username, password)
-    remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
+    # remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
 
     # family_args = []
     # print('-->', client, family_args)
@@ -268,6 +296,16 @@ if __name__ == '__main__':
     # print('-->', remote_client, client)
     # print('--> Executing clv_family_member_import_remote()...')
     # clv_family_member_import_remote(remote_client, client)
+
+    # family_args = [('member_ids', '=', False), ]
+    # print('-->', client, family_args)
+    # print('--> Executing clv_family_mark_aExcluir()...')
+    # clv_family_mark_aExcluir(client, family_args)
+
+    # family_args = [('member_ids', '=', False), ]
+    # print('-->', client, family_args)
+    # print('--> Executing clv_family_unlink()...')
+    # clv_family_unlink(client, family_args)
 
     print('--> clv_family.py')
     print('--> Execution time:', secondsToStr(time() - start))
