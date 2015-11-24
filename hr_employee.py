@@ -21,7 +21,7 @@
 from __future__ import print_function
 
 from erppeek import *
-# import csv
+import csv
 
 from base import *
 import argparse
@@ -73,6 +73,39 @@ def hr_employee_updt_code(client):
             "code": '/',
             }
         hr_employee.write(employee.id, values)
+
+    print('--> i: ', i)
+
+
+def hr_employee_export_jcafb(client, file_path):
+
+    headings_hr_employee = ['no', 'employee_id',
+                            'name', 'code', 'login',
+                            ]
+    file_hr_employee = open(file_path, 'wb')
+    writer_hr_employee = csv.writer(file_hr_employee, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_hr_employee.writerow(headings_hr_employee)
+
+    hr_employee = client.model('hr.employee')
+    hr_employee_browse = hr_employee.browse([])
+
+    i = 0
+    for employee in hr_employee_browse:
+        i += 1
+
+        employee_id = employee.id
+        name = employee.name.encode("utf-8")
+        code = employee.code
+        login = employee.user_id.login
+
+        print(i, employee_id, name, code, login)
+
+        row_hr_employee = [i, employee_id,
+                           name, code, login
+                           ]
+        writer_hr_employee.writerow(row_hr_employee)
+
+    file_hr_employee.close()
 
     print('--> i: ', i)
 
@@ -135,6 +168,11 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing hr_employee_updt_code()...')
     # hr_employee_updt_code(client)
+
+    # file_path = '/opt/openerp/jcafb/data/JCAFB_employees.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing hr_employee_export_jcafb()...')
+    # hr_employee_export_jcafb(client, file_path)
 
     print('--> hr_employee.py')
     print('--> Execution time:', secondsToStr(time() - start))
