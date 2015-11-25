@@ -512,5 +512,30 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_mark_verify_from_medicament_list()...')
     # clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, list_args)
 
+    #################################
+
+    # medicament_args = [('is_product', '=', True),
+    #                    ('state', '=', 'waiting'),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing include_medicaments_into_groups()...')
+    # include_medicaments_into_groups(client, medicament_args)
+
+    # medicament_args = [('code', '=', False),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing clv_medicament_updt_code()...')
+    # clv_medicament_updt_code(client, medicament_args)
+
+    # medicament_args = [('state', '=', 'new'),
+    #                    ('is_product', '=', False),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing clv_medicament_updt_state_active()...')
+    # clv_medicament_updt_state_active(client, medicament_args)
+
+    # medicament_args = [('state', '=', 'waiting'),]
+    # print('-->', client, medicament_args)
+    # print('--> Executing clv_medicament_updt_state_active()...')
+    # clv_medicament_updt_state_active(client, medicament_args)
+
+
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
