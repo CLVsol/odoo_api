@@ -20,7 +20,6 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 import csv
 
@@ -31,6 +30,7 @@ import getpass
 from clv_medicament_group import *
 from clv_medicament_group_member import *
 from clv_tag import *
+
 
 def get_new_l0_medicament_active_component(client, active_component_id, concentration, pres_form, pres_form_2):
 
@@ -74,6 +74,7 @@ def get_new_l0_medicament_active_component(client, active_component_id, concentr
 
     return new_medicament_id
 
+
 def get_new_l0_medicament_name(client, medicament_name, active_component_id, concentration, pres_form, pres_form_2):
 
     new_medicament_id = 0
@@ -116,6 +117,7 @@ def get_new_l0_medicament_name(client, medicament_name, active_component_id, con
 
     return new_medicament_id
 
+
 def include_medicament_into_group(client, medicament):
 
     medicament_group_id = get_medicament_group_id(client, medicament.active_component.id, 
@@ -155,6 +157,7 @@ def include_medicament_into_group(client, medicament):
 
     print('>>>>>', medicament_group_member_l0, medicament_group_member_l0)
 
+
 def include_medicaments_into_groups(client, args):
 
     clv_medicament = client.model('clv_medicament')
@@ -169,6 +172,7 @@ def include_medicaments_into_groups(client, args):
         include_medicament_into_group(client, medicament)
 
     print('medicament_count: ', medicament_count)
+
 
 def clv_medicament_updt_code(client, args):
 
@@ -187,6 +191,7 @@ def clv_medicament_updt_code(client, args):
         clv_medicament.write(medicament.id, values)
 
     print('medicament_count: ', medicament_count)
+
 
 def clv_medicament_updt_state_active(client, args):
 
@@ -208,6 +213,7 @@ def clv_medicament_updt_state_active(client, args):
             client.exec_workflow('clv_medicament', 'button_activate', medicament.id)
 
     print('medicament_count: ', medicament_count)
+
 
 def clv_medicament_mark_verify_from_orizon_lpm(client):
 
@@ -239,6 +245,7 @@ def clv_medicament_mark_verify_from_orizon_lpm(client):
     print('orizon_lpm_count: ', orizon_lpm_count)
     print('medicament_to_verify: ', medicament_to_verify)
     print('medicament_ok: ', medicament_ok)
+
 
 def clv_medicament_mark_verify_from_medicament_list(client, list_name, list_version_name, args):
 
@@ -290,6 +297,7 @@ def clv_medicament_mark_verify_from_medicament_list(client, list_name, list_vers
     print('list_item_count: ', list_item_count)
     print('medicament_to_verify: ', medicament_to_verify)
     print('medicament_ok: ', medicament_ok)
+
 
 def clv_medicament_export(client, file_path):
 
@@ -391,6 +399,7 @@ def clv_medicament_export(client, file_path):
 
     print('medicament_count: ', medicament_count)
 
+
 def get_arguments():
 
     global username
@@ -420,14 +429,15 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
