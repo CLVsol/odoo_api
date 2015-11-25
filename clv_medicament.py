@@ -217,6 +217,11 @@ def clv_medicament_updt_state_active(client, args):
 
 def clv_medicament_mark_verify_from_orizon_lpm(client):
 
+    tag_id_Verificar = get_tag_id(
+        client,
+        'Verificar',
+        'Registro que necessita de algum tipo de verificação.')
+
     args = [('excluded', '=', False),
             ('medicament_ids', '!=', False), ]
     clv_orizon_lpm = client.model('clv_orizon_lpm')
@@ -239,6 +244,10 @@ def clv_medicament_mark_verify_from_orizon_lpm(client):
 
         if medicament_browse.id != []:
             medicament_to_verify += 1
+            values = {
+                'tag_ids': [(4, tag_id_Verificar)],
+                }
+            clv_medicament.write(medicament_browse[0].id, values)
         else:
             medicament_ok += 1
 
