@@ -29,6 +29,28 @@ import argparse
 import getpass
 
 
+def clv_medicament_dispensation_ext_unlink(client, args):
+
+    clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
+    medicament_dispensation_ext_browse = clv_medicament_dispensation_ext.browse(args)
+
+    i = 0
+    for medicament_dispensation_ext in medicament_dispensation_ext_browse:
+        i += 1
+        print(i, medicament_dispensation_ext.name)
+
+        history = client.model('clv_medicament_dispensation_ext.history')
+        history_browse = history.browse(
+            [('medicament_dispensation_ext_id', '=', medicament_dispensation_ext.id), ])
+        history_ids = history_browse.id
+        print('>>>>>', history_ids)
+
+        history.unlink(history_ids)
+        clv_medicament_dispensation_ext.unlink(medicament_dispensation_ext.id)
+
+    print('--> i: ', i)
+
+
 def clv_medicament_dispensation_ext_updt_state_waiting(client, args):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
@@ -596,6 +618,11 @@ if __name__ == '__main__':
     # clv_medicament_dispensation_ext_updt_dispensation(client)
 
     #######################################
+
+    # medicament_dispensation_ext_args = [('name', '=', False), ]
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_unlink()...')
+    # clv_medicament_dispensation_ext_unlink(client, medicament_dispensation_ext_args)
 
     # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_01_11_a_20_11.csv'
     # print('-->', client, file_name)
