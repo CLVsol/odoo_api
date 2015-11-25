@@ -218,7 +218,7 @@ def clv_medicament_updt_state_active(client, args):
 def clv_medicament_mark_verify_from_orizon_lpm(client):
 
     args = [('excluded', '=', False),
-            ('medicament_ids', '!=', False),]
+            ('medicament_ids', '!=', False), ]
     clv_orizon_lpm = client.model('clv_orizon_lpm')
     orizon_lpm_browse = clv_orizon_lpm.browse(args)
 
@@ -515,27 +515,30 @@ if __name__ == '__main__':
     #################################
 
     # medicament_args = [('is_product', '=', True),
-    #                    ('state', '=', 'waiting'),]
+    #                    ('state', '=', 'waiting'), ]
     # print('-->', client, medicament_args)
     # print('--> Executing include_medicaments_into_groups()...')
     # include_medicaments_into_groups(client, medicament_args)
 
-    # medicament_args = [('code', '=', False),]
+    # medicament_args = [('code', '=', False), ]
     # print('-->', client, medicament_args)
     # print('--> Executing clv_medicament_updt_code()...')
     # clv_medicament_updt_code(client, medicament_args)
 
     # medicament_args = [('state', '=', 'new'),
-    #                    ('is_product', '=', False),]
+    #                    ('is_product', '=', False), ]
     # print('-->', client, medicament_args)
     # print('--> Executing clv_medicament_updt_state_active()...')
     # clv_medicament_updt_state_active(client, medicament_args)
 
-    # medicament_args = [('state', '=', 'waiting'),]
+    # medicament_args = [('state', '=', 'waiting'), ]
     # print('-->', client, medicament_args)
     # print('--> Executing clv_medicament_updt_state_active()...')
     # clv_medicament_updt_state_active(client, medicament_args)
 
+    # print('-->', client)
+    # print('--> Executing clv_medicament_mark_verify_from_orizon_lpm()...')
+    # clv_medicament_mark_verify_from_orizon_lpm(client)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
