@@ -20,7 +20,6 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 import csv
 import re
@@ -28,6 +27,7 @@ import re
 from base import *
 import argparse
 import getpass
+
 
 def clv_medicament_dispensation_ext_updt_state_waiting(client, args):
 
@@ -41,23 +41,24 @@ def clv_medicament_dispensation_ext_updt_state_waiting(client, args):
         print(count, medicament_dispensation_ext.state, medicament_dispensation_ext.name)
 
         if medicament_dispensation_ext.state == 'draft':
-            client.exec_workflow('clv_medicament_dispensation_ext', 
-                                 'button_waiting', 
+            client.exec_workflow('clv_medicament_dispensation_ext',
+                                 'button_waiting',
                                  medicament_dispensation_ext.id)
 
     print('count: ', count)
+
 
 def clv_medicament_dispensation_ext_import_orizon(client, file_name):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
 
     res_partner = client.model('res.partner')
-    partner_browse = res_partner.browse([('name', '=', 'Orizon'),])
+    partner_browse = res_partner.browse([('name', '=', 'Orizon'), ])
     partner_id = partner_browse.id[0]
 
     delimiter_char = ';'
 
-    f  = open(file_name, "rb")
+    f = open(file_name, "rb")
     r = csv.reader(f, delimiter=delimiter_char)
     rownum = 0
     for row in r:
@@ -117,8 +118,8 @@ def clv_medicament_dispensation_ext_import_orizon(client, file_name):
         elif code_len > 12 and code_len <= 14:
             code_form = code_str[14 - code_len:21]
 
-        Crm =  Uf_Crm + '-CRM-' + Crm
-        
+        Crm = Uf_Crm + '-CRM-' + Crm
+
         print(rownum, code_form, Nome_do_Beneficiario, Cod_Prod, Data_da_Venda, Cnpj, Crm, Uf_Crm)
 
         values = {
@@ -147,6 +148,7 @@ def clv_medicament_dispensation_ext_import_orizon(client, file_name):
 
     print('rownum: ', rownum - 1)
 
+
 def clv_medicament_dispensation_ext_updt_name(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
@@ -168,6 +170,7 @@ def clv_medicament_dispensation_ext_updt_name(client):
 
     print('i: ', i)
 
+
 def clv_medicament_dispensation_ext_updt_pharmacy(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
@@ -188,7 +191,7 @@ def clv_medicament_dispensation_ext_updt_pharmacy(client):
         print(i, dispensation_ext.name, cnpj)
 
         clv_pharmacy = client.model('clv_pharmacy')
-        pharmacy_browse = clv_pharmacy.browse([('cnpj', '=', cnpj),])
+        pharmacy_browse = clv_pharmacy.browse([('cnpj', '=', cnpj), ])
         pharmacy_id = pharmacy_browse.id
 
         if pharmacy_id != []:
@@ -206,6 +209,7 @@ def clv_medicament_dispensation_ext_updt_pharmacy(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+
 def clv_medicament_dispensation_ext_updt_prescriber(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
@@ -222,7 +226,8 @@ def clv_medicament_dispensation_ext_updt_prescriber(client):
         print(i, dispensation_ext.name, dispensation_ext.prescriber_code)
 
         clv_professional = client.model('clv_professional')
-        prescriber_browse = clv_professional.browse([('professional_id', '=', dispensation_ext.prescriber_code),])
+        prescriber_browse = clv_professional.browse(
+            [('professional_id', '=', dispensation_ext.prescriber_code), ])
         prescriber_id = prescriber_browse.id
 
         if prescriber_id != []:
@@ -240,6 +245,7 @@ def clv_medicament_dispensation_ext_updt_prescriber(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+
 def clv_medicament_dispensation_ext_updt_insured_card(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
@@ -256,7 +262,8 @@ def clv_medicament_dispensation_ext_updt_insured_card(client):
         print(i, dispensation_ext.name, dispensation_ext.insured_card_code)
 
         clv_insured_card = client.model('clv_insured_card')
-        insured_card_browse = clv_insured_card.browse([('code', '=', dispensation_ext.insured_card_code),])
+        insured_card_browse = clv_insured_card.browse(
+            [('code', '=', dispensation_ext.insured_card_code), ])
         insured_card_id = insured_card_browse.id
 
         if insured_card_id != []:
@@ -274,11 +281,12 @@ def clv_medicament_dispensation_ext_updt_insured_card(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+
 def clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
     dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
-                                                                      ('medicament_ref', '=', False),])
+                                                                      ('medicament_ref', '=', False), ])
 
     i = 0
     found = 0
@@ -289,7 +297,8 @@ def clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client):
         print(i, dispensation_ext.name, dispensation_ext.medicament_code)
 
         clv_orizon_lpm = client.model('clv_orizon_lpm')
-        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', dispensation_ext.medicament_code),])
+        orizon_lpm_browse = clv_orizon_lpm.browse(
+            [('cod_prod', '=', dispensation_ext.medicament_code), ])
         orizon_lpm_id = orizon_lpm_browse.id
 
         if orizon_lpm_id != []:
@@ -307,11 +316,12 @@ def clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+
 def clv_medicament_dispensation_ext_updt_medicament(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
     dispensation_ext_browse = clv_medicament_dispensation_ext.browse([('state', '=', 'draft'),
-                                                                      ('medicament', '=', False),])
+                                                                      ('medicament', '=', False), ])
 
     i = 0
     found = 0
@@ -322,7 +332,8 @@ def clv_medicament_dispensation_ext_updt_medicament(client):
         print(i, dispensation_ext.name, dispensation_ext.medicament_ref)
 
         clv_medicament = client.model('clv_medicament')
-        medicament_browse = clv_medicament.browse([('orizon_lpm_id', '=', dispensation_ext.medicament_ref.id),])
+        medicament_browse = clv_medicament.browse(
+            [('orizon_lpm_id', '=', dispensation_ext.medicament_ref.id), ])
         medicament_id = medicament_browse.id
 
         if medicament_id != []:
@@ -340,12 +351,13 @@ def clv_medicament_dispensation_ext_updt_medicament(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+
 def clv_medicament_dispensation_ext_updt_dispensation(client):
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation')
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse(\
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse(
         [('state', '=', 'draft'),
          ('dispensation_id', '=', False),
          ('pharmacy_id', '!=', False),
@@ -364,7 +376,7 @@ def clv_medicament_dispensation_ext_updt_dispensation(client):
         print(i, dispensation_ext.name, dispensation_ext.medicament_ref)
 
         clv_medicament_dispensation = client.model('clv_medicament_dispensation')
-        medicament_dispensation_browse = clv_medicament_dispensation.browse(\
+        medicament_dispensation_browse = clv_medicament_dispensation.browse(
             [('pharmacy_id', '=', dispensation_ext.pharmacy_id.id),
              ('prescriber_id', '=', dispensation_ext.prescriber_id.id),
              ('insured_card_id', '=', dispensation_ext.insured_card_id.id),
@@ -393,6 +405,7 @@ def clv_medicament_dispensation_ext_updt_dispensation(client):
     print('found: ', found)
     print('not_found: ', not_found)
 
+
 def get_arguments():
 
     global username
@@ -407,17 +420,17 @@ def get_arguments():
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
 
-    if args.dbname != None:
+    if args.dbname is not None:
         dbname = args.dbname
     elif dbname == '*':
         dbname = raw_input('dbname: ')
 
-    if args.username != None:
+    if args.username is not None:
         username = args.username
     elif username == '*':
         username = raw_input('username: ')
 
-    if args.password != None:
+    if args.password is not None:
         password = args.password
     elif password == '*':
         password = getpass.getpass('password: ')
@@ -428,8 +441,8 @@ if __name__ == '__main__':
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
