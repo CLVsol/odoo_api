@@ -33,7 +33,7 @@ import getpass
 def clv_medicament_dispensation_updt_medicament_ref_orizon(client):
 
     clv_medicament_dispensation = client.model('clv_medicament_dispensation')
-    dispensation_browse = clv_medicament_dispensation.browse(\
+    dispensation_browse = clv_medicament_dispensation.browse(
         [('medicament_ref', '=', False),
          ('dispensation_ext_id', '!=', False),
          ])
@@ -47,15 +47,15 @@ def clv_medicament_dispensation_updt_medicament_ref_orizon(client):
         print(i, dispensation.name, dispensation.medicament_code)
 
         clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-        dispensation_ext_browse = clv_medicament_dispensation_ext.browse(\
-            [('id', '=', dispensation.dispensation_ext_id.id),])
+        dispensation_ext_browse = clv_medicament_dispensation_ext.browse(
+            [('id', '=', dispensation.dispensation_ext_id.id), ])
         dispensation_ext_id = dispensation_ext_browse.id
 
         if dispensation_ext_id != []:
             found += 1
 
             values = {
-                'medicament_ref': 'clv_orizon_lpm,' + \
+                'medicament_ref': 'clv_orizon_lpm,' +
                                   str(dispensation_ext_browse.medicament_ref[0].id),
                 }
             clv_medicament_dispensation.write(dispensation.id, values)
@@ -71,7 +71,7 @@ def clv_medicament_dispensation_updt_medicament_ref_orizon(client):
 def clv_medicament_dispensation_updt_refund_price_orizon(client):
 
     clv_medicament_dispensation = client.model('clv_medicament_dispensation')
-    dispensation_browse = clv_medicament_dispensation.browse(\
+    dispensation_browse = clv_medicament_dispensation.browse(
         [('at_sight_value', '!=', 0.0),
          ('refund_price', '!=', 0.0),
          ])
@@ -95,7 +95,7 @@ def clv_medicament_dispensation_import_dispensation_ext_orizon(client):
     clv_medicament_dispensation = client.model('clv_medicament_dispensation')
 
     clv_medicament_dispensation_ext = client.model('clv_medicament_dispensation_ext')
-    dispensation_ext_browse = clv_medicament_dispensation_ext.browse(\
+    dispensation_ext_browse = clv_medicament_dispensation_ext.browse(
         [('state', '=', 'draft'),
          ('dispensation_id', '=', False),
          ('pharmacy_id', '!=', False),
@@ -124,7 +124,7 @@ def clv_medicament_dispensation_import_dispensation_ext_orizon(client):
             'prescriber_id': dispensation_ext.prescriber_id.id,
             'pharmacy_id': dispensation_ext.pharmacy_id.id,
             'dispenser': False,
-            'medicament_ref': 'clv_orizon_lpm,' + \
+            'medicament_ref': 'clv_orizon_lpm,' +
                               str(dispensation_ext.medicament_ref.id),
             'dispensation_ext_id': dispensation_ext.id,
             }
@@ -143,7 +143,7 @@ def clv_medicament_dispensation_import_dispensation_ext_orizon(client):
 def clv_medicament_dispensation_updt_mrp(client):
 
     clv_medicament_dispensation = client.model('clv_medicament_dispensation')
-    dispensation_browse = clv_medicament_dispensation.browse(\
+    dispensation_browse = clv_medicament_dispensation.browse(
         [('max_retail_price', '=', 0.0),
          ])
 
@@ -155,7 +155,7 @@ def clv_medicament_dispensation_updt_mrp(client):
         i += 1
         print(i, dispensation.name, dispensation.medicament, dispensation.medicament.abcfarma_id)
 
-        if dispensation.medicament.abcfarma_id != False:
+        if dispensation.medicament.abcfarma_id is not False:
             found += 1
             abcfarma = dispensation.medicament.abcfarma_id
 
@@ -177,7 +177,7 @@ def clv_medicament_dispensation_updt_mrp(client):
 def clv_medicament_dispensation_updt_refund_price(client):
 
     clv_medicament_dispensation = client.model('clv_medicament_dispensation')
-    dispensation_browse = clv_medicament_dispensation.browse(\
+    dispensation_browse = clv_medicament_dispensation.browse(
         [('refund_price', '=', 0.0),
          ('dispensation_ext_id', '!=', False),
          ('at_sight_value', '=', 0.0),
@@ -191,7 +191,7 @@ def clv_medicament_dispensation_updt_refund_price(client):
         i += 1
         print(i, dispensation.name, dispensation.medicament_ref.id)
 
-        if dispensation.medicament_ref != False:
+        if dispensation.medicament_ref is not False:
             found += 1
 
             print('>>>>>', dispensation.sale_value / dispensation.pack_quantity)
@@ -215,7 +215,8 @@ def _age(birthday, now):
         birthday = datetime.strptime(birthday, '%Y-%m-%d')
         now = datetime.strptime(now, '%Y-%m-%d')
         delta = relativedelta(birthday, now)
-        age = str(delta.years) + "y " + str(delta.months) + "m " + str(delta.days) + "d"
+        # age = str(delta.years) + "y " + str(delta.months) + "m " + str(delta.days) + "d"
+        age = str(delta.years)
     else:
         age = "No Date of Birth!"
 
@@ -231,7 +232,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
                              'med_abc', 'cod_prod', 'insurance_client', 'reg_number', 'insured_name', 'category',
                              'titular_name',
                              'active_component', 'active_component_code', 'concentration', 'pres_form', 'pres_form_2',
-                             'birthday', 'age',
+                             'birthday', 'age', 'insured_card_name'
                              ]
     file_dispensation = open(file_path, 'wb')
     writer_dispensation = csv.writer(file_dispensation, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
@@ -271,8 +272,8 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
         sale_value = dispensation.sale_value
         total_refund_price = dispensation.total_refund_price
         at_sight_value = dispensation.at_sight_value
-        insured_card = dispensation.insured_card_id.name.encode("utf-8") + \
-            ' [' + dispensation.insured_card_id.code + ']'
+        insured_card_name = dispensation.insured_card_id.name.encode("utf-8")
+        insured_card = dispensation.insured_card_id.code
         state = dispensation.insured_card_id.state
         prescriber = dispensation.prescriber_id.name.encode("utf-8") + \
             ' [' + dispensation.prescriber_id.professional_id + ']'
@@ -322,7 +323,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
               refund_price, total_refund_price, insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
               insurance_client, reg_number, insured_name, category_name, titular_name,
               active_component, active_component_code, concentration, pres_form, pres_form_2,
-              birthday, age)
+              birthday, age, insured_card_name)
 
         row_dispensation = [i, prescription, template, name, dispensation_date, medicament_code, medicament,
                             medicament_ref,
@@ -334,7 +335,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
                             insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
                             insurance_client, reg_number, insured_name, category_name, titular_name,
                             active_component, active_component_code, concentration, pres_form, pres_form_2,
-                            birthday, age
+                            birthday, age, insured_card_name
                             ]
         writer_dispensation.writerow(row_dispensation)
 
@@ -357,17 +358,17 @@ def get_arguments():
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
 
-    if args.dbname != None:
+    if args.dbname is not None:
         dbname = args.dbname
     elif dbname == '*':
         dbname = raw_input('dbname: ')
 
-    if args.username != None:
+    if args.username is not None:
         username = args.username
     elif username == '*':
         username = raw_input('username: ')
 
-    if args.password != None:
+    if args.password is not None:
         password = args.password
     elif password == '*':
         password = getpass.getpass('password: ')
@@ -379,8 +380,8 @@ if __name__ == '__main__':
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -409,7 +410,7 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
     # clv_medicament_dispensation_updt_mrp(client)
-    
+
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
     # clv_medicament_dispensation_updt_refund_price(client)
@@ -435,7 +436,7 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
     # clv_medicament_dispensation_updt_mrp(client)
-    
+
     # file_path = "/opt/openerp/biobox/data/bb_dispensation_2015_09_21_a_10_20.csv"
     # start_date = '2015-09-21'
     # end_date = '2015-10-20'
@@ -452,13 +453,17 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
     # clv_medicament_dispensation_updt_mrp(client)
-    
-    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2015_05_21_a_10_31.csv"
-    # start_date = '2015-05-21'
-    # end_date = '2015-10-31'
-    # print('-->', client, file_path, start_date, end_date)
-    # print('--> Executing clv_medicament_dispensation_export()...')
-    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    file_path = "/opt/openerp/biobox/data/bb_dispensation_2015_05_21_a_10_31.csv"
+    start_date = '2015-05-21'
+    end_date = '2015-10-31'
+    print('-->', client, file_path, start_date, end_date)
+    print('--> Executing clv_medicament_dispensation_export()...')
+    clv_medicament_dispensation_export(client, file_path, start_date, end_date)
 
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
