@@ -20,7 +20,6 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 import csv
 from filedict import *
@@ -29,12 +28,13 @@ from base import *
 import argparse
 import getpass
 
+
 def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name, list_version_name, list_id_filename):
 
-    d = filedict.FileDict(filename = list_id_filename)
+    d = filedict.FileDict(filename=list_id_filename)
 
     clv_medicament_list = client.model('clv_medicament_list')
-    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name), ])
     print('>>>>>', medicament_list_browse)
 
     clv_medicament_list_version = client.model('clv_medicament_list.version')
@@ -53,21 +53,22 @@ def export_medicament_list_id_from_mericament_ref_code_orizon(client, list_name,
     for medicament_list_item in medicament_list_item_browse:
         i += 1
         print(i, medicament_list_item.id,
-                 medicament_list_item.medicament_ref.id, 
-                 medicament_list_item.medicament_ref.cod_prod,
-                 medicament_list_item.medicament_ref.name.encode("utf-8"))
+              medicament_list_item.medicament_ref.id,
+              medicament_list_item.medicament_ref.cod_prod,
+              medicament_list_item.medicament_ref.name.encode("utf-8"))
 
         d[medicament_list_item.medicament_ref.cod_prod] = [medicament_list_item.id]
 
-        print('>>>>>', medicament_list_item.medicament_ref.cod_prod, 
-                       d[medicament_list_item.medicament_ref.cod_prod])
+        print('>>>>>', medicament_list_item.medicament_ref.cod_prod,
+              d[medicament_list_item.medicament_ref.cod_prod])
 
     print('--> i: ', i)
+
 
 def clv_medicament_list_updt_medicament_orizon(client, list_name, list_version_name):
 
     clv_medicament_list = client.model('clv_medicament_list')
-    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name), ])
     print('>>>>>', medicament_list_browse)
 
     clv_medicament_list_version = client.model('clv_medicament_list.version')
@@ -111,10 +112,11 @@ def clv_medicament_list_updt_medicament_orizon(client, list_name, list_version_n
     print('--> found: ', found)
     print('--> not_found: ', not_found)
 
+
 def clv_medicament_list_clear_subsidy_orizon(client, list_name, list_version_name):
 
     clv_medicament_list = client.model('clv_medicament_list')
-    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name), ])
     print('>>>>>', medicament_list_browse)
 
     clv_medicament_list_version = client.model('clv_medicament_list.version')
@@ -142,13 +144,14 @@ def clv_medicament_list_clear_subsidy_orizon(client, list_name, list_version_nam
 
     print('--> i: ', i)
 
+
 def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_version_name, list_id_filename):
 
-    d = filedict.FileDict(filename = list_id_filename)
+    d = filedict.FileDict(filename=list_id_filename)
 
     delimiter_char = ';'
 
-    f  = open(infile_name, "rb")
+    f = open(infile_name, "rb")
     r = csv.reader(f, delimiter=delimiter_char)
     rownum = 0
     found = 0
@@ -170,7 +173,7 @@ def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_
         print(rownum, cod_prod, medicament)
 
         clv_medicament_list = client.model('clv_medicament_list')
-        medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+        medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name), ])
         print('>>>>>', medicament_list_browse)
 
         clv_medicament_list_version = client.model('clv_medicament_list.version')
@@ -205,10 +208,11 @@ def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_
     print('--> found: ', found)
     print('--> not_found: ', not_found)
 
+
 def clv_medicament_list_clear_old_from(client, list_name, list_version_name, from_):
 
     clv_medicament_list = client.model('clv_medicament_list')
-    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name), ])
     print('>>>>>', medicament_list_browse)
 
     clv_medicament_list_version = client.model('clv_medicament_list.version')
@@ -220,7 +224,7 @@ def clv_medicament_list_clear_old_from(client, list_name, list_version_name, fro
 
     clv_medicament_list_item = client.model('clv_medicament_list.item')
     medicament_list_item_browse = clv_medicament_list_item.browse(
-        [('list_version_id', '=', medicament_list_version_browse[0].id),])
+        [('list_version_id', '=', medicament_list_version_browse[0].id), ])
 
     i = 0
     unlinked = 0
@@ -245,12 +249,13 @@ def clv_medicament_list_clear_old_from(client, list_name, list_version_name, fro
     print('--> unlinked: ', unlinked)
     print('--> not_unlinked: ', not_unlinked)
 
+
 def clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name, list_id_filename):
 
-    d = filedict.FileDict(filename = list_id_filename)
+    d = filedict.FileDict(filename=list_id_filename)
 
     clv_medicament_list = client.model('clv_medicament_list')
-    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name),])
+    medicament_list_browse = clv_medicament_list.browse([('name', '=', list_name), ])
     print('>>>>>', medicament_list_browse)
 
     clv_medicament_list_version = client.model('clv_medicament_list.version')
@@ -262,7 +267,7 @@ def clv_medicament_list_check_orizon(client, infile_name, list_name, list_versio
 
     delimiter_char = ';'
 
-    f  = open(infile_name, "rb")
+    f = open(infile_name, "rb")
     r = csv.reader(f, delimiter=delimiter_char)
     rownum = 0
     found = 0
@@ -306,15 +311,15 @@ def clv_medicament_list_check_orizon(client, infile_name, list_name, list_versio
         except:
             medicament_list_item_id = []
 
-
         if medicament_list_item_id != []:
             found += 1
-            medicament_list_item = clv_medicament_list_item.browse(\
-                [('id', '=', medicament_list_item_id[0]),])[0]
-            print('>>>>>>>>>>', medicament_list_item, medicament_list_item.subsidy, Reembolso, medicament_list_item.discount, Desconto)
+            medicament_list_item = clv_medicament_list_item.browse(
+                [('id', '=', medicament_list_item_id[0]), ])[0]
+            print('>>>>>>>>>>', medicament_list_item, medicament_list_item.subsidy, Reembolso,
+                  medicament_list_item.discount, Desconto)
             if medicament_list_item.subsidy == float(Reembolso) and \
                medicament_list_item.discount == float(Desconto):
-               ok += 1
+                ok += 1
             else:
                 not_ok += 1
         else:
@@ -330,6 +335,7 @@ def clv_medicament_list_check_orizon(client, infile_name, list_name, list_versio
     print('--> ok: ', ok)
     print('--> not_ok: ', not_ok)
 
+
 def get_arguments():
 
     global username
@@ -344,17 +350,17 @@ def get_arguments():
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
 
-    if args.dbname != None:
+    if args.dbname is not None:
         dbname = args.dbname
     elif dbname == '*':
         dbname = raw_input('dbname: ')
 
-    if args.username != None:
+    if args.username is not None:
         username = args.username
     elif username == '*':
         username = raw_input('username: ')
 
-    if args.password != None:
+    if args.password is not None:
         password = args.password
     elif password == '*':
         password = getpass.getpass('password: ')
@@ -365,8 +371,8 @@ if __name__ == '__main__':
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
