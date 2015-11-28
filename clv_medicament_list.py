@@ -555,12 +555,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_list_check_orizon()...')
     # clv_medicament_list_check_orizon(client, infile_name, list_name, list_version_name, list_id_filename)
 
-    file_name = '/opt/openerp/orizon_lpm/Lista_483_0_5k_BioBox_x_Orizon_1511.csv'
-    list_name = 'Orizon 483 (0,5k)'
-    list_version_name = '1511'
-    print('-->', client, file_name, list_name, list_version_name)
-    print('--> Executing clv_medicament_list_include_orizon()...')
-    clv_medicament_list_include_orizon(client, file_name, list_name, list_version_name)
+    # file_name = '/opt/openerp/orizon_lpm/Lista_483_0_5k_BioBox_x_Orizon_1511.csv'
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1511'
+    # print('-->', client, file_name, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_include_orizon()...')
+    # clv_medicament_list_include_orizon(client, file_name, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
