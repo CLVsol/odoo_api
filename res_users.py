@@ -230,6 +230,7 @@ def res_users_updt_employee_access_rights_jcafb(client):
     Tag_User_id = res_groups.browse([('name', '=', 'Tag User'), ])[0].id
     Tag_Manager_id = res_groups.browse([('name', '=', 'Tag Manager'), ])[0].id
     Annotation_User_id = res_groups.browse([('name', '=', 'Annotation User'), ])[0].id
+    Annotation_Manager_id = res_groups.browse([('name', '=', 'Annotation Manager'), ])[0].id
     Address_User_id = res_groups.browse([('name', '=', 'Address User'), ])[0].id
     Address_Manager_id = res_groups.browse([('name', '=', 'Address Manager'), ])[0].id
     Person_User_id = res_groups.browse([('name', '=', 'Person User'), ])[0].id
@@ -257,6 +258,7 @@ def res_users_updt_employee_access_rights_jcafb(client):
         Tag_User_id,
         Tag_Manager_id,
         Annotation_User_id,
+        Annotation_Manager_id,
         Address_User_id,
         Address_Manager_id,
         Person_User_id,
