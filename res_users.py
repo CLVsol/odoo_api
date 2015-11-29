@@ -27,6 +27,21 @@ from base import *
 import argparse
 import getpass
 
+'''
+Reference: http://help.openerp.com/question/18704/hide-menu-for-existing-group/
+
+There are actually0-6 numbers for representing each job for a many2many/ one2many field
+
+    (0, 0, { values }) -- link to a new record that needs to be created with the given values dictionary
+    (1, ID, { values }) -- update the linked record with id = ID (write values on it)
+    (2, ID) -- remove and delete the linked record with id = ID (calls unlink on ID, that will delete the
+               object completely, and the link to it as well)
+    (3, ID) -- cut the link to the linked record with id = ID (delete the relationship between the two
+               objects but does not delete the target object itself)
+    (4, ID) -- link to existing record with id = ID (adds a relationship)
+    (5) -- unlink all (like using (3,ID) for all linked records)
+    (6, 0, [IDs]) -- replace the list of linked IDs (like using (5) then (4,ID) for each ID in the list of IDs)
+'''
 
 def res_users_export(client, file_path):
 
@@ -199,6 +214,82 @@ def res_users_reset_password_jcafb(client):
     print('--> not_found: ', not_found)
 
 
+def res_users_updt_employee_access_rights_jcafb(client):
+
+    hr_employee = client.model('hr.employee')
+    hr_employee_browse = hr_employee.browse([])
+
+    res_users = client.model('res.users')
+    res_groups = client.model('res.groups')
+
+    Base_User_id = res_groups.browse([('name', '=', 'Base User'), ])[0].id
+    Base_Super_User_id = res_groups.browse([('name', '=', 'Base Super User'), ])[0].id
+    Base_Manager_id = res_groups.browse([('name', '=', 'Base Manager'), ])[0].id
+    Base_Register_Manager_id = res_groups.browse([('name', '=', 'Base Register Manager'), ])[0].id
+    Base_Super_Manager_id = res_groups.browse([('name', '=', 'Base Super Manager'), ])[0].id
+    Tag_User_id = res_groups.browse([('name', '=', 'Tag User'), ])[0].id
+    Tag_Manager_id = res_groups.browse([('name', '=', 'Tag Manager'), ])[0].id
+    Annotation_User_id = res_groups.browse([('name', '=', 'Annotation User'), ])[0].id
+    Address_User_id = res_groups.browse([('name', '=', 'Address User'), ])[0].id
+    Address_Manager_id = res_groups.browse([('name', '=', 'Address Manager'), ])[0].id
+    Person_User_id = res_groups.browse([('name', '=', 'Person User'), ])[0].id
+    Person_Manager_id = res_groups.browse([('name', '=', 'Person Manager'), ])[0].id
+    Family_User_id = res_groups.browse([('name', '=', 'Family User'), ])[0].id
+    Family_Manager_id = res_groups.browse([('name', '=', 'Family Manager'), ])[0].id
+    Patient_User_id = res_groups.browse([('name', '=', 'Patient User'), ])[0].id
+    Patient_Manager_id = res_groups.browse([('name', '=', 'Patient Manager'), ])[0].id
+    # Lab_Test_User_id = res_groups.browse([('name', '=', 'Lab Test User'), ])[0].id
+    # Lab_Test_Manager_id = res_groups.browse([('name', '=', 'Lab Test Manager'), ])[0].id
+    # Pointing_User_id = res_groups.browse([('name', '=', 'Pointing User'), ])[0].id
+    # Pointing_Manager_id = res_groups.browse([('name', '=', 'Pointing Manager'), ])[0].id
+    # Document_User_id = res_groups.browse([('name', '=', 'Document User'), ])[0].id
+    # Document_Manager_id = res_groups.browse([('name', '=', 'Document Manager'), ])[0].id
+
+    Contact_Creation_id = res_groups.browse([('name', '=', 'Contact Creation'), ])[0].id
+    Employee_id = res_groups.browse([('name', '=', 'Employee'), ])[0].id
+    Survey_User_id = res_groups.browse([('name', '=', 'Survey / User'), ])[0].id
+    Website_Comments_id = res_groups.browse([('name', '=', 'Website Comments'), ])[0].id
+
+    Group_Jornadeiro = [
+        Base_User_id,
+        Base_Super_User_id,
+        Base_Manager_id,
+        Tag_User_id,
+        Tag_Manager_id,
+        Annotation_User_id,
+        Address_User_id,
+        Address_Manager_id,
+        Person_User_id,
+        Person_Manager_id,
+        Family_User_id,
+        Family_Manager_id,
+        Patient_User_id,
+        Patient_Manager_id,
+
+        Contact_Creation_id,
+        Employee_id,
+        Survey_User_id,
+        Website_Comments_id,
+        ]
+    print('>>>>>', Group_Jornadeiro)
+    i = 0
+    # for user in res_users_browse:
+    for employee in hr_employee_browse:
+        i += 1
+
+        user = employee.user_id
+
+        print(i, user.login, user.groups_id.name)
+
+        if user.login not in ['admin', 'data.admin', 'aliceherminia@gmail.com']:
+            values = {
+                'groups_id': [(6, 0, Group_Jornadeiro)]
+                }
+            res_users.write(user.id, values)
+
+    print('--> i: ', i)
+
+
 def get_arguments():
 
     global username
@@ -301,6 +392,10 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing res_users_reset_password_jcafb()...')
     # res_users_reset_password_jcafb(client)
+
+    # print('-->', client)
+    # print('--> Executing res_users_updt_employee_access_rights_jcafb()...')
+    # res_users_updt_employee_access_rights_jcafb(client)
 
     print('--> res_users.py')
     print('--> Execution time:', secondsToStr(time() - start))
