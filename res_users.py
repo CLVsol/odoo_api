@@ -233,6 +233,9 @@ def res_users_updt_employee_access_rights_jcafb(client):
     Annotation_Manager_id = res_groups.browse([('name', '=', 'Annotation Manager'), ])[0].id
     Address_User_id = res_groups.browse([('name', '=', 'Address User'), ])[0].id
     Address_Manager_id = res_groups.browse([('name', '=', 'Address Manager'), ])[0].id
+    Document_User_id = res_groups.browse([('name', '=', 'Document User'), ])[0].id
+    Document_Manager_id = res_groups.browse([('name', '=', 'Document Manager'), ])[0].id
+    Document_Approver_id = res_groups.browse([('name', '=', 'Document Approver'), ])[0].id
     Person_User_id = res_groups.browse([('name', '=', 'Person User'), ])[0].id
     Person_Manager_id = res_groups.browse([('name', '=', 'Person Manager'), ])[0].id
     Family_User_id = res_groups.browse([('name', '=', 'Family User'), ])[0].id
@@ -243,8 +246,6 @@ def res_users_updt_employee_access_rights_jcafb(client):
     # Lab_Test_Manager_id = res_groups.browse([('name', '=', 'Lab Test Manager'), ])[0].id
     # Pointing_User_id = res_groups.browse([('name', '=', 'Pointing User'), ])[0].id
     # Pointing_Manager_id = res_groups.browse([('name', '=', 'Pointing Manager'), ])[0].id
-    # Document_User_id = res_groups.browse([('name', '=', 'Document User'), ])[0].id
-    # Document_Manager_id = res_groups.browse([('name', '=', 'Document Manager'), ])[0].id
 
     Contact_Creation_id = res_groups.browse([('name', '=', 'Contact Creation'), ])[0].id
     Employee_id = res_groups.browse([('name', '=', 'Employee'), ])[0].id
@@ -261,6 +262,9 @@ def res_users_updt_employee_access_rights_jcafb(client):
         Annotation_Manager_id,
         Address_User_id,
         Address_Manager_id,
+        Document_User_id,
+        Document_Manager_id,
+        # Document_Approver_id,
         Person_User_id,
         Person_Manager_id,
         Family_User_id,
