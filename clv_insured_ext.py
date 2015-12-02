@@ -20,15 +20,14 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
-import csv
 import fileinput
 import re
 
 from base import *
 import argparse
 import getpass
+
 
 def clv_insured_ext_unlink(client, status):
 
@@ -49,6 +48,7 @@ def clv_insured_ext_unlink(client, status):
         clv_insured_ext.unlink(insured_ext.id)
 
     print('--> i: ', i)
+
 
 def clv_insured_ext_import(client):
 
@@ -131,6 +131,7 @@ def clv_insured_ext_import(client):
     print('--> synchronized: ', synchronized)
     print('--> not_synchronized: ', not_synchronized)
 
+
 def clv_insured_ext_syncronize_orizon(client, file_name):
 
     text_file = open(file_name, "w")
@@ -145,10 +146,10 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
         i += 1
 
         clv_insured = client.model('clv_insured')
-        insured_browse = clv_insured.browse([('id', '=', insured_ext.insured_id.id),])
+        insured_browse = clv_insured.browse([('id', '=', insured_ext.insured_id.id), ])
 
         clv_insured_card = client.model('clv_insured_card')
-        insured_card_browse = clv_insured_card.browse([('id', '=', insured_ext.insured_card_id.id),])
+        insured_card_browse = clv_insured_card.browse([('id', '=', insured_ext.insured_card_id.id), ])
 
         code = insured_ext.code
         name = insured_ext.name.encode("utf-8")
@@ -160,7 +161,7 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
         gender = insured_ext.gender
         birthday = insured_ext.birthday
 
-        if insured_ext.zip_code != False:
+        if insured_ext.zip_code is not False:
             cep = insured_ext.zip_code
         else:
             cep = ''
@@ -292,6 +293,7 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
 
     print('--> i: ', i)
 
+
 def clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization):
 
     Cod_Convenio =     [ 0,   0]
@@ -361,8 +363,8 @@ def clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
     line_no = 0
     for line in fileinput.input([file_name]):
         line_no += 1
-        s = [ line[ w[i-1] : w[i] ] for i in range(1,len(w)) ]
-        
+        s = [line[w[i-1]: w[i]] for i in range(1, len(w))]
+
         crd_code = s[Cod_Beneficiario[0]].strip()
         code_len = len(crd_code) - 2
         while len(crd_code) < 16:
@@ -385,7 +387,7 @@ def clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
             code_form = code_str[14 - code_len:21]
 
         clv_insured_ext = client.model('clv_insured_ext')
-        insured_ext_browse = clv_insured_ext.browse([('code', '=', code_form),])
+        insured_ext_browse = clv_insured_ext.browse([('code', '=', code_form), ])
         insured_ext_id = insured_ext_browse.id[0]
 
         print(line_no, s[Tipo_de_Operacao[0]], code_form, s[Nome[0]], insured_ext_id)
@@ -411,10 +413,11 @@ def clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
     print('--> line_no: ', line_no)
 
+
 def clv_insured_ext_set_partner_orizon(client):
 
     clv_insured_ext = client.model('clv_insured_ext')
-    insured_ext_browse = clv_insured_ext.browse([('partner_ids', '=', False),])
+    insured_ext_browse = clv_insured_ext.browse([('partner_ids', '=', False), ])
 
     i = 0
     for insured_ext in insured_ext_browse:
@@ -423,7 +426,7 @@ def clv_insured_ext_set_partner_orizon(client):
         print(i, insured_ext.code, insured_ext.name)
 
         res_partner = client.model('res.partner')
-        partner_browse = res_partner.browse([('name', '=', 'Orizon'),])
+        partner_browse = res_partner.browse([('name', '=', 'Orizon'), ])
         partner_ids = partner_browse.id[0]
 
         values = {
@@ -433,13 +436,14 @@ def clv_insured_ext_set_partner_orizon(client):
 
     print('--> i: ', i)
 
+
 def clv_insured_ext_updt_from_insured_card_orizon(client):
 
     clv_insured_ext = client.model('clv_insured_ext')
 
     clv_insured_card = client.model('clv_insured_card')
 
-    insured_card_browse = clv_insured_card.browse([('state', '=', 'active'),])
+    insured_card_browse = clv_insured_card.browse([('state', '=', 'active'), ])
 
     i = 0
     new = 0
@@ -455,15 +459,15 @@ def clv_insured_ext_updt_from_insured_card_orizon(client):
         print(i, insured_card.code, partner, insured_card.state, insured_card.name)
 
         clv_insured = client.model('clv_insured')
-        insured_browse = clv_insured.browse([('id', '=', insured_card.insured_id.id),])
+        insured_browse = clv_insured.browse([('id', '=', insured_card.insured_id.id), ])
 
         clv_address = client.model('clv_address')
-        address_browse = clv_address.browse([('id', '=', insured_browse.address_home_id.id[0]),])
+        address_browse = clv_address.browse([('id', '=', insured_browse.address_home_id.id[0]), ])
         zip_code = False
         if address_browse.zip != []:
             zip_code = address_browse.zip[0]
 
-        insured_ext_browse = clv_insured_ext.browse([('insured_card_id', '=', insured_card.id),])
+        insured_ext_browse = clv_insured_ext.browse([('insured_card_id', '=', insured_card.id), ])
         if insured_ext_browse.id == []:
             new += 1
 
@@ -498,7 +502,7 @@ def clv_insured_ext_updt_from_insured_card_orizon(client):
                         }
                     clv_insured_ext.write(insured_ext_browse[0].id, values)
 
-    insured_card_browse = clv_insured_card.browse([('state', '=', 'canceled'),])
+    insured_card_browse = clv_insured_card.browse([('state', '=', 'canceled'), ])
 
     for insured_card in insured_card_browse:
         i += 1
@@ -509,7 +513,7 @@ def clv_insured_ext_updt_from_insured_card_orizon(client):
 
         print(i, insured_card.code, partner, insured_card.state, insured_card.name)
 
-        insured_ext_browse = clv_insured_ext.browse([('insured_card_id', '=', insured_card.id),])
+        insured_ext_browse = clv_insured_ext.browse([('insured_card_id', '=', insured_card.id), ])
         if insured_ext_browse.id != []:
             if insured_ext_browse[0].state == insured_card.state:
                 synchronized += 1
@@ -532,6 +536,7 @@ def clv_insured_ext_updt_from_insured_card_orizon(client):
     print('--> new: ', new)
     print('--> synchronized: ', synchronized)
     print('--> not_synchronized: ', not_synchronized)
+
 
 def get_arguments():
 
@@ -562,14 +567,15 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -710,6 +716,23 @@ if __name__ == '__main__':
     # print('-->', client)
     # file_name = '/opt/openerp/orizon/USU1865_20151116_151102_I.TXT'
     # date_synchronization = '2015-11-17 21:00:00'
+    # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
+    # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
+
+    #######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_ext_updt_from_insured_card_orizon()...')
+    # clv_insured_ext_updt_from_insured_card_orizon(client)
+
+    # print('-->', client)
+    # file_name = '/opt/openerp/orizon/USU1865_20151202_151201_I.TXT'
+    # print('--> Executing clv_insured_ext_syncronize_orizon(' + file_name + ')...')
+    # clv_insured_ext_syncronize_orizon(client, file_name)
+
+    # print('-->', client)
+    # file_name = '/opt/openerp/orizon/USU1865_20151202_151201_I.TXT'
+    # date_synchronization = '2015-12-02 21:00:00'
     # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
     # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
