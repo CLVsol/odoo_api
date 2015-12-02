@@ -223,5 +223,17 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_export_HVC()...')
     # clv_insured_export_HVC(client, file_path, date_inclusion)
 
+    # file_path = '/opt/openerp/biobox/data/insured_VCAS_2015_11_30.csv'
+    # date_inclusion = '2015-11-30'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_VCAS()...')
+    # clv_insured_export_VCAS(client, file_path, date_inclusion)
+
+    # file_path = '/opt/openerp/biobox/data/insured_HVC_2015_11_30.csv'
+    # date_inclusion = '2015-11-30'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_HVC()...')
+    # clv_insured_export_HVC(client, file_path, date_inclusion)
+
     print('--> clv_insured.py')
     print('--> Execution time:', secondsToStr(time() - start))
