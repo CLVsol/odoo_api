@@ -20,15 +20,14 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
-import csv
 
 from base import *
 import argparse
 import getpass
 
 from clv_address import *
+
 
 def clv_person_unlink(client, args):
 
@@ -43,7 +42,7 @@ def clv_person_unlink(client, args):
         print(i, person.name.encode("utf-8"))
 
         history = client.model('clv_person.history')
-        history_browse = history.browse([('person_id', '=', person.id),])
+        history_browse = history.browse([('person_id', '=', person.id), ])
         history_ids = history_browse.id
         print('>>>>>', history_ids)
 
@@ -58,6 +57,7 @@ def clv_person_unlink(client, args):
     print('--> i: ', i)
     print('--> deleted: ', deleted)
     print('--> not_deleted: ', not_deleted)
+
 
 def clv_person_import_remote(remote_client, local_client):
 
@@ -80,15 +80,15 @@ def clv_person_import_remote(remote_client, local_client):
         print(person_count, person.code, person.name.encode("utf-8"), person.tag_ids, person.category_ids)
         print('>>>>>', person.gender, person.birthday)
         address_id = False
-        if person.address_id != False:
+        if person.address_id is not False:
             print('>>>>>', person.address_id.name.encode("utf-8"))
-            if person.address_id.street != False:
-                print('>>>>>>>>>>', person.address_id.street.encode("utf-8"), 
-                                    person.address_id.number)
-            if person.address_id.district != False:
+            if person.address_id.street is not False:
+                print('>>>>>>>>>>', person.address_id.street.encode("utf-8"),
+                      person.address_id.number)
+            if person.address_id.district is not False:
                 print('>>>>>>>>>>', person.address_id.district.encode("utf-8"))
 
-            address_id = clv_address.browse([('name', '=', person.address_id.name),]).id
+            address_id = clv_address.browse([('name', '=', person.address_id.name), ]).id
 
             if address_id == []:
                 values = {
@@ -116,36 +116,36 @@ def clv_person_import_remote(remote_client, local_client):
     for person in remote_person_browse:
         i += 1
 
-        local_person = local_clv_person.browse([('code', '=', person.code),])[0]
+        local_person = local_clv_person.browse([('code', '=', person.code), ])[0]
         print(i, local_person.code, local_person.name.encode("utf-8"))
 
-        if person.spouse_id != False:
+        if person.spouse_id is not False:
             spouse_count += 1
-            spouse = local_clv_person.browse([('code', '=', person.spouse_id.code),])[0]
+            spouse = local_clv_person.browse([('code', '=', person.spouse_id.code), ])[0]
             print('>>>>> spouse', spouse.code, spouse.name.encode("utf-8"))
             values = {
                 'spouse_id': spouse.id,
                 }
             local_clv_person.write(local_person.id, values)
-        if person.father_id != False:
+        if person.father_id is not False:
             father_count += 1
-            father = local_clv_person.browse([('code', '=', person.father_id.code),])[0]
+            father = local_clv_person.browse([('code', '=', person.father_id.code), ])[0]
             print('>>>>> father', father.code, father.name.encode("utf-8"))
             values = {
                 'father_id': father.id,
                 }
             local_clv_person.write(local_person.id, values)
-        if person.mother_id != False:
+        if person.mother_id is not False:
             mother_count += 1
-            mother = local_clv_person.browse([('code', '=', person.mother_id.code),])[0]
+            mother = local_clv_person.browse([('code', '=', person.mother_id.code), ])[0]
             print('>>>>> mother', mother.code, mother.name.encode("utf-8"))
             values = {
                 'mother_id': mother.id,
                 }
             local_clv_person.write(local_person.id, values)
-        if person.responsible_id != False:
+        if person.responsible_id is not False:
             responsible_count += 1
-            responsible = local_clv_person.browse([('code', '=', person.responsible_id.code),])[0]
+            responsible = local_clv_person.browse([('code', '=', person.responsible_id.code), ])[0]
             print('>>>>> responsible', responsible.code, responsible.name.encode("utf-8"))
             values = {
                 'responsible_id': responsible.id,
@@ -159,6 +159,7 @@ def clv_person_import_remote(remote_client, local_client):
     print('father_count: ', father_count)
     print('mother_count: ', mother_count)
     print('responsible_count: ', responsible_count)
+
 
 def get_arguments():
 
@@ -182,32 +183,32 @@ def get_arguments():
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
 
-    if args.dbname != None:
+    if args.dbname is not None:
         dbname = args.dbname
     elif dbname == '*':
         dbname = raw_input('dbname: ')
 
-    if args.username != None:
+    if args.username is not None:
         username = args.username
     elif username == '*':
         username = raw_input('username: ')
 
-    if args.password != None:
+    if args.password is not None:
         password = args.password
     elif password == '*':
         password = getpass.getpass('password: ')
 
-    if args.remote_dbname != None:
+    if args.remote_dbname is not None:
         remote_dbname = args.remote_dbname
     elif remote_dbname == '*':
         remote_dbname = raw_input('remote_dbname: ')
 
-    if args.remote_username != None:
+    if args.remote_username is not None:
         remote_username = args.remote_username
     elif remote_username == '*':
         remote_username = raw_input('remote_username: ')
 
-    if args.remote_password != None:
+    if args.remote_password is not None:
         remote_password = args.remote_password
     elif remote_password == '*':
         remote_password = getpass.getpass('remote_password: ')
@@ -218,8 +219,8 @@ if __name__ == '__main__':
 
     # username = 'username'
     username = '*'
-    # password = 'paswword' 
-    password = '*' 
+    # password = 'paswword'
+    password = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -228,8 +229,8 @@ if __name__ == '__main__':
 
     # remote_username = 'username'
     remote_username = '*'
-    # remote_password = 'paswword' 
-    remote_password = '*' 
+    # remote_password = 'paswword'
+    remote_password = '*'
 
     remote_dbname = 'odoo'
     # remote_dbname = '*'
