@@ -457,6 +457,7 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
@@ -625,6 +626,41 @@ if __name__ == '__main__':
     # clv_medicament_dispensation_ext_unlink(client, medicament_dispensation_ext_args)
 
     # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_01_11_a_20_11.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    #######################################
+
+    # file_name = '/opt/openerp/orizon/Desconto_em_Folha_Sintetico_21_11_a_30_11.csv'
     # print('-->', client, file_name)
     # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
     # clv_medicament_dispensation_ext_import_orizon(client, file_name)
