@@ -298,6 +298,60 @@ def clv_person_mng_import_jcafb_2016_idoso_set_batch_name(client, file_path, bat
     print('--> not_found: ', not_found)
 
 
+def clv_person_mng_search_person(client):
+
+    clv_person_mng = client.model('clv_person_mng')
+    person_mng_browse = clv_person_mng.browse([('person_id', '=', False), ])
+    clv_person = client.model('clv_person')
+
+    i = 0
+    found = 0
+    not_found = 0
+    for person_mng in person_mng_browse:
+        i += 1
+        print(i, person_mng.name)
+
+        person_id = clv_person.browse([('name', '=', person_mng.name), ]).id
+
+        if person_id == []:
+            not_found += 1
+        else:
+            found += 1
+            values = {
+                "person_id": person_id[0],
+                }
+            clv_person_mng.write(person_mng.id, values)
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not_found: ', not_found)
+
+
+def clv_person_mng_set_addr_name(client):
+
+    clv_person_mng = client.model('clv_person_mng')
+    person_mng_browse = clv_person_mng.browse([('addr_name', '=', False), ])
+
+    i = 0
+    for person_mng in person_mng_browse:
+        i += 1
+        print(i, person_mng.name)
+
+        addr_street = person_mng.addr_street
+
+        values = {
+            "addr_street": False,
+            }
+        clv_person_mng.write(person_mng.id, values)
+
+        values = {
+            "addr_street": addr_street,
+            }
+        clv_person_mng.write(person_mng.id, values)
+
+    print('--> i: ', i)
+
+
 def get_arguments():
 
     global username
@@ -406,6 +460,14 @@ if __name__ == '__main__':
     # print('-->', client, file_path, batch_name)
     # print('--> Executing clv_person_mng_import_jcafb_2016_idoso_set_batch_name()...')
     # clv_person_mng_import_jcafb_2016_idoso_set_batch_name(client, file_path, batch_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_person_mng_search_person()...')
+    # clv_person_mng_search_person(client)
+
+    print('-->', client)
+    print('--> Executing clv_person_mng_set_addr_name()...')
+    clv_person_mng_set_addr_name(client)
 
     print('--> clv_person_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
