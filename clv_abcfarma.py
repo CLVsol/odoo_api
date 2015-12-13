@@ -20,13 +20,13 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 from dbfpy import dbf
 
 from base import *
 import argparse
 import getpass
+
 
 def clv_abcfarma_import_new(client, file_name, from_):
 
@@ -164,6 +164,7 @@ def clv_abcfarma_import_new(client, file_name, from_):
     print('--> not_found: ', not_found)
     print('--> excluded: ', excluded)
 
+
 def get_abcfarma_list_id(client, list_name):
 
     clv_abcfarma_list = client.model('clv_abcfarma.list')
@@ -179,6 +180,7 @@ def get_abcfarma_list_id(client, list_name):
         abcfarma_list_id = abcfarma_list_id[0]
 
     return abcfarma_list_id
+
 
 def clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name):
 
@@ -304,6 +306,7 @@ def clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_nam
     print('abcfarma_not_found: ', abcfarma_not_found)
     print('abcfarma_included: ', abcfarma_included)
 
+
 def get_arguments():
 
     global username
@@ -348,14 +351,15 @@ def get_arguments():
     # elif from_ == '*':
     #     from_ = raw_input('from_: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -386,6 +390,12 @@ if __name__ == '__main__':
 
     # file_name = '/opt/openerp/abcfarma/TABELA_2015_11.dbf'
     # from_ = 'TABELA_2015_11'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_abcfarma_import_new()...')
+    # clv_abcfarma_import_new(client, file_name, from_)
+
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_12.dbf'
+    # from_ = 'TABELA_2015_12'
     # print('-->', client, file_name, from_)
     # print('--> Executing clv_abcfarma_import_new()...')
     # clv_abcfarma_import_new(client, file_name, from_)
@@ -525,6 +535,12 @@ if __name__ == '__main__':
     # list_name = 'TABELA_2015_11'
     # previous_list_name = 'TABELA_2015_10'
     # file_name = '/opt/openerp/abcfarma/TABELA_2015_11.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # list_name = 'TABELA_2015_12'
+    # previous_list_name = 'TABELA_2015_11'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2015_12.dbf'
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
 
