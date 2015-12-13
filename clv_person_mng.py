@@ -465,9 +465,9 @@ if __name__ == '__main__':
     # print('--> Executing clv_person_mng_search_person()...')
     # clv_person_mng_search_person(client)
 
-    print('-->', client)
-    print('--> Executing clv_person_mng_set_addr_name()...')
-    clv_person_mng_set_addr_name(client)
+    # print('-->', client)
+    # print('--> Executing clv_person_mng_set_addr_name()...')
+    # clv_person_mng_set_addr_name(client)
 
     print('--> clv_person_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
