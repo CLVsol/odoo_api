@@ -20,13 +20,12 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
-import csv
 
 from base import *
 import argparse
 import getpass
+
 
 def clv_address_unlink(client, args):
 
@@ -41,7 +40,7 @@ def clv_address_unlink(client, args):
         print(i, address.name.encode("utf-8"))
 
         history = client.model('clv_address.history')
-        history_browse = history.browse([('address_id', '=', address.id),])
+        history_browse = history.browse([('address_id', '=', address.id), ])
         history_ids = history_browse.id
         print('>>>>>', history_ids)
 
@@ -56,6 +55,44 @@ def clv_address_unlink(client, args):
     print('--> i: ', i)
     print('--> deleted: ', deleted)
     print('--> not_deleted: ', not_deleted)
+
+
+def clv_address_unlink_aExcluir(client):
+
+    clv_tag = client.model('clv_tag')
+    tag_aExcluir = clv_tag.browse([('name', '=', 'aExcluir'), ])[0].id
+
+    clv_address = client.model('clv_address')
+    address_browse = clv_address.browse([])
+
+    i = 0
+    deleted = 0
+    not_deleted = 0
+    for address in address_browse:
+        i += 1
+        print(i, address.name.encode("utf-8"), address.tag_ids.id)
+
+        for tag_id in address.tag_ids.id:
+
+            if tag_id == tag_aExcluir:
+
+                history = client.model('clv_address.history')
+                history_browse = history.browse([('address_id', '=', address.id), ])
+                history_ids = history_browse.id
+                print('>>>>>', history_ids)
+
+                history.unlink(history_ids)
+                try:
+                    clv_address.unlink(address.id)
+                    deleted += 1
+                except:
+                    print('>>>>>', 'Not deleted!')
+                    not_deleted += 1
+
+    print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
 
 def get_arguments():
 
@@ -86,14 +123,15 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -106,6 +144,10 @@ if __name__ == '__main__':
     print('--> clv_address.py...')
 
     client = erppeek.Client(server, dbname, username, password)
+
+    print('-->', client)
+    print('--> Executing clv_address_unlink_aExcluir()...')
+    clv_address_unlink_aExcluir(client)
 
     print('--> clv_address.py')
     print('--> Execution time:', secondsToStr(time() - start))
