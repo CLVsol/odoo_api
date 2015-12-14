@@ -43,6 +43,7 @@ There are actually0-6 numbers for representing each job for a many2many/ one2man
     (6, 0, [IDs]) -- replace the list of linked IDs (like using (5) then (4,ID) for each ID in the list of IDs)
 '''
 
+
 def res_users_export(client, file_path):
 
     headings_res_users = ['no', 'user_id',
@@ -242,8 +243,11 @@ def res_users_updt_employee_access_rights_jcafb(client):
     Family_Manager_id = res_groups.browse([('name', '=', 'Family Manager'), ])[0].id
     Patient_User_id = res_groups.browse([('name', '=', 'Patient User'), ])[0].id
     Patient_Manager_id = res_groups.browse([('name', '=', 'Patient Manager'), ])[0].id
-    # Lab_Test_User_id = res_groups.browse([('name', '=', 'Lab Test User'), ])[0].id
-    # Lab_Test_Manager_id = res_groups.browse([('name', '=', 'Lab Test Manager'), ])[0].id
+    Person_mng_User_id = res_groups.browse([('name', '=', 'Person Managment User'), ])[0].id
+    Person_mng_Manager_id = res_groups.browse([('name', '=', 'Person Management Manager'), ])[0].id
+    Lab_Test_User_id = res_groups.browse([('name', '=', 'Lab Test User'), ])[0].id
+    Lab_Test_Manager_id = res_groups.browse([('name', '=', 'Lab Test Manager'), ])[0].id
+    Lab_Test_Approver_id = res_groups.browse([('name', '=', 'Lab Test Approver'), ])[0].id
     # Pointing_User_id = res_groups.browse([('name', '=', 'Pointing User'), ])[0].id
     # Pointing_Manager_id = res_groups.browse([('name', '=', 'Pointing Manager'), ])[0].id
 
@@ -256,6 +260,8 @@ def res_users_updt_employee_access_rights_jcafb(client):
         Base_User_id,
         Base_Super_User_id,
         Base_Manager_id,
+        Base_Register_Manager_id,
+        # Base_Super_Manager_id,
         Tag_User_id,
         Tag_Manager_id,
         Annotation_User_id,
@@ -264,13 +270,18 @@ def res_users_updt_employee_access_rights_jcafb(client):
         Address_Manager_id,
         Document_User_id,
         Document_Manager_id,
-        # Document_Approver_id,
+        Document_Approver_id,
         Person_User_id,
         Person_Manager_id,
         Family_User_id,
         Family_Manager_id,
         Patient_User_id,
         Patient_Manager_id,
+        Person_mng_User_id,
+        Person_mng_Manager_id,
+        Lab_Test_User_id,
+        Lab_Test_Manager_id,
+        Lab_Test_Approver_id,
 
         Contact_Creation_id,
         Employee_id,
