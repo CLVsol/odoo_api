@@ -243,7 +243,7 @@ def res_users_updt_employee_access_rights_jcafb(client):
     Family_Manager_id = res_groups.browse([('name', '=', 'Family Manager'), ])[0].id
     Patient_User_id = res_groups.browse([('name', '=', 'Patient User'), ])[0].id
     Patient_Manager_id = res_groups.browse([('name', '=', 'Patient Manager'), ])[0].id
-    Person_mng_User_id = res_groups.browse([('name', '=', 'Person Managment User'), ])[0].id
+    Person_mng_User_id = res_groups.browse([('name', '=', 'Person Management User'), ])[0].id
     Person_mng_Manager_id = res_groups.browse([('name', '=', 'Person Management Manager'), ])[0].id
     Lab_Test_User_id = res_groups.browse([('name', '=', 'Lab Test User'), ])[0].id
     Lab_Test_Manager_id = res_groups.browse([('name', '=', 'Lab Test Manager'), ])[0].id
