@@ -240,7 +240,9 @@ def res_users_updt_employee_access_rights_jcafb(client):
     Person_User_id = res_groups.browse([('name', '=', 'Person User'), ])[0].id
     Person_Manager_id = res_groups.browse([('name', '=', 'Person Manager'), ])[0].id
     Family_User_id = res_groups.browse([('name', '=', 'Family User'), ])[0].id
-    Family_Manager_id = res_groups.browse([('name', '=', 'Family Manager'), ])[0].id
+    Family_Manager_id = res_groups.browse([('name', '=', 'Community Manager'), ])[0].id
+    Community_User_id = res_groups.browse([('name', '=', 'Community User'), ])[0].id
+    Community_Manager_id = res_groups.browse([('name', '=', 'Family Manager'), ])[0].id
     Patient_User_id = res_groups.browse([('name', '=', 'Patient User'), ])[0].id
     Patient_Manager_id = res_groups.browse([('name', '=', 'Patient Manager'), ])[0].id
     Person_mng_User_id = res_groups.browse([('name', '=', 'Person Management User'), ])[0].id
@@ -275,6 +277,8 @@ def res_users_updt_employee_access_rights_jcafb(client):
         Person_Manager_id,
         Family_User_id,
         Family_Manager_id,
+        Community_User_id,
+        Community_Manager_id,
         Patient_User_id,
         Patient_Manager_id,
         Person_mng_User_id,
