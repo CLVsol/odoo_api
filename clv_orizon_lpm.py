@@ -20,13 +20,13 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 import csv
 
 from base import *
 import argparse
 import getpass
+
 
 def clv_orizon_lpm_import_new(client, file_name, from_):
 
@@ -135,6 +135,7 @@ def clv_orizon_lpm_import_new(client, file_name, from_):
     print('--> not_found: ', not_found)
     print('--> excluded: ', excluded)
 
+
 def get_orizon_lpm_list_id(client, list_name):
 
     clv_orizon_lpm_list = client.model('clv_orizon_lpm.list')
@@ -150,6 +151,7 @@ def get_orizon_lpm_list_id(client, list_name):
         orizon_lpm_list_id = orizon_lpm_list_id[0]
 
     return orizon_lpm_list_id
+
 
 def clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name):
 
@@ -242,6 +244,7 @@ def clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_n
     print('orizon_lpm_not_found: ', orizon_lpm_not_found)
     print('orizon_lpm_included: ', orizon_lpm_included)
 
+
 def get_arguments():
 
     global username
@@ -278,7 +281,7 @@ if __name__ == '__main__':
     # username = 'username'
     username = '*'
     # paswword = 'paswword' 
-    paswword = '*' 
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -325,6 +328,20 @@ if __name__ == '__main__':
     # list_name = 'LPM_1511'
     # previous_list_name = 'LPM_1510'
     # file_name = '/opt/openerp/orizon_lpm/LPM_1511.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    #########################
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1512.csv'
+    # from_ = 'LPM_1512'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1512'
+    # previous_list_name = 'LPM_1511'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1512.csv'
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
 
