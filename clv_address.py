@@ -145,9 +145,14 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    print('-->', client)
-    print('--> Executing clv_address_unlink_aExcluir()...')
-    clv_address_unlink_aExcluir(client)
+    # print('-->', client)
+    # print('--> Executing clv_address_unlink_aExcluir()...')
+    # clv_address_unlink_aExcluir(client)
+
+    # address_args = [('state', '=', 'draft'), ]
+    # print('-->', client, address_args)
+    # print('--> Executing clv_address_unlink()...')
+    # clv_address_unlink(client, address_args)
 
     print('--> clv_address.py')
     print('--> Execution time:', secondsToStr(time() - start))
