@@ -149,7 +149,8 @@ if __name__ == '__main__':
     # print('--> Executing clv_address_unlink_aExcluir()...')
     # clv_address_unlink_aExcluir(client)
 
-    # address_args = [('state', '=', 'draft'), ]
+    # address_args = [('state', '=', 'draft'),
+    #                 ('street', '=', False), ]
     # print('-->', client, address_args)
     # print('--> Executing clv_address_unlink()...')
     # clv_address_unlink(client, address_args)
