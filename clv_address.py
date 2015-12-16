@@ -39,6 +39,17 @@ def clv_address_unlink(client, args):
         i += 1
         print(i, address.name.encode("utf-8"))
 
+        clv_person = client.model('clv_person')
+        person_browse = clv_person.browse([('address_id', '=', address.id), ])
+        person_ids = person_browse.id
+        print('>>>>>', person_ids)
+
+        for person_id in person_ids:
+            values = {
+                "address_id": False,
+                }
+            clv_person.write(person_id, values)
+
         history = client.model('clv_address.history')
         history_browse = history.browse([('address_id', '=', address.id), ])
         history_ids = history_browse.id
