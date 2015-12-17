@@ -173,7 +173,7 @@ def clv_family_member_import_remote(remote_client, local_client):
 
 def clv_family_mark_aExcluir(client, args):
 
-    tag_id_Verificar = get_tag_id(
+    tag_id_aExcluir = get_tag_id(
         client,
         'aExcluir',
         'Registro a ser excluído.')
@@ -187,11 +187,59 @@ def clv_family_mark_aExcluir(client, args):
         print(i, family.name.encode("utf-8"))
 
         values = {
-            'tag_ids': [(4, tag_id_Verificar)],
+            'tag_ids': [(4, tag_id_aExcluir)],
             }
         clv_family.write(family.id, values)
 
     print('--> i: ', i)
+
+
+def clv_family_reset_name(client, args):
+
+    clv_family = client.model('clv_family')
+    family_browse = clv_family.browse(args)
+
+    i = 0
+    for family in family_browse:
+        i += 1
+        print(i, family.name.encode("utf-8"), family.address_id.name.encode("utf-8"))
+
+        values = {
+            'name': family.address_id.name,
+            }
+        clv_family.write(family.id, values)
+
+    print('--> i: ', i)
+
+
+def clv_family_mark_Nome_Replicado(client, args):
+
+    tag_id_Nome_Replicado = get_tag_id(
+        client,
+        'Nome Replicado',
+        'Registro com Nome duplicado.')
+
+    clv_family = client.model('clv_family')
+    family_browse = clv_family.browse(args)
+
+    i = 0
+    replicated = 0
+    for family in family_browse:
+        i += 1
+
+        count_replicated_name = len(clv_family.browse([('name', '=', family.name), ]).id)
+
+        print(i, family.name.encode("utf-8"), count_replicated_name)
+
+        if count_replicated_name > 1:
+            replicated += 1
+            values = {
+                'tag_ids': [(4, tag_id_Nome_Replicado)],
+                }
+            clv_family.write(family.id, values)
+
+    print('--> i: ', i)
+    print('--> replicated: ', replicated)
 
 
 def get_arguments():
@@ -306,6 +354,16 @@ if __name__ == '__main__':
     # print('-->', client, family_args)
     # print('--> Executing clv_family_unlink()...')
     # clv_family_unlink(client, family_args)
+
+    # family_args = [('address_id', '!=', False), ]
+    # print('-->', client, family_args)
+    # print('--> Executing clv_family_unlink()...')
+    # clv_family_reset_name(client, family_args)
+
+    family_args = []
+    print('-->', client, family_args)
+    print('--> Executing clv_family_mark_Nome_Replicado()...')
+    clv_family_mark_Nome_Replicado(client, family_args)
 
     print('--> clv_family.py')
     print('--> Execution time:', secondsToStr(time() - start))
