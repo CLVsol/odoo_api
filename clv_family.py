@@ -360,10 +360,10 @@ if __name__ == '__main__':
     # print('--> Executing clv_family_unlink()...')
     # clv_family_reset_name(client, family_args)
 
-    family_args = []
-    print('-->', client, family_args)
-    print('--> Executing clv_family_mark_Nome_Replicado()...')
-    clv_family_mark_Nome_Replicado(client, family_args)
+    # family_args = []
+    # print('-->', client, family_args)
+    # print('--> Executing clv_family_mark_Nome_Replicado()...')
+    # clv_family_mark_Nome_Replicado(client, family_args)
 
     print('--> clv_family.py')
     print('--> Execution time:', secondsToStr(time() - start))
