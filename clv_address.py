@@ -26,6 +26,8 @@ from base import *
 import argparse
 import getpass
 
+from clv_tag import *
+
 
 def clv_address_unlink(client, args):
 
@@ -105,6 +107,36 @@ def clv_address_unlink_aExcluir(client):
     print('--> not_deleted: ', not_deleted)
 
 
+def clv_address_mark_Nome_Replicado(client, args):
+
+    tag_id_Nome_Replicado = get_tag_id(
+        client,
+        'Nome Replicado',
+        'Registro com Nome duplicado.')
+
+    clv_address = client.model('clv_address')
+    address_browse = clv_address.browse(args)
+
+    i = 0
+    replicated = 0
+    for address in address_browse:
+        i += 1
+
+        count_replicated_name = len(clv_address.browse([('name', '=', address.name), ]).id)
+
+        print(i, address.name.encode("utf-8"), count_replicated_name)
+
+        if count_replicated_name > 1:
+            replicated += 1
+            values = {
+                'tag_ids': [(4, tag_id_Nome_Replicado)],
+                }
+            clv_address.write(address.id, values)
+
+    print('--> i: ', i)
+    print('--> replicated: ', replicated)
+
+
 def get_arguments():
 
     global username
@@ -165,6 +197,11 @@ if __name__ == '__main__':
     # print('-->', client, address_args)
     # print('--> Executing clv_address_unlink()...')
     # clv_address_unlink(client, address_args)
+
+    # address_args = []
+    # print('-->', client, address_args)
+    # print('--> Executing clv_address_mark_Nome_Replicado()...')
+    # clv_address_mark_Nome_Replicado(client, address_args)
 
     print('--> clv_address.py')
     print('--> Execution time:', secondsToStr(time() - start))
