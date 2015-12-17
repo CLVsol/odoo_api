@@ -352,6 +352,44 @@ def clv_person_mng_set_addr_name(client):
     print('--> i: ', i)
 
 
+def clv_person_mng_search_patient_category(client, batch_name, category):
+
+    clv_person_mng = client.model('clv_person_mng')
+    person_mng_browse = clv_person_mng.browse([('person_id', '!=', False),
+                                               ('batch_name', '=', batch_name), ])
+    clv_patient = client.model('clv_patient')
+    clv_patient_category = client.model('clv_patient.category')
+
+    category_id = clv_patient_category.browse([('name', '=', category), ])[0].id
+
+    i = 0
+    found = 0
+    not_found = 0
+    for person_mng in person_mng_browse:
+        i += 1
+
+        patients = clv_patient.browse([('person', '=', person_mng.person_id.id), ])
+
+        if patients.id == []:
+            not_found += 1
+            print(i, person_mng.name.encode('utf-8'), category_id, patient.category_ids)
+            print('>>>>>', not_found, person_mng.name.encode('utf-8'))
+
+        for patient in patients:
+
+            print(i, person_mng.name.encode('utf-8'), category_id, patient.category_ids)
+
+            if category_id in patient.category_ids.id:
+                found += 1
+            else:
+                not_found += 1
+                print('>>>>>', not_found, person_mng.name.encode('utf-8'))
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not_found: ', not_found)
+
+
 def get_arguments():
 
     global username
@@ -468,6 +506,30 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_person_mng_set_addr_name()...')
     # clv_person_mng_set_addr_name(client)
+
+    # batch_name = 'Criancas_2016_Rural'
+    # category = 'Criança 2016'
+    # print('-->', client, batch_name, category)
+    # print('--> Executing clv_person_mng_search_patient_category()...')
+    # clv_person_mng_search_patient_category(client, batch_name, category)
+
+    # batch_name = 'Criancas_2016_Urbana'
+    # category = 'Criança 2016'
+    # print('-->', client, batch_name, category)
+    # print('--> Executing clv_person_mng_search_patient_category()...')
+    # clv_person_mng_search_patient_category(client, batch_name, category)
+
+    # batch_name = 'Idosos_2016_rural'
+    # category = 'Idoso 2016'
+    # print('-->', client, batch_name, category)
+    # print('--> Executing clv_person_mng_search_patient_category()...')
+    # clv_person_mng_search_patient_category(client, batch_name, category)
+
+    # batch_name = 'Idosos_2016_urbana'
+    # category = 'Idoso 2016'
+    # print('-->', client, batch_name, category)
+    # print('--> Executing clv_person_mng_search_patient_category()...')
+    # clv_person_mng_search_patient_category(client, batch_name, category)
 
     print('--> clv_person_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
