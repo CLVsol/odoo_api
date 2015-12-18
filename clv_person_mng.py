@@ -390,6 +390,39 @@ def clv_person_mng_search_patient_category(client, batch_name, category):
     print('--> not_found: ', not_found)
 
 
+def clv_person_mng_set_person_community(client, args, community):
+
+    clv_community = client.model('clv_community')
+    community_id = clv_community.browse([('name', '=', community), ])[0].id
+
+    clv_person_mng = client.model('clv_person_mng')
+    person_mng_browse = clv_person_mng.browse(args)
+
+    clv_community_person = client.model('clv_community.person')
+
+    i = 0
+    for person_mng in person_mng_browse:
+        i += 1
+
+        person_id = person_mng.person_id.id
+
+        community_person_ids = clv_community_person.browse([('community_id', '=', community_id),
+                                                            ('person_id', '=', person_id),
+                                                            ]).id
+
+        print(i, person_mng.name.encode('utf-8'), person_id, community_id, community_person_ids)
+
+        if community_person_ids == []:
+            values = {
+                'community_id': community_id,
+                'person_id': person_id,
+                }
+            community_person_id = clv_community_person.create(values).id
+            print('>>>>>', community_person_id)
+
+    print('--> i: ', i)
+
+
 def get_arguments():
 
     global username
@@ -530,6 +563,30 @@ if __name__ == '__main__':
     # print('-->', client, batch_name, category)
     # print('--> Executing clv_person_mng_search_patient_category()...')
     # clv_person_mng_search_patient_category(client, batch_name, category)
+
+    # person_mng_args = [('batch_name', '=', 'Criancas_2016_Rural'), ]
+    # community = 'Zona Rural'
+    # print('-->', client, person_mng_args, community)
+    # print('--> Executing clv_person_mng_set_person_community()...')
+    # clv_person_mng_set_person_community(client, person_mng_args, community)
+
+    # person_mng_args = [('batch_name', '=', 'Criancas_2016_Urbana'), ]
+    # community = 'Zona Urbana'
+    # print('-->', client, person_mng_args, community)
+    # print('--> Executing clv_person_mng_set_person_community()...')
+    # clv_person_mng_set_person_community(client, person_mng_args, community)
+
+    # person_mng_args = [('batch_name', '=', 'Idosos_2016_rural'), ]
+    # community = 'Zona Rural'
+    # print('-->', client, person_mng_args, community)
+    # print('--> Executing clv_person_mng_set_person_community()...')
+    # clv_person_mng_set_person_community(client, person_mng_args, community)
+
+    # person_mng_args = [('batch_name', '=', 'Idosos_2016_urbana'), ]
+    # community = 'Zona Urbana'
+    # print('-->', client, person_mng_args, community)
+    # print('--> Executing clv_person_mng_set_person_community()...')
+    # clv_person_mng_set_person_community(client, person_mng_args, community)
 
     print('--> clv_person_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
