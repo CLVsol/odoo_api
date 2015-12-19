@@ -161,6 +161,35 @@ def clv_person_import_remote(remote_client, local_client):
     print('responsible_count: ', responsible_count)
 
 
+def clv_person_check_address(client, args):
+
+    tag_id_Verificar_Endereco = get_tag_id(
+        client,
+        'Verificar Endereço',
+        'Registro necessitando verificação do Endereço.')
+
+    clv_person = client.model('clv_person')
+    person_browse = clv_person.browse(args)
+
+    i = 0
+    address_verify = 0
+    for person in person_browse:
+        i += 1
+
+        print(i, person.name.encode("utf-8"), person.address_id.id,
+              person.family_member_ids.family_id.address_id[0].id)
+
+        if person.address_id.id != person.family_member_ids.family_id.address_id[0].id:
+            address_verify += 1
+            values = {
+                'tag_ids': [(4, tag_id_Verificar_Endereco)],
+                }
+            clv_person.write(person.id, values)
+
+    print('--> i: ', i)
+    print('--> address_verify: ', address_verify)
+
+
 def get_arguments():
 
     global username
@@ -227,10 +256,10 @@ if __name__ == '__main__':
 
     remote_server = 'http://192.168.25.112:8069'
 
-    # remote_username = 'username'
-    remote_username = '*'
-    # remote_password = 'paswword'
-    remote_password = '*'
+    remote_username = 'username'
+    # remote_username = '*'
+    remote_password = 'paswword'
+    # remote_password = '*'
 
     remote_dbname = 'odoo'
     # remote_dbname = '*'
@@ -243,7 +272,7 @@ if __name__ == '__main__':
     print('--> clv_person.py...')
 
     client = erppeek.Client(server, dbname, username, password)
-    remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
+    # remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
 
     # person_args = []
     # print('-->', client, person_args)
@@ -258,6 +287,13 @@ if __name__ == '__main__':
     # print('-->', remote_client, client)
     # print('--> Executing clv_person_import_remote()...')
     # clv_person_import_remote(remote_client, client)
+
+    # person_args = [('address_id', '!=', False),
+    #                ('family_member_ids', '!=', False),
+    #                ]
+    # print('-->', client, person_args)
+    # print('--> Executing clv_person_check_address()...')
+    # clv_person_check_address(client, person_args)
 
     print('--> clv_person.py')
     print('--> Execution time:', secondsToStr(time() - start))
