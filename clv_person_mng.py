@@ -457,6 +457,51 @@ def clv_person_mng_set_family_community(client, args, community):
     print('--> i: ', i)
 
 
+def clv_address_mark_Verificar_Endereco(client, args):
+
+    tag_id_Verificar_Endereco = get_tag_id(
+        client,
+        'Verificar Endereço',
+        'Registro marcado para verificação do Endereço.')
+
+    clv_person_mng = client.model('clv_person_mng')
+    person_mng_browse = clv_person_mng.browse(args)
+
+    clv_person = client.model('clv_person')
+    clv_family = client.model('clv_family')
+
+    i = 0
+    verify = 0
+    for person_mng in person_mng_browse:
+        i += 1
+
+        person_mng_address_id = person_mng.address_id.id
+        person_address_id = person_mng.person_id.address_id.id
+        person_id = person_mng.person_id.id
+        family_id = person_mng.person_id.family_member_ids[0].family_id.id
+
+        print(i, person_mng.name.encode("utf-8"), person_mng_address_id,
+              person_address_id, person_id, family_id)
+
+        if person_mng_address_id != person_address_id:
+            verify += 1
+            values = {
+                'tag_ids': [(4, tag_id_Verificar_Endereco)],
+                }
+            clv_person_mng.write(person_mng.id, values)
+            values = {
+                'tag_ids': [(4, tag_id_Verificar_Endereco)],
+                }
+            clv_person.write(person_id, values)
+            values = {
+                'tag_ids': [(4, tag_id_Verificar_Endereco)],
+                }
+            clv_family.write(family_id, values)
+
+    print('--> i: ', i)
+    print('--> verify: ', verify)
+
+
 def get_arguments():
 
     global username
@@ -645,6 +690,11 @@ if __name__ == '__main__':
     # print('-->', client, person_mng_args, community)
     # print('--> Executing clv_person_mng_set_family_community()...')
     # clv_person_mng_set_family_community(client, person_mng_args, community)
+
+    # person_mng_args = [('batch_name', '!=', 'Idosos_2016_completa'), ]
+    # print('-->', client, person_mng_args)
+    # print('--> Executing clv_address_mark_Verificar_Endereco()...')
+    # clv_address_mark_Verificar_Endereco(client, person_mng_args)
 
     print('--> clv_person_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
