@@ -20,15 +20,14 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
-import csv
 
 from base import *
 import argparse
 import getpass
 
 from clv_patient import *
+
 
 def clv_patient_unlink(client, args):
 
@@ -59,6 +58,7 @@ def clv_patient_unlink(client, args):
     print('--> deleted: ', deleted)
     print('--> not_deleted: ', not_deleted)
 
+
 def get_patient_category_id(client, patient_category_name, patient_category_code='/'):
 
     clv_patient_category = client.model('clv_patient.category')
@@ -76,6 +76,7 @@ def get_patient_category_id(client, patient_category_name, patient_category_code
         patient_category_id = patient_category_id[0]
 
     return patient_category_id
+
 
 def clv_patient_import_remote(remote_client, local_client):
 
@@ -109,6 +110,7 @@ def clv_patient_import_remote(remote_client, local_client):
             local_clv_patient.write(local_patient_id, values)
 
     print('patient_count: ', patient_count)
+
 
 def get_arguments():
 
@@ -162,24 +164,25 @@ def get_arguments():
     elif remote_password == '*':
         remote_password = getpass.getpass('remote_password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
 
     remote_server = 'http://192.168.48.129:8069'
 
-    # remote_username = 'username'
-    remote_username = '*'
-    # remote_password = 'paswword' 
-    remote_password = '*' 
+    remote_username = 'username'
+    # remote_username = '*'
+    remote_password = 'password'
+    # remote_password = '*'
 
     remote_dbname = 'odoo'
     # remote_dbname = '*'
@@ -192,7 +195,7 @@ if __name__ == '__main__':
     print('--> clv_patient.py...')
 
     client = erppeek.Client(server, dbname, username, password)
-    remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
+    # remote_client = erppeek.Client(remote_server, remote_dbname, remote_username, remote_password)
 
     # patient_args = []
     # print('-->', client, patient_args)
