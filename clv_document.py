@@ -27,6 +27,206 @@ import argparse
 import getpass
 
 
+def clv_document_create(client, args):
+
+    clv_document = client.model('clv_document')
+
+    clv_patient = client.model('clv_patient')
+    patient_browse = clv_patient.browse(args)
+
+    clv_patient_category = client.model('clv_patient.category')
+    cat_idoso_2016_id = clv_patient_category.browse([('name', '=', 'Idoso 2016'), ])[0].id
+    cat_crianca_2016_id = clv_patient_category.browse([('name', '=', 'Criança 2016'), ])[0].id
+
+    survey_survey = client.model('survey.survey')
+    survey_FSE16_id = survey_survey.browse([(
+        'title', '=',
+        '[FSE16] JCAFB 2016 - Questionário Socioeconômico Familiar (Crianças e Idosos)'), ])[0].id
+    survey_ISE16_id = survey_survey.browse([(
+        'title', '=',
+        '[ISE16] JCAFB 2016 - Questionário Socioeconômico Individual (Idosos)'), ])[0].id
+    survey_CSE16_id = survey_survey.browse([(
+        'title', '=',
+        '[CSE16] JCAFB 2016 - Questionário Socioeconômico Individual (Crianças)'), ])[0].id
+    survey_QMD16_id = survey_survey.browse([(
+        'title', '=',
+        '[QMD16] JCAFB 2016 - Questionário Medicamento'), ])[0].id
+    survey_QAN16_id = survey_survey.browse([(
+        'title', '=',
+        '[QAN16] JCAFB 2016 - Questionário para detecção de Anemia'), ])[0].id
+    survey_QDH16_id = survey_survey.browse([(
+        'title', '=',
+        '[QDH16] JCAFB 2016 - Questionário - Diabetes, Hipertensão Arterial e Hipercolesterolemia'), ])[0].id
+    survey_ITM16_id = survey_survey.browse([(
+        'title', '=',
+        '[ITM16] JCAFB 2016 - Interpretação das Tabelas de Medicamentos'), ])[0].id
+    survey_TCP16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCP16] JCAFB 2016 - TERMO DE CONSENTIMENTO PARA A CAMPANHA DE DETECÇÃO DE DIABETES, HIPERTENSÃO ARTERIAL E HIPERCOLESTEROLEMIA'), ])[0].id
+    survey_TCR16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCR16] JCAFB 2016 - TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAMES COPROPARASITOLÓGICOS, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'), ])[0].id
+    survey_TID16_id = survey_survey.browse([(
+        'title', '=',
+        '[TID16] JCAFB 2016 - TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAME DE URINA, COPROPARASITOLÓGICO, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'), ])[0].id
+
+    i = 0
+    idoso_2016 = 0
+    crianca_2016 = 0
+    for patient in patient_browse:
+        i += 1
+
+        print(i, patient.name.encode('utf-8'), patient.category_ids.id)
+
+        if (cat_idoso_2016_id in patient.category_ids.id) or \
+           (cat_crianca_2016_id in patient.category_ids.id):
+
+            family_id = patient.person.family_member_ids[0].family_id.id
+
+            survey_ids = []
+            for document in patient.person.family_member_ids.family_id.document_ids:
+                survey_ids = survey_ids + document.survey_id.id
+
+            if survey_FSE16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_FSE16_id,
+                    # 'patient_id': patient.id,
+                    'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_QMD16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_QMD16_id,
+                    # 'patient_id': patient.id,
+                    'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_ITM16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_ITM16_id,
+                    # 'patient_id': patient.id,
+                    'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+        if cat_idoso_2016_id in patient.category_ids.id:
+            idoso_2016 += 1
+
+            survey_ids = []
+            for document in patient.person.family_member_ids.family_id.document_ids:
+                survey_ids = survey_ids + document.survey_id.id
+
+            if survey_ISE16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_ISE16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_QAN16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_QAN16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_QDH16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_QDH16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_TID16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_TID16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_TCP16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_TCP16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+        if cat_crianca_2016_id in patient.category_ids.id:
+            crianca_2016 += 1
+
+            survey_ids = []
+            for document in patient.person.family_member_ids.family_id.document_ids:
+                survey_ids = survey_ids + document.survey_id.id
+
+            if survey_CSE16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_CSE16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_QAN16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_QAN16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_TCR16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_TCR16_id,
+                    'patient_id': patient.id,
+                    # 'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+    print('--> i: ', i)
+    print('--> idoso_2016: ', idoso_2016)
+    print('--> crianca_2016: ', crianca_2016)
+
+
 def get_arguments():
 
     global username
@@ -77,6 +277,11 @@ if __name__ == '__main__':
     print('--> clv_document.py...')
 
     client = erppeek.Client(server, dbname, username, password)
+
+    patient_args = [('category_ids', '!=', False), ]
+    print('-->', client, patient_args)
+    print('--> Executing clv_document_create()...')
+    clv_document_create(client, patient_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
