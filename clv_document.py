@@ -27,6 +27,36 @@ import argparse
 import getpass
 
 
+def clv_document_unlink(client, args):
+
+    clv_document = client.model('clv_document')
+    document_browse = clv_document.browse(args)
+
+    i = 0
+    deleted = 0
+    not_deleted = 0
+    for document in document_browse:
+        i += 1
+        print(i, document.name.encode("utf-8"))
+
+        history = client.model('clv_document.history')
+        history_browse = history.browse([('document_id', '=', document.id), ])
+        history_ids = history_browse.id
+        print('>>>>>', history_ids)
+
+        history.unlink(history_ids)
+        try:
+            clv_document.unlink(document.id)
+            deleted += 1
+        except:
+            print('>>>>>', 'Not deleted!')
+            not_deleted += 1
+
+    print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
+
 def clv_document_create(client, args):
 
     clv_document = client.model('clv_document')
@@ -81,10 +111,10 @@ def clv_document_create(client, args):
         if (cat_idoso_2016_id in patient.category_ids.id) or \
            (cat_crianca_2016_id in patient.category_ids.id):
 
-            family_id = patient.person.family_member_ids[0].family_id.id
+            document_id = patient.person.document_member_ids[0].document_id.id
 
             survey_ids = []
-            for document in patient.person.family_member_ids.family_id.document_ids:
+            for document in patient.person.document_member_ids.document_id.document_ids:
                 survey_ids = survey_ids + document.survey_id.id
 
             if survey_FSE16_id not in survey_ids:
@@ -92,7 +122,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_FSE16_id,
                     # 'patient_id': patient.id,
-                    'family_id': family_id,
+                    'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -103,7 +133,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_QMD16_id,
                     # 'patient_id': patient.id,
-                    'family_id': family_id,
+                    'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -114,7 +144,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_ITM16_id,
                     # 'patient_id': patient.id,
-                    'family_id': family_id,
+                    'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -124,7 +154,7 @@ def clv_document_create(client, args):
             idoso_2016 += 1
 
             survey_ids = []
-            for document in patient.person.family_member_ids.family_id.document_ids:
+            for document in patient.person.document_member_ids.document_id.document_ids:
                 survey_ids = survey_ids + document.survey_id.id
 
             if survey_ISE16_id not in survey_ids:
@@ -132,7 +162,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_ISE16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -143,7 +173,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_QAN16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -154,7 +184,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_QDH16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -165,7 +195,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_TID16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -176,7 +206,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_TCP16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -186,7 +216,7 @@ def clv_document_create(client, args):
             crianca_2016 += 1
 
             survey_ids = []
-            for document in patient.person.family_member_ids.family_id.document_ids:
+            for document in patient.person.document_member_ids.document_id.document_ids:
                 survey_ids = survey_ids + document.survey_id.id
 
             if survey_CSE16_id not in survey_ids:
@@ -194,7 +224,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_CSE16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -205,7 +235,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_QAN16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -216,7 +246,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_TCR16_id,
                     'patient_id': patient.id,
-                    # 'family_id': family_id,
+                    # 'document_id': document_id,
                     }
                 document_id = clv_document.create(values).id
 
