@@ -59,6 +59,43 @@ def clv_patient_unlink(client, args):
     print('--> not_deleted: ', not_deleted)
 
 
+def clv_patient_unlink_aExcluir(client):
+
+    clv_tag = client.model('clv_tag')
+    tag_aExcluir = clv_tag.browse([('name', '=', 'aExcluir'), ])[0].id
+
+    clv_patient = client.model('clv_patient')
+    patient_browse = clv_patient.browse([])
+
+    i = 0
+    deleted = 0
+    not_deleted = 0
+    for patient in patient_browse:
+        i += 1
+        print(i, patient.name.encode("utf-8"), patient.tag_ids.id)
+
+        for tag_id in patient.tag_ids.id:
+
+            if tag_id == tag_aExcluir:
+
+                history = client.model('clv_patient.history')
+                history_browse = history.browse([('patient_id', '=', patient.id), ])
+                history_ids = history_browse.id
+                print('>>>>>', history_ids)
+
+                history.unlink(history_ids)
+                try:
+                    clv_patient.unlink(patient.id)
+                    deleted += 1
+                except:
+                    print('>>>>>', 'Not deleted!')
+                    not_deleted += 1
+
+    print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
+
 def get_patient_category_id(client, patient_category_name, patient_category_code='/'):
 
     clv_patient_category = client.model('clv_patient.category')
@@ -201,6 +238,10 @@ if __name__ == '__main__':
     # print('-->', client, patient_args)
     # print('--> Executing clv_patient_unlink("new")...')
     # clv_patient_unlink(client, patient_args)
+
+    # print('-->', client)
+    # print('--> Executing clv_patient_unlink_aExcluir()...')
+    # clv_patient_unlink_aExcluir(client)
 
     # print('-->', remote_client, client)
     # print('--> Executing clv_patient_import_remote()...')
