@@ -59,6 +59,43 @@ def clv_person_unlink(client, args):
     print('--> not_deleted: ', not_deleted)
 
 
+def clv_person_unlink_aExcluir(client):
+
+    clv_tag = client.model('clv_tag')
+    tag_aExcluir = clv_tag.browse([('name', '=', 'aExcluir'), ])[0].id
+
+    clv_person = client.model('clv_person')
+    person_browse = clv_person.browse([])
+
+    i = 0
+    deleted = 0
+    not_deleted = 0
+    for person in person_browse:
+        i += 1
+        print(i, person.name.encode("utf-8"), person.tag_ids.id)
+
+        for tag_id in person.tag_ids.id:
+
+            if tag_id == tag_aExcluir:
+
+                history = client.model('clv_person.history')
+                history_browse = history.browse([('person_id', '=', person.id), ])
+                history_ids = history_browse.id
+                print('>>>>>', history_ids)
+
+                history.unlink(history_ids)
+                try:
+                    clv_person.unlink(person.id)
+                    deleted += 1
+                except:
+                    print('>>>>>', 'Not deleted!')
+                    not_deleted += 1
+
+    print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
+
 def clv_person_import_remote(remote_client, local_client):
 
     clv_address = local_client.model('clv_address')
@@ -278,6 +315,10 @@ if __name__ == '__main__':
     # print('-->', client, person_args)
     # print('--> Executing clv_person_unlink("new")...')
     # clv_person_unlink(client, person_args)
+
+    # print('-->', client)
+    # print('--> Executing clv_person_unlink_aExcluir()...')
+    # clv_person_unlink_aExcluir(client)
 
     # address_args = []
     # print('-->', client, address_args)
