@@ -279,6 +279,43 @@ def clv_family_mark_Nome_Replicado(client, args):
     print('--> replicated: ', replicated)
 
 
+def clv_person_set_family_community(client, args):
+
+    clv_person = client.model('clv_person')
+    person_browse = clv_person.browse(args)
+
+    clv_community_family = client.model('clv_community.family')
+
+    i = 0
+    for person in person_browse:
+        i += 1
+
+        community_person_ids = person.community_ids.community_id.id
+
+        print(i, person.name.encode('utf-8'), community_person_ids)
+
+        for community_id in community_person_ids:
+
+            family_id = person.family_member_ids[0].family_id.id
+
+            community_family_ids = clv_community_family.browse(
+                [('community_id', '=', community_id),
+                 ('family_id', '=', family_id),
+                 ]).id
+
+            print('>>>>>', community_id, community_family_ids)
+
+            if community_family_ids == []:
+                values = {
+                    'community_id': community_id,
+                    'family_id': family_id,
+                    }
+                community_family_id = clv_community_family.create(values).id
+                print('>>>>>', community_family_id)
+
+    print('--> i: ', i)
+
+
 def get_arguments():
 
     global username
@@ -405,6 +442,11 @@ if __name__ == '__main__':
     # print('-->', client)
     # print('--> Executing clv_family_unlink_aExcluir()...')
     # clv_family_unlink_aExcluir(client)
+
+    # person_args = []
+    # print('-->', client, person_args)
+    # print('--> Executing clv_person_set_family_community()...')
+    # clv_person_set_family_community(client, person_args)
 
     print('--> clv_family.py')
     print('--> Execution time:', secondsToStr(time() - start))
