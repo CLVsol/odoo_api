@@ -81,24 +81,33 @@ def clv_document_create(client, args):
     survey_QMD16_id = survey_survey.browse([(
         'title', '=',
         '[QMD16] JCAFB 2016 - Questionário Medicamento'), ])[0].id
+    survey_ITM16_id = survey_survey.browse([(
+        'title', '=',
+        '[ITM16] JCAFB 2016 - Interpretação das Tabelas de Medicamentos'), ])[0].id
     survey_QAN16_id = survey_survey.browse([(
         'title', '=',
         '[QAN16] JCAFB 2016 - Questionário para detecção de Anemia'), ])[0].id
     survey_QDH16_id = survey_survey.browse([(
         'title', '=',
         '[QDH16] JCAFB 2016 - Questionário - Diabetes, Hipertensão Arterial e Hipercolesterolemia'), ])[0].id
-    survey_ITM16_id = survey_survey.browse([(
-        'title', '=',
-        '[ITM16] JCAFB 2016 - Interpretação das Tabelas de Medicamentos'), ])[0].id
     survey_TCP16_id = survey_survey.browse([(
         'title', '=',
-        '[TCP16] JCAFB 2016 - TERMO DE CONSENTIMENTO PARA A CAMPANHA DE DETECÇÃO DE DIABETES, HIPERTENSÃO ARTERIAL E HIPERCOLESTEROLEMIA'), ])[0].id
+        '[TCP16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO PARA A CAMPANHA DE DETECÇÃO DE DIABETES, ' +
+        'HIPERTENSÃO ARTERIAL E HIPERCOLESTEROLEMIA'
+        ), ])[0].id
     survey_TCR16_id = survey_survey.browse([(
         'title', '=',
-        '[TCR16] JCAFB 2016 - TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAMES COPROPARASITOLÓGICOS, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'), ])[0].id
+        '[TCR16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAMES COPROPARASITOLÓGICOS, ' +
+        'DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
     survey_TID16_id = survey_survey.browse([(
         'title', '=',
-        '[TID16] JCAFB 2016 - TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAME DE URINA, COPROPARASITOLÓGICO, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'), ])[0].id
+        '[TID16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAME DE URINA, ' +
+        'COPROPARASITOLÓGICO, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
 
     i = 0
     idoso_2016 = 0
@@ -111,18 +120,37 @@ def clv_document_create(client, args):
         if (cat_idoso_2016_id in patient.category_ids.id) or \
            (cat_crianca_2016_id in patient.category_ids.id):
 
-            document_id = patient.person.document_member_ids[0].document_id.id
+            family_id = patient.person.family_member_ids[0].family_id.id
 
             survey_ids = []
-            for document in patient.person.document_member_ids.document_id.document_ids:
+            for document in patient.person.family_member_ids.family_id.document_ids:
                 survey_ids = survey_ids + document.survey_id.id
 
             if survey_FSE16_id not in survey_ids:
 
                 values = {
                     'survey_id': survey_FSE16_id,
-                    # 'patient_id': patient.id,
-                    'document_id': document_id,
+                    'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+        if cat_idoso_2016_id in patient.category_ids.id:
+            idoso_2016 += 1
+
+            family_id = patient.person.family_member_ids[0].family_id.id
+
+            survey_ids = []
+            for document in patient.document_ids:
+                survey_ids = survey_ids + document.survey_id.id
+
+            if survey_ISE16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_ISE16_id,
+                    'patient_id': patient.id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -132,8 +160,8 @@ def clv_document_create(client, args):
 
                 values = {
                     'survey_id': survey_QMD16_id,
-                    # 'patient_id': patient.id,
-                    'document_id': document_id,
+                    'family_id': family_id,
+                    'patient_id': patient.id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -143,26 +171,8 @@ def clv_document_create(client, args):
 
                 values = {
                     'survey_id': survey_ITM16_id,
-                    # 'patient_id': patient.id,
-                    'document_id': document_id,
-                    }
-                document_id = clv_document.create(values).id
-
-                print('>>>>>', document_id)
-
-        if cat_idoso_2016_id in patient.category_ids.id:
-            idoso_2016 += 1
-
-            survey_ids = []
-            for document in patient.person.document_member_ids.document_id.document_ids:
-                survey_ids = survey_ids + document.survey_id.id
-
-            if survey_ISE16_id not in survey_ids:
-
-                values = {
-                    'survey_id': survey_ISE16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -173,7 +183,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_QAN16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -184,7 +194,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_QDH16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -195,7 +205,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_TID16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -206,7 +216,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_TCP16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -215,8 +225,10 @@ def clv_document_create(client, args):
         if cat_crianca_2016_id in patient.category_ids.id:
             crianca_2016 += 1
 
+            family_id = patient.person.family_member_ids[0].family_id.id
+
             survey_ids = []
-            for document in patient.person.document_member_ids.document_id.document_ids:
+            for document in patient.document_ids:
                 survey_ids = survey_ids + document.survey_id.id
 
             if survey_CSE16_id not in survey_ids:
@@ -224,7 +236,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_CSE16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -235,7 +247,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_QAN16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
@@ -246,7 +258,7 @@ def clv_document_create(client, args):
                 values = {
                     'survey_id': survey_TCR16_id,
                     'patient_id': patient.id,
-                    # 'document_id': document_id,
+                    'family_id': family_id,
                     }
                 document_id = clv_document.create(values).id
 
