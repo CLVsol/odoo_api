@@ -20,13 +20,13 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 import csv
 
 from base import *
 import argparse
 import getpass
+
 
 def get_insured_category_id(client, category_name):
 
@@ -43,6 +43,7 @@ def get_insured_category_id(client, category_name):
         insured_category_id = insured_category_id[0]
 
     return insured_category_id
+
 
 def clv_insured_export_VCAS(client, file_path, date_inclusion):
 
@@ -100,6 +101,7 @@ def clv_insured_export_VCAS(client, file_path, date_inclusion):
 
     print('i: ', i)
 
+
 def clv_insured_export_HVC(client, file_path, date_inclusion):
 
     clv_insurance_client = client.model('clv_insurance_client')
@@ -156,6 +158,7 @@ def clv_insured_export_HVC(client, file_path, date_inclusion):
 
     print('i: ', i)
 
+
 def get_arguments():
 
     global username
@@ -185,14 +188,15 @@ def get_arguments():
     elif password == '*':
         password = getpass.getpass('password: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -231,6 +235,20 @@ if __name__ == '__main__':
 
     # file_path = '/opt/openerp/biobox/data/insured_HVC_2015_11_30.csv'
     # date_inclusion = '2015-11-30'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_HVC()...')
+    # clv_insured_export_HVC(client, file_path, date_inclusion)
+
+    ##########################################
+
+    # file_path = '/opt/openerp/biobox/data/insured_VCAS_2015_12_31.csv'
+    # date_inclusion = '2015-12-31'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_VCAS()...')
+    # clv_insured_export_VCAS(client, file_path, date_inclusion)
+
+    # file_path = '/opt/openerp/biobox/data/insured_HVC_2015_12_31.csv'
+    # date_inclusion = '2015-12-31'
     # print('-->', client, file_path, date_inclusion)
     # print('--> Executing clv_insured_export_HVC()...')
     # clv_insured_export_HVC(client, file_path, date_inclusion)
