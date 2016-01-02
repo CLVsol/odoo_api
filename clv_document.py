@@ -269,6 +269,110 @@ def clv_document_create(client, args):
     print('--> crianca_2016: ', crianca_2016)
 
 
+def clv_document_clear_survey_user_input_id(client, args):
+
+    clv_document = client.model('clv_document')
+    document_browse = clv_document.browse(args)
+
+    i = 0
+    for document in document_browse:
+        i += 1
+        print(i, document.name, document.survey_id.title.encode("utf-8"))
+
+        values = {
+            "survey_user_input_id": False,
+            }
+        clv_document.write(document.id, values)
+
+    print('--> i: ', i)
+
+
+def clv_document_get_survey_user_input_id(client, args):
+
+    survey_survey = client.model('survey.survey')
+    survey_FSE16_id = survey_survey.browse([(
+        'title', '=',
+        '[FSE16] JCAFB 2016 - Questionário Socioeconômico Familiar (Crianças e Idosos)'), ])[0].id
+    survey_ISE16_id = survey_survey.browse([(
+        'title', '=',
+        '[ISE16] JCAFB 2016 - Questionário Socioeconômico Individual (Idosos)'), ])[0].id
+    survey_CSE16_id = survey_survey.browse([(
+        'title', '=',
+        '[CSE16] JCAFB 2016 - Questionário Socioeconômico Individual (Crianças)'), ])[0].id
+    survey_QMD16_id = survey_survey.browse([(
+        'title', '=',
+        '[QMD16] JCAFB 2016 - Questionário Medicamento'), ])[0].id
+    survey_ITM16_id = survey_survey.browse([(
+        'title', '=',
+        '[ITM16] JCAFB 2016 - Interpretação das Tabelas de Medicamentos'), ])[0].id
+    survey_QAN16_id = survey_survey.browse([(
+        'title', '=',
+        '[QAN16] JCAFB 2016 - Questionário para detecção de Anemia'), ])[0].id
+    survey_QDH16_id = survey_survey.browse([(
+        'title', '=',
+        '[QDH16] JCAFB 2016 - Questionário - Diabetes, Hipertensão Arterial e Hipercolesterolemia'), ])[0].id
+    survey_TCP16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCP16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO PARA A CAMPANHA DE DETECÇÃO DE DIABETES, ' +
+        'HIPERTENSÃO ARTERIAL E HIPERCOLESTEROLEMIA'
+        ), ])[0].id
+    survey_TCR16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCR16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAMES COPROPARASITOLÓGICOS, ' +
+        'DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
+    survey_TID16_id = survey_survey.browse([(
+        'title', '=',
+        '[TID16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAME DE URINA, ' +
+        'COPROPARASITOLÓGICO, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
+
+    clv_document = client.model('clv_document')
+    document_browse = clv_document.browse(args)
+
+    survey_user_input_line = client.model('survey.user_input_line')
+
+    i = 0
+    found = 0
+    not_found = 0
+    for document in document_browse:
+        i += 1
+        print(i, document.name, document.survey_id.title.encode("utf-8"))
+
+        if document.survey_id.id == survey_TID16_id:
+
+            survey_user_input_line_browse = survey_user_input_line.browse(
+                [('value_text', '=', document.name), ])
+            survey_user_input_line_ids = survey_user_input_line_browse.id
+
+            if survey_user_input_line_ids != []:
+                found += 1
+                values = {
+                    "survey_user_input_id": survey_user_input_line_browse[0].user_input_id.id,
+                    }
+                clv_document.write(document.id, values)
+
+        if document.survey_id.id == survey_TCP16_id:
+
+            survey_user_input_line_browse = survey_user_input_line.browse(
+                [('value_text', '=', document.name), ])
+            survey_user_input_line_ids = survey_user_input_line_browse.id
+
+            if survey_user_input_line_ids != []:
+                found += 1
+                values = {
+                    "survey_user_input_id": survey_user_input_line_browse[0].user_input_id.id,
+                    }
+                clv_document.write(document.id, values)
+
+    print('--> i: ', i)
+    print('--> found: ', found)
+    print('--> not_found: ', not_found)
+
+
 def get_arguments():
 
     global username
@@ -320,10 +424,24 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    patient_args = [('category_ids', '!=', False), ]
-    print('-->', client, patient_args)
-    print('--> Executing clv_document_create()...')
-    clv_document_create(client, patient_args)
+    # patient_args = [('category_ids', '!=', False), ]
+    # print('-->', client, patient_args)
+    # print('--> Executing clv_document_create()...')
+    # clv_document_create(client, patient_args)
+
+    # document_args = [('state', '=', 'waiting'),
+    #                  ('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_clear_survey_user_input_id()...')
+    # clv_document_clear_survey_user_input_id(client, document_args)
+
+    # document_args = [('state', '=', 'waiting'),
+    #                  ('survey_user_input_id', '=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_get_survey_user_input_id()...')
+    # clv_document_get_survey_user_input_id(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
