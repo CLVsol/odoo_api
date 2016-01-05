@@ -62,7 +62,7 @@ def get_medicament_list_version_id(client, list_id, list_version_name):
             }
         medicament_list_version_id = clv_medicament_list_version.create(values).id
     else:
-        medicament_list_version_id = medicament_list_id[0]
+        medicament_list_version_id = medicament_list_version_id[0]
 
     return medicament_list_version_id
 
@@ -463,6 +463,24 @@ def clv_medicament_list_include_orizon(client, file_name, list_name, list_versio
     print('medicament_not_found: ', medicament_not_found)
 
 
+def clv_medicament_list_export(client, medicament_list, medicament_list_version, file_path):
+
+    list_id = get_medicament_list_id(client, medicament_list)
+    list_version_id = get_medicament_list_version_id(client, list_id, medicament_list_version)
+
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
+    medicament_list_item_browse = clv_medicament_list_item.browse(
+        [('list_version_id', '=', list_version_id), ])
+
+    item_count = 0
+    for medicament_list_item in medicament_list_item_browse:
+        item_count += 1
+
+        print(item_count, medicament_list_item.medicament_id.name.encode('utf-8'))
+
+    print('item_count: ', item_count)
+
+
 def get_arguments():
 
     global username
@@ -561,6 +579,13 @@ if __name__ == '__main__':
     # print('-->', client, file_name, list_name, list_version_name)
     # print('--> Executing clv_medicament_list_include_orizon()...')
     # clv_medicament_list_include_orizon(client, file_name, list_name, list_version_name)
+
+    medicament_list = 'CPqD - Memento'
+    medicament_list_version = '1500'
+    file_path = '/opt/openerp/biobox/data/ml_CPqD_Memento_1500_2015_10_28.csv'
+    print('-->', client, medicament_list, medicament_list_version, file_path)
+    print('--> Executing clv_medicament_list_export()...')
+    clv_medicament_list_export(client, medicament_list, medicament_list_version, file_path)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
