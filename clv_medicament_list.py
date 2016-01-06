@@ -465,6 +465,12 @@ def clv_medicament_list_include_orizon(client, file_name, list_name, list_versio
 
 def clv_medicament_list_export(client, medicament_list, medicament_list_version, file_path):
 
+    headings_item = ['no',
+                     ]
+    file_item = open(file_path, 'wb')
+    writer_item = csv.writer(file_item, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_item.writerow(headings_item)
+
     list_id = get_medicament_list_id(client, medicament_list)
     list_version_id = get_medicament_list_version_id(client, list_id, medicament_list_version)
 
@@ -477,6 +483,12 @@ def clv_medicament_list_export(client, medicament_list, medicament_list_version,
         item_count += 1
 
         print(item_count, medicament_list_item.medicament_id.name.encode('utf-8'))
+
+        row_item = [item_count,
+                    ]
+        writer_item.writerow(row_item)
+
+    file_item.close()
 
     print('item_count: ', item_count)
 
