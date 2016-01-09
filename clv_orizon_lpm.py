@@ -280,7 +280,7 @@ if __name__ == '__main__':
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
+    # paswword = 'paswword'
     paswword = '*'
 
     dbname = 'odoo'
@@ -342,6 +342,20 @@ if __name__ == '__main__':
     # list_name = 'LPM_1512'
     # previous_list_name = 'LPM_1511'
     # file_name = '/opt/openerp/orizon_lpm/LPM_1512.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    #########################
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1601.csv'
+    # from_ = 'LPM_1601'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1601'
+    # previous_list_name = 'LPM_1512'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1601.csv'
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
 
