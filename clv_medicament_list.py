@@ -466,8 +466,9 @@ def clv_medicament_list_include_orizon(client, file_name, list_name, list_versio
 def clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path):
 
     headings_item = ['no',
-                     'medicament_id',
-                     'medicament_ref'
+                     # 'medicament_id',
+                     # 'medicament_ref',
+                     'cod_BioBox', 'cod_abc', 'cod_garantemed', 'cod_orizon',
                      ]
     file_item = open(file_path, 'wb')
     writer_item = csv.writer(file_item, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
@@ -487,23 +488,43 @@ def clv_medicament_list_export(client, medicament_list, medicament_list_version,
     for medicament_list_item in medicament_list_item_browse:
         item_count += 1
 
+        medicament_id = False
+        medicament_name = False
+        cod_BioBox = False
+        cod_abc = False
+        cod_garantemed = False
+        cod_orizon = False
+
+        medicament_ref = False
+
         if medicament_list_item.medicament_id is not False:
             medicament_id = medicament_list_item.medicament_id.id
             medicament_name = medicament_list_item.medicament_id.name.encode('utf-8')
-        else:
-            medicament_id = False
-            medicament_name = False
+            cod_BioBox = medicament_list_item.medicament_id.code
+
+            if medicament_list_item.medicament_id.abcfarma_id is not False:
+                cod_abc = medicament_list_item.medicament_id.abcfarma_id.med_abc
+
+            if medicament_list_item.medicament_id.medicament_gm_id is not False:
+                cod_garantemed = medicament_list_item.medicament_id.medicament_gm_id.cod_prod_fabricante
+
+            if medicament_list_item.medicament_id.orizon_lpm_id is not False:
+                cod_orizon = medicament_list_item.medicament_id.orizon_lpm_id.cod_prod
 
         if medicament_list_item.medicament_ref is not False:
             medicament_ref = medicament_list_item.medicament_ref.id
-        else:
-            medicament_ref = False
 
-        print(item_count, medicament_name)
+            if reference == 'clv_orizon_lpm':
+                cod_orizon = medicament_list_item.medicament_ref.cod_prod
 
-        row_item = [item_count,
-                    medicament_id,
-                    medicament_ref,
+        print(item_count, medicament_list_item.order,
+              medicament_id, medicament_ref,
+              cod_BioBox, cod_abc, cod_garantemed, cod_orizon)
+
+        row_item = [medicament_list_item.order,
+                    # medicament_id,
+                    # medicament_ref,
+                    cod_BioBox, cod_abc, cod_garantemed, cod_orizon
                     ]
         writer_item.writerow(row_item)
 
