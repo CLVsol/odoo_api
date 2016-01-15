@@ -227,6 +227,53 @@ def clv_person_check_address(client, args):
     print('--> address_verify: ', address_verify)
 
 
+def clv_person_export_jcafb(client, file_path):
+
+    headings_person = ['no',
+                       'código da pessoa', 'nome',
+                       'código do paciente', 'data de nascimento',
+                       'endereço',
+                       'categorias',
+                       ]
+    file_person = open(file_path, 'wb')
+    writer_person = csv.writer(file_person, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_person.writerow(headings_person)
+
+    clv_person = client.model('clv_person')
+    person_browse = clv_person.browse([])
+
+    person_count = 0
+    for person in person_browse:
+        person_count += 1
+
+        print(person_count, person.code, person.name.encode('utf-8'))
+
+        patient_code = False
+        categories = ''
+        if person.patient_ids.id != []:
+            patient_code = person.patient_ids[0].code
+            for category in person.patient_ids[0].category_ids:
+                if categories == '':
+                    categories = categories + category.name.encode('utf-8')
+                else:
+                    categories = categories + ',' + category.name.encode('utf-8')
+
+        if person.address_id is not False:
+            address = person.address_id.name.encode('utf-8')
+
+        row_person = [person_count,
+                      person.code, person.name.encode('utf-8'),
+                      patient_code, person.birthday,
+                      address,
+                      categories,
+                      ]
+        writer_person.writerow(row_person)
+
+    file_person.close()
+
+    print('person_count: ', person_count)
+
+
 def get_arguments():
 
     global username
@@ -335,6 +382,11 @@ if __name__ == '__main__':
     # print('-->', client, person_args)
     # print('--> Executing clv_person_check_address()...')
     # clv_person_check_address(client, person_args)
+
+    file_path = '/opt/openerp/jcafb/data/Lista_de_Campanha_2016-01-15.csv'
+    print('-->', client, file_path)
+    print('--> Executing clv_person_export_jcafb("new")...')
+    clv_person_export_jcafb(client, file_path)
 
     print('--> clv_person.py')
     print('--> Execution time:', secondsToStr(time() - start))
