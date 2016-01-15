@@ -124,6 +124,7 @@ def clv_document_create(client, args):
 
             survey_ids = []
             for document in patient.person.family_member_ids.family_id.document_ids:
+                print('>>>>>', survey_ids, document.survey_id.id)
                 survey_ids = survey_ids + document.survey_id.id
 
             if survey_FSE16_id not in survey_ids:
@@ -143,7 +144,8 @@ def clv_document_create(client, args):
 
             survey_ids = []
             for document in patient.document_ids:
-                survey_ids = survey_ids + document.survey_id.id
+                print('>>>>>', survey_ids, [document.survey_id.id])
+                survey_ids = survey_ids + [document.survey_id.id]
 
             if survey_ISE16_id not in survey_ids:
 
@@ -229,7 +231,8 @@ def clv_document_create(client, args):
 
             survey_ids = []
             for document in patient.document_ids:
-                survey_ids = survey_ids + document.survey_id.id
+                print('>>>>>', survey_ids, [document.survey_id.id])
+                survey_ids = survey_ids + [document.survey_id.id]
 
             if survey_CSE16_id not in survey_ids:
 
@@ -424,10 +427,10 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    # patient_args = [('category_ids', '!=', False), ]
-    # print('-->', client, patient_args)
-    # print('--> Executing clv_document_create()...')
-    # clv_document_create(client, patient_args)
+    patient_args = [('category_ids', '!=', False), ]
+    print('-->', client, patient_args)
+    print('--> Executing clv_document_create()...')
+    clv_document_create(client, patient_args)
 
     # document_args = [('state', '=', 'waiting'),
     #                  ('survey_user_input_id', '!=', False),
