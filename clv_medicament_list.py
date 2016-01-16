@@ -469,6 +469,11 @@ def clv_medicament_list_export(client, medicament_list, medicament_list_version,
                      # 'medicament_id',
                      # 'medicament_ref',
                      'cod_BioBox', 'cod_abc', 'cod_garantemed', 'cod_orizon',
+                     'nome_biobox', 'medicament_name', 'presentation',
+                     'active_component_name', 'active_component_code',
+                     'concentration', 'pres_form', 'pres_form_2',
+                     'discount', 'subsidy',
+                     'notes',
                      ]
     file_item = open(file_path, 'wb')
     writer_item = csv.writer(file_item, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
@@ -489,18 +494,43 @@ def clv_medicament_list_export(client, medicament_list, medicament_list_version,
         item_count += 1
 
         medicament_id = False
-        medicament_name = False
+        nome_biobox = False
         cod_BioBox = False
         cod_abc = False
         cod_garantemed = False
         cod_orizon = False
 
+        medicament_name = False
+        presentation = False
+        active_component_name = False
+        active_component_code = False
+        concentration = False
+        pres_form = False
+        pres_form_2 = False
+
         medicament_ref = False
+
+        notes = False
+        if medicament_list_item.notes is not False:
+            notes = medicament_list_item.notes.encode('utf-8')
 
         if medicament_list_item.medicament_id is not False:
             medicament_id = medicament_list_item.medicament_id.id
-            medicament_name = medicament_list_item.medicament_id.name.encode('utf-8')
+            nome_biobox = medicament_list_item.medicament_id.name.encode('utf-8')
             cod_BioBox = medicament_list_item.medicament_id.code
+            if medicament_list_item.medicament_id.medicament_name is not False:
+                medicament_name = medicament_list_item.medicament_id.medicament_name.encode('utf-8')
+            if medicament_list_item.medicament_id.presentation is not False:
+                presentation = medicament_list_item.medicament_id.presentation.encode('utf-8')
+            if medicament_list_item.medicament_id.active_component is not False:
+                active_component_name = medicament_list_item.medicament_id.active_component.name.encode('utf-8')
+                active_component_code = medicament_list_item.medicament_id.active_component.code
+            if medicament_list_item.medicament_id.concentration is not False:
+                concentration = medicament_list_item.medicament_id.concentration.encode('utf-8')
+            if medicament_list_item.medicament_id.pres_form is not False:
+                pres_form = medicament_list_item.medicament_id.pres_form.name.encode('utf-8')
+            if medicament_list_item.medicament_id.pres_form_2 is not False:
+                pres_form_2 = medicament_list_item.medicament_id.pres_form_2.name.encode('utf-8')
 
             if medicament_list_item.medicament_id.abcfarma_id is not False:
                 cod_abc = medicament_list_item.medicament_id.abcfarma_id.med_abc
@@ -517,6 +547,9 @@ def clv_medicament_list_export(client, medicament_list, medicament_list_version,
             if reference == 'clv_orizon_lpm':
                 cod_orizon = medicament_list_item.medicament_ref.cod_prod
 
+        discount = medicament_list_item.discount
+        subsidy = medicament_list_item.subsidy
+
         print(item_count, medicament_list_item.order,
               medicament_id, medicament_ref,
               cod_BioBox, cod_abc, cod_garantemed, cod_orizon)
@@ -524,7 +557,12 @@ def clv_medicament_list_export(client, medicament_list, medicament_list_version,
         row_item = [medicament_list_item.order,
                     # medicament_id,
                     # medicament_ref,
-                    cod_BioBox, cod_abc, cod_garantemed, cod_orizon
+                    cod_BioBox, cod_abc, cod_garantemed, cod_orizon,
+                    nome_biobox, medicament_name, presentation,
+                    active_component_name, active_component_code,
+                    concentration, pres_form, pres_form_2,
+                    discount, subsidy,
+                    notes
                     ]
         writer_item.writerow(row_item)
 
