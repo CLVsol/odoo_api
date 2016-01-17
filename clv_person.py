@@ -258,6 +258,7 @@ def clv_person_export_jcafb(client, file_path):
                 else:
                     categories = categories + ',' + category.name.encode('utf-8')
 
+        address = ''
         if person.address_id is not False:
             address = person.address_id.name.encode('utf-8')
 
@@ -383,10 +384,15 @@ if __name__ == '__main__':
     # print('--> Executing clv_person_check_address()...')
     # clv_person_check_address(client, person_args)
 
-    file_path = '/opt/openerp/jcafb/data/Lista_de_Campanha_2016-01-15.csv'
-    print('-->', client, file_path)
-    print('--> Executing clv_person_export_jcafb("new")...')
-    clv_person_export_jcafb(client, file_path)
+    # file_path = '/opt/openerp/jcafb/data/Lista_de_Campanha_2016-01-15.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_person_export_jcafb("new")...')
+    # clv_person_export_jcafb(client, file_path)
+
+    # file_path = '/opt/openerp/jcafb/data/Lista_de_Campanha_2016-01-16.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_person_export_jcafb("new")...')
+    # clv_person_export_jcafb(client, file_path)
 
     print('--> clv_person.py')
     print('--> Execution time:', secondsToStr(time() - start))
