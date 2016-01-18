@@ -186,7 +186,7 @@ def clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_nam
 
     list_id = get_abcfarma_list_id(client, list_name)
     previous_list_id = False
-    if previous_list_name != False:
+    if previous_list_name is not False:
         previous_list_id = get_abcfarma_list_id(client, previous_list_name)
 
     db = dbf.Dbf(file_name)
@@ -247,7 +247,7 @@ def clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_nam
         print(rownum, MED_ABC, MED_DES, MED_APR)
 
         clv_abcfarma = client.model('clv_abcfarma')
-        abcfarma_browse = clv_abcfarma.browse([('med_abc', '=', MED_ABC),])
+        abcfarma_browse = clv_abcfarma.browse([('med_abc', '=', MED_ABC), ])
         abcfarma_id = abcfarma_browse.id
 
         if abcfarma_id != []:
@@ -258,8 +258,8 @@ def clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_nam
             clv_abcfarma_list_item = client.model('clv_abcfarma.list.item')
             abcfarma_list_item_browse = \
                 clv_abcfarma_list_item.browse([('list_id', '=', previous_list_id),
-                                           ('medicament_id', '=', abcfarma_id),
-                                           ])
+                                               ('medicament_id', '=', abcfarma_id),
+                                               ])
             previous_list_item_id = abcfarma_list_item_browse.id
 
             included = False
@@ -326,17 +326,17 @@ def get_arguments():
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
 
-    if args.dbname != None:
+    if args.dbname is not None:
         dbname = args.dbname
     elif dbname == '*':
         dbname = raw_input('dbname: ')
 
-    if args.username != None:
+    if args.username is not None:
         username = args.username
     elif username == '*':
         username = raw_input('username: ')
 
-    if args.password != None:
+    if args.password is not None:
         password = args.password
     elif password == '*':
         password = getpass.getpass('password: ')
