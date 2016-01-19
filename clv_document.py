@@ -124,7 +124,11 @@ def clv_document_create(client, args):
         if (cat_idoso_2016_id in patient.category_ids.id) or \
            (cat_crianca_2016_id in patient.category_ids.id):
 
-            family_id = patient.person.family_member_ids[0].family_id.id
+            family_id = False
+            try:
+                family_id = patient.person.family_member_ids[0].family_id.id
+            except:
+                pass
 
             survey_ids = []
             for document in patient.person.family_member_ids.family_id.document_ids:
@@ -231,7 +235,11 @@ def clv_document_create(client, args):
         if cat_crianca_2016_id in patient.category_ids.id:
             crianca_2016 += 1
 
-            family_id = patient.person.family_member_ids[0].family_id.id
+            family_id = False
+            try:
+                family_id = patient.person.family_member_ids[0].family_id.id
+            except:
+                pass
 
             survey_ids = []
             for document in patient.document_ids:
