@@ -157,12 +157,12 @@ def clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_n
 
     list_id = get_orizon_lpm_list_id(client, list_name)
     previous_list_id = False
-    if previous_list_name != False:
+    if previous_list_name is not False:
         previous_list_id = get_orizon_lpm_list_id(client, previous_list_name)
 
     delimiter_char = ';'
 
-    f  = open(file_name, "rb")
+    f = open(file_name, "rb")
     r = csv.reader(f, delimiter=delimiter_char)
     rownum = 0
     orizon_lpm_found = 0
@@ -200,7 +200,7 @@ def clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_n
         print(rownum, Cod_Prod)
 
         clv_orizon_lpm = client.model('clv_orizon_lpm')
-        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod),])
+        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod), ])
         orizon_lpm_id = orizon_lpm_browse.id
 
         if orizon_lpm_id != []:
@@ -259,20 +259,21 @@ def get_arguments():
     args = parser.parse_args()
     print('%s%s' % ('--> ', args))
 
-    if args.dbname != None:
+    if args.dbname is not None:
         dbname = args.dbname
     elif dbname == '*':
         dbname = raw_input('dbname: ')
 
-    if args.username != None:
+    if args.username is not None:
         username = args.username
     elif username == '*':
         username = raw_input('username: ')
 
-    if args.password != None:
+    if args.password is not None:
         password = args.password
     elif password == '*':
         password = getpass.getpass('password: ')
+
 
 if __name__ == '__main__':
 
