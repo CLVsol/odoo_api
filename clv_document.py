@@ -67,6 +67,8 @@ def clv_document_create(client, args):
     clv_patient_category = client.model('clv_patient.category')
     cat_idoso_2016_id = clv_patient_category.browse([('name', '=', 'Idoso 2016'), ])[0].id
     cat_crianca_2016_id = clv_patient_category.browse([('name', '=', 'Criança 2016'), ])[0].id
+    cat_dhc_2016_id = clv_patient_category.browse([('name', '=', 'DHC 2016'), ])[0].id
+    cat_anemia_2016_id = clv_patient_category.browse([('name', '=', 'Anemia 2016'), ])[0].id
 
     survey_survey = client.model('survey.survey')
     survey_FSE16_id = survey_survey.browse([(
@@ -112,6 +114,8 @@ def clv_document_create(client, args):
     i = 0
     idoso_2016 = 0
     crianca_2016 = 0
+    dhc_2016 = 0
+    anemia_2016 = 0
     for patient in patient_browse:
         i += 1
 
@@ -267,9 +271,72 @@ def clv_document_create(client, args):
 
                 print('>>>>>', document_id)
 
+        if cat_dhc_2016_id in patient.category_ids.id:
+            dhc_2016 += 1
+
+            survey_ids = []
+            for document in patient.document_ids:
+                print('>>>>>', survey_ids, [document.survey_id.id])
+                survey_ids = survey_ids + [document.survey_id.id]
+
+            family_id = False
+            try:
+                family_id = patient.person.family_member_ids[0].family_id.id
+            except:
+                pass
+
+            if survey_QDH16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_QDH16_id,
+                    'patient_id': patient.id,
+                    'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+            if survey_TCP16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_TCP16_id,
+                    'patient_id': patient.id,
+                    'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
+        if cat_anemia_2016_id in patient.category_ids.id:
+            anemia_2016 += 1
+
+            family_id = False
+            try:
+                family_id = patient.person.family_member_ids[0].family_id.id
+            except:
+                pass
+
+            survey_ids = []
+            for document in patient.document_ids:
+                print('>>>>>', survey_ids, [document.survey_id.id])
+                survey_ids = survey_ids + [document.survey_id.id]
+
+            if survey_QAN16_id not in survey_ids:
+
+                values = {
+                    'survey_id': survey_QAN16_id,
+                    'patient_id': patient.id,
+                    'family_id': family_id,
+                    }
+                document_id = clv_document.create(values).id
+
+                print('>>>>>', document_id)
+
     print('--> i: ', i)
     print('--> idoso_2016: ', idoso_2016)
     print('--> crianca_2016: ', crianca_2016)
+    print('--> dhc_2016: ', dhc_2016)
+    print('--> anemia_2016: ', anemia_2016)
 
 
 def clv_document_clear_survey_user_input_id(client, args):
