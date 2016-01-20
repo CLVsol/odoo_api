@@ -98,6 +98,13 @@ def get_survey_data(client):
                             print('>>>>>', 'Ok')
                         else:
                             print('>>>>>', 'NOT Ok')
+                        patient_code = False
+                        if document_browse[0].patient_id is not False:
+                            patient_code = document_browse[0].patient_id.patient_code
+                        family_code = False
+                        if document_browse[0].family_id is not False:
+                            family_code = document_browse[0].family_id.code
+                        print('>>>>>', patient_code, family_code)
 
             if line <= 200:
                 if input_line.question_id.type == 'textbox':
