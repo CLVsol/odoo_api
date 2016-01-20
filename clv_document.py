@@ -421,23 +421,11 @@ def clv_document_get_survey_user_input_id(client, args):
     found = 0
     not_found = 0
     for document in document_browse:
-        i += 1
-        print(i, document.name, document.survey_id.title.encode("utf-8"))
+        # i += 1
+        # print(i, document.name, document.survey_id.title.encode("utf-8"))
 
-        if document.survey_id.id == survey_TID16_id:
-
-            survey_user_input_line_browse = survey_user_input_line.browse(
-                [('value_text', '=', document.name), ])
-            survey_user_input_line_ids = survey_user_input_line_browse.id
-
-            if survey_user_input_line_ids != []:
-                found += 1
-                values = {
-                    "survey_user_input_id": survey_user_input_line_browse[0].user_input_id.id,
-                    }
-                clv_document.write(document.id, values)
-
-        if document.survey_id.id == survey_TCP16_id:
+        if document.survey_id.id == survey_FSE16_id:
+            i += 1
 
             survey_user_input_line_browse = survey_user_input_line.browse(
                 [('value_text', '=', document.name), ])
@@ -445,10 +433,56 @@ def clv_document_get_survey_user_input_id(client, args):
 
             if survey_user_input_line_ids != []:
                 found += 1
-                values = {
-                    "survey_user_input_id": survey_user_input_line_browse[0].user_input_id.id,
-                    }
-                clv_document.write(document.id, values)
+                print(i, document.name, document.survey_id.title.encode("utf-8"),
+                      survey_user_input_line_browse[0].user_input_id.state)
+
+                # values = {
+                #     "survey_user_input_id": survey_user_input_line_browse[0].user_input_id.id,
+                #     }
+                # clv_document.write(document.id, values)
+
+            else:
+                not_found += 1
+
+        if document.survey_id.id == survey_ISE16_id:
+            i += 1
+
+            survey_user_input_line_browse = survey_user_input_line.browse(
+                [('value_text', '=', document.name), ])
+            survey_user_input_line_ids = survey_user_input_line_browse.id
+
+            if survey_user_input_line_ids != []:
+                found += 1
+                print(i, document.name, document.survey_id.title.encode("utf-8"),
+                      survey_user_input_line_browse[0].user_input_id.state)
+
+                # values = {
+                #     "survey_user_input_id": survey_user_input_line_browse[0].user_input_id.id,
+                #     }
+                # clv_document.write(document.id, values)
+
+            else:
+                not_found += 1
+
+        if document.survey_id.id == survey_CSE16_id:
+            i += 1
+
+            survey_user_input_line_browse = survey_user_input_line.browse(
+                [('value_text', '=', document.name), ])
+            survey_user_input_line_ids = survey_user_input_line_browse.id
+
+            if survey_user_input_line_ids != []:
+                found += 1
+                print(i, document.name, document.survey_id.title.encode("utf-8"),
+                      survey_user_input_line_browse[0].user_input_id.state)
+
+                # values = {
+                #     "survey_user_input_id": survey_user_input_line_browse[0].user_input_id.id,
+                #     }
+                # clv_document.write(document.id, values)
+
+            else:
+                not_found += 1
 
     print('--> i: ', i)
     print('--> found: ', found)
@@ -506,10 +540,10 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    patient_args = [('category_ids', '!=', False), ]
-    print('-->', client, patient_args)
-    print('--> Executing clv_document_create()...')
-    clv_document_create(client, patient_args)
+    # patient_args = [('category_ids', '!=', False), ]
+    # print('-->', client, patient_args)
+    # print('--> Executing clv_document_create()...')
+    # clv_document_create(client, patient_args)
 
     # document_args = [('state', '=', 'waiting'),
     #                  ('survey_user_input_id', '!=', False),
@@ -518,12 +552,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_document_clear_survey_user_input_id()...')
     # clv_document_clear_survey_user_input_id(client, document_args)
 
-    # document_args = [('state', '=', 'waiting'),
-    #                  ('survey_user_input_id', '=', False),
-    #                  ]
-    # print('-->', client, document_args)
-    # print('--> Executing clv_document_get_survey_user_input_id()...')
-    # clv_document_get_survey_user_input_id(client, document_args)
+    document_args = [('state', '=', 'draft'),
+                     ('survey_user_input_id', '=', False),
+                     ]
+    print('-->', client, document_args)
+    print('--> Executing clv_document_get_survey_user_input_id()...')
+    clv_document_get_survey_user_input_id(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
