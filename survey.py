@@ -57,6 +57,56 @@ def get_survey_user_input(client, state, survey_code):
                 print('>>>>>>>>>>', input_line.value_text)
 
 
+def get_survey_data(client):
+
+    survey_user_input = client.model('survey.user_input')
+    # survey_user_input_browse = survey_user_input.browse([('state', '=', state), ])
+    survey_user_input_browse = survey_user_input.browse([])
+
+    survey_user_input_line = client.model('survey.user_input_line')
+
+    clv_document = client.model('clv_document')
+
+    i = 0
+    for user_input in survey_user_input_browse:
+        i += 1
+        # print(i, user_input.token, user_input.state,
+        #       user_input.survey_id.title.encode('utf-8'))
+        print(i, user_input.token, user_input.state)
+        print('>>>>>', user_input.survey_id.title.encode('utf-8'))
+
+        survey_user_input_line_browse = survey_user_input_line.browse(
+            [('user_input_id', '=', user_input.id), ])
+        line = 0
+        for input_line in survey_user_input_line_browse:
+            line += 1
+            # ir_model_data_name = ir_model_data_get_name(client,
+            #                                             'survey.question',
+            #                                             input_line.question_id.id)
+            # print('>>>>>', input_line.id, ir_model_data_name,
+            #       input_line.question_id.type,
+            #       input_line.question_id.question.encode('utf-8'))
+
+            if line == 1:
+                if input_line.question_id.type == 'textbox':
+                    document_browse = clv_document.browse(
+                        [('name', '=', input_line.value_text), ])
+                    if document_browse != []:
+                        print('>>>>>', document_browse[0].survey_id.title.encode("utf-8"))
+                        if user_input.survey_id.title.encode('utf-8') == \
+                           document_browse[0].survey_id.title.encode("utf-8"):
+                            print('>>>>>', 'Ok')
+                        else:
+                            print('>>>>>', 'NOT Ok')
+
+            if line <= 200:
+                if input_line.question_id.type == 'textbox':
+                    print('>>>>>>>>>>', line, input_line.value_text,
+                          input_line.question_id.question.encode('utf-8'))
+
+    print('--> i: ', i)
+
+
 def get_arguments():
 
     global username
@@ -108,11 +158,15 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    state = 'new'
-    survey_code = '040.008-46'
-    print('-->', client, state, survey_code)
-    print('--> Executing get_survey_user_input()...')
-    get_survey_user_input(client, state, survey_code)
+    # state = 'new'
+    # survey_code = '040.008-46'
+    # print('-->', client, state, survey_code)
+    # print('--> Executing get_survey_user_input()...')
+    # get_survey_user_input(client, state, survey_code)
+
+    print('-->', client)
+    print('--> Executing get_survey_data()...')
+    get_survey_data(client)
 
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
