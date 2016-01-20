@@ -101,7 +101,7 @@ def get_survey_data(client):
 
             if line <= 200:
                 if input_line.question_id.type == 'textbox':
-                    print('>>>>>>>>>>', line, input_line.value_text,
+                    print('>>>>>>>>>>', line, input_line.value_text.encode('utf-8'),
                           input_line.question_id.question.encode('utf-8'))
 
     print('--> i: ', i)
