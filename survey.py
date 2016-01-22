@@ -57,6 +57,26 @@ def get_survey_user_input(client, state, survey_code):
                 print('>>>>>>>>>>', input_line.value_text)
 
 
+def survey_user_input_clear_test_entry(client):
+
+    survey_user_input = client.model('survey.user_input')
+    survey_user_input_browse = survey_user_input.browse([('state', '=', 'done'),
+                                                         ('test_entry', '=', True), ])
+
+    i = 0
+    for user_input in survey_user_input_browse:
+        i += 1
+
+        print(i, user_input.date_create, user_input.token)
+
+        values = {
+            "test_entry": False,
+            }
+        survey_user_input.write(user_input.id, values)
+
+    print('--> i: ', i)
+
+
 def get_survey_data(client):
 
     survey_survey = client.model('survey.survey')
@@ -335,8 +355,12 @@ if __name__ == '__main__':
     # get_survey_user_input(client, state, survey_code)
 
     print('-->', client)
-    print('--> Executing get_survey_data()...')
-    get_survey_data(client)
+    print('--> Executing survey_user_input_clear_test_entry()...')
+    survey_user_input_clear_test_entry(client)
+
+    # print('-->', client)
+    # print('--> Executing get_survey_data()...')
+    # get_survey_data(client)
 
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
