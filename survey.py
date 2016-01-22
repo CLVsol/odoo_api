@@ -144,7 +144,7 @@ def get_survey_data(client):
         done += 1
         document_browse = False
 
-        print(i, user_input.token, user_input.state)
+        print(i, user_input.date_create, user_input.token, user_input.state)
         # if survey_FSE16_id == user_input.survey_id.id:
         #     print('>>>>>', 'survey_FSE16_id')
         # if survey_ISE16_id == user_input.survey_id.id:
@@ -354,13 +354,13 @@ if __name__ == '__main__':
     # print('--> Executing get_survey_user_input()...')
     # get_survey_user_input(client, state, survey_code)
 
-    print('-->', client)
-    print('--> Executing survey_user_input_clear_test_entry()...')
-    survey_user_input_clear_test_entry(client)
-
     # print('-->', client)
-    # print('--> Executing get_survey_data()...')
-    # get_survey_data(client)
+    # print('--> Executing survey_user_input_clear_test_entry()...')
+    # survey_user_input_clear_test_entry(client)
+
+    print('-->', client)
+    print('--> Executing get_survey_data()...')
+    get_survey_data(client)
 
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
