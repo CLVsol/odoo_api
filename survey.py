@@ -77,7 +77,7 @@ def survey_user_input_clear_test_entry(client, args):
     print('--> i: ', i)
 
 
-def survey_user_input_set_email_document_code(client):
+def survey_user_input_set_email_document_code(client, args):
 
     survey_user_input = client.model('survey.user_input')
     survey_user_input_browse = survey_user_input.browse(args)
