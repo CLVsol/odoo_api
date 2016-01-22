@@ -77,6 +77,37 @@ def survey_user_input_clear_test_entry(client):
     print('--> i: ', i)
 
 
+def survey_user_input_set_email_document_code(client):
+
+    survey_user_input = client.model('survey.user_input')
+    survey_user_input_browse = survey_user_input.browse([('state', '=', 'done'),
+                                                         ('email', '=', False), ])
+
+    survey_user_input_line = client.model('survey.user_input_line')
+
+    i = 0
+    for user_input in survey_user_input_browse:
+        i += 1
+
+        print(i, user_input.date_create, user_input.token)
+
+        survey_user_input_line_browse = survey_user_input_line.browse(
+            [('user_input_id', '=', user_input.id), ])
+
+        if len(survey_user_input_line_browse) > 0:
+
+            document_code = survey_user_input_line_browse[0].value_text
+
+            print('>>>>>', document_code)
+
+            values = {
+                "email": document_code,
+                }
+            survey_user_input.write(user_input.id, values)
+
+    print('--> i: ', i)
+
+
 def get_survey_data(client):
 
     survey_survey = client.model('survey.survey')
@@ -358,9 +389,13 @@ if __name__ == '__main__':
     # print('--> Executing survey_user_input_clear_test_entry()...')
     # survey_user_input_clear_test_entry(client)
 
-    print('-->', client)
-    print('--> Executing get_survey_data()...')
-    get_survey_data(client)
+    # print('-->', client)
+    # print('--> Executing survey_user_input_set_email_document_code()...')
+    # survey_user_input_set_email_document_code(client)
+
+    # print('-->', client)
+    # print('--> Executing get_survey_data()...')
+    # get_survey_data(client)
 
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
