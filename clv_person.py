@@ -394,5 +394,10 @@ if __name__ == '__main__':
     # print('--> Executing clv_person_export_jcafb("new")...')
     # clv_person_export_jcafb(client, file_path)
 
+    # file_path = '/opt/openerp/jcafb/data/Lista_de_Campanha_2016-01-23.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_person_export_jcafb("new")...')
+    # clv_person_export_jcafb(client, file_path)
+
     print('--> clv_person.py')
     print('--> Execution time:', secondsToStr(time() - start))
