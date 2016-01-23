@@ -218,13 +218,8 @@ def survey_user_input_set_email_Ok(client, args):
         survey_user_input_line_browse = survey_user_input_line.browse(
             [('user_input_id', '=', user_input.id), ])
 
-        # if user_input.survey_id.survey_user_input_id is not False:
-        #     not_new += 1
-        #     continue
-
-        # new += 1
-
         is_ok = True
+        is_new = False
 
         if len(survey_user_input_line_browse) > 0:
 
@@ -237,20 +232,24 @@ def survey_user_input_set_email_Ok(client, args):
                     print('xxxxx', document_browse[0].survey_user_input_id.id, user_input.id)
                     if document_browse[0].survey_user_input_id.id == user_input.id:
                         not_new += 1
-                        continue
+                        ok += 1
+                        # continue
                     else:
                         err_message = '[Duplicated Document Code "' + \
                                       survey_user_input_line_browse[0].value_text + \
                                       '"!]'
+                        is_new = True
                         new += 1
                         not_ok += 1
                         print('>>>>>', 'NOT Ok')
                         is_ok = False
                 else:
+                    is_new = True
                     new += 1
             else:
                 print('yyyyy', survey_user_input_line_browse[0].value_text, document_browse)
                 err_message = '[Invalid Document Code!]'
+                is_new = True
                 new += 1
                 not_ok += 1
                 print('>>>>>', 'NOT Ok')
@@ -365,7 +364,6 @@ def survey_user_input_set_email_Ok(client, args):
 
         if user_input.partner_id is not False:
             err_message = '[Duplicated Document Code "' + user_input.email + '"!]'
-            # new += 1
             print('>>>>>', 'NOT Ok')
             if is_ok:
                 not_ok += 1
@@ -373,9 +371,15 @@ def survey_user_input_set_email_Ok(client, args):
                 is_ok = False
 
         if is_ok:
-            email = 'Ok'
+            if is_new:
+                email = 'Ok {New}'
+            else:
+                email = 'Ok'
         else:
-            email = 'NOT Ok' + ' ' + err_message
+            if is_new:
+                email = 'NOT Ok' + ' ' + err_message + ' {New}'
+            else:
+                email = 'NOT Ok' + ' ' + err_message
 
         values = {
             "email": email,
@@ -389,6 +393,40 @@ def survey_user_input_set_email_Ok(client, args):
     print('--> ok: ', ok)
     print('--> not_ok: ', not_ok)
     # print('--> linked: ', linked)
+
+
+def survey_user_input_link_document(client, args):
+
+    survey_user_input = client.model('survey.user_input')
+    survey_user_input_browse = survey_user_input.browse(args)
+
+    survey_user_input_line = client.model('survey.user_input_line')
+
+    clv_document = client.model('clv_document')
+
+    i = 0
+    for user_input in survey_user_input_browse:
+        i += 1
+
+        print(i, user_input.date_create, user_input.token)
+
+        survey_user_input_line_browse = survey_user_input_line.browse(
+            [('user_input_id', '=', user_input.id), ])
+
+        if len(survey_user_input_line_browse) > 0:
+
+            document_code = survey_user_input_line_browse[0].value_text
+
+            print('>>>>>', document_code)
+
+            document_browse = clv_document.browse([('name', '=', document_code), ])
+            if document_browse.id != []:
+                values = {
+                    "survey_user_input_id": user_input.id,
+                    }
+                clv_document.write(document_browse[0].id, values)
+
+    print('--> i: ', i)
 
 
 def get_survey_data(client):
@@ -668,32 +706,40 @@ if __name__ == '__main__':
     # print('--> Executing get_survey_user_input()...')
     # get_survey_user_input(client, state, survey_code)
 
-    user_input_args = [('state', '=', 'done'),
-                       ('test_entry', '=', True), ]
-    print('-->', client, user_input_args)
-    print('--> Executing survey_user_input_clear_test_entry()...')
-    survey_user_input_clear_test_entry(client, user_input_args)
-
     # user_input_args = [('state', '=', 'done'),
-    #                    ('email', '!=', False), ]
-    user_input_args = [('state', '=', 'done'), ]
-    print('-->', client, user_input_args)
-    print('--> Executing survey_user_input_clear_email()...')
-    survey_user_input_clear_email(client, user_input_args)
+    #                    ('test_entry', '=', True), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_clear_test_entry()...')
+    # survey_user_input_clear_test_entry(client, user_input_args)
+
+    # # user_input_args = [('state', '=', 'done'),
+    # #                    ('email', '!=', False), ]
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_clear_email()...')
+    # survey_user_input_clear_email(client, user_input_args)
+
+    # # user_input_args = [('state', '=', 'done'),
+    # #                    ('email', '=', False), ]
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_document_code()...')
+    # survey_user_input_set_email_document_code(client, user_input_args)
 
     # user_input_args = [('state', '=', 'done'),
     #                    ('email', '=', False), ]
-    user_input_args = [('state', '=', 'done'), ]
-    print('-->', client, user_input_args)
-    print('--> Executing survey_user_input_set_email_document_code()...')
-    survey_user_input_set_email_document_code(client, user_input_args)
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_Ok()...')
+    # survey_user_input_set_email_Ok(client, user_input_args)
 
     user_input_args = [('state', '=', 'done'),
-                       ('email', '=', False), ]
-    user_input_args = [('state', '=', 'done'), ]
+                       # ('email', 'like', '%{New}'),
+                       ('email', '=', 'Ok {New}'),
+                       ]
     print('-->', client, user_input_args)
-    print('--> Executing survey_user_input_set_email_Ok()...')
-    survey_user_input_set_email_Ok(client, user_input_args)
+    print('--> Executing survey_user_input_link_document()...')
+    survey_user_input_link_document(client, user_input_args)
 
     # print('-->', client)
     # print('--> Executing get_survey_data()...')
