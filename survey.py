@@ -60,8 +60,7 @@ def get_survey_user_input(client, state, survey_code):
 def survey_user_input_clear_test_entry(client, args):
 
     survey_user_input = client.model('survey.user_input')
-    survey_user_input_browse = survey_user_input.browse([('state', '=', 'done'),
-                                                         ('test_entry', '=', True), ])
+    survey_user_input_browse = survey_user_input.browse(args)
 
     i = 0
     for user_input in survey_user_input_browse:
@@ -627,9 +626,11 @@ if __name__ == '__main__':
     # print('--> Executing get_survey_user_input()...')
     # get_survey_user_input(client, state, survey_code)
 
-    # print('-->', client)
+    # user_input_args = [('state', '=', 'done'),
+    #                    ('test_entry', '=', True), ]
+    # print('-->', client, user_input_args)
     # print('--> Executing survey_user_input_clear_test_entry()...')
-    # survey_user_input_clear_test_entry(client)
+    # survey_user_input_clear_test_entry(client, user_input_args)
 
     # # user_input_args = [('state', '=', 'done'),
     # #                    ('email', '=', False), ]
