@@ -100,8 +100,18 @@ def survey_user_input_set_email_document_code(client, args):
 
             values = {
                 "email": document_code,
+                "partner_id": False,
                 }
             survey_user_input.write(user_input.id, values)
+
+            survey_user_input_duplicated_document_code_ids = survey_user_input.browse(
+                [('email', '=', document_code), ]).id
+            if len(survey_user_input_duplicated_document_code_ids) > 1:
+                for user_input_2 in survey_user_input_duplicated_document_code_ids:
+                    values = {
+                        "partner_id": 1,
+                        }
+                    survey_user_input.write(user_input.id, values)
 
     print('--> i: ', i)
 
@@ -632,12 +642,12 @@ if __name__ == '__main__':
     # print('--> Executing survey_user_input_clear_test_entry()...')
     # survey_user_input_clear_test_entry(client, user_input_args)
 
-    # # user_input_args = [('state', '=', 'done'),
-    # #                    ('email', '=', False), ]
-    # user_input_args = [('state', '=', 'done'), ]
-    # print('-->', client, user_input_args)
-    # print('--> Executing survey_user_input_set_email_document_code()...')
-    # survey_user_input_set_email_document_code(client, user_input_args)
+    # user_input_args = [('state', '=', 'done'),
+    #                    ('email', '=', False), ]
+    user_input_args = [('state', '=', 'done'), ]
+    print('-->', client, user_input_args)
+    print('--> Executing survey_user_input_set_email_document_code()...')
+    survey_user_input_set_email_document_code(client, user_input_args)
 
     # user_input_args = [('state', '=', 'done'),
     #                    ('email', '=', False), ]
