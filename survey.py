@@ -486,6 +486,10 @@ if __name__ == '__main__':
     # print('--> Executing get_survey_user_input()...')
     # get_survey_user_input(client, state, survey_code)
 
+    ############################
+
+    # 1
+
     # user_input_args = [('state', '=', 'done'),
     #                    ('test_entry', '=', True), ]
     # print('-->', client, user_input_args)
@@ -513,6 +517,8 @@ if __name__ == '__main__':
     # print('--> Executing survey_user_input_set_email_Ok()...')
     # survey_user_input_set_email_Ok(client, user_input_args)
 
+    # 2
+
     # user_input_args = [('state', '=', 'done'),
     #                    # ('email', 'like', '%{New}'),
     #                    ('email', '=', 'Ok {New}'),
@@ -520,6 +526,29 @@ if __name__ == '__main__':
     # print('-->', client, user_input_args)
     # print('--> Executing survey_user_input_link_document()...')
     # survey_user_input_link_document(client, user_input_args)
+
+    # 3
+
+    # # user_input_args = [('state', '=', 'done'),
+    # #                    ('email', '!=', False), ]
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_clear_email()...')
+    # survey_user_input_clear_email(client, user_input_args)
+
+    # # user_input_args = [('state', '=', 'done'),
+    # #                    ('email', '=', False), ]
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_document_code()...')
+    # survey_user_input_set_email_document_code(client, user_input_args)
+
+    # user_input_args = [('state', '=', 'done'),
+    #                    ('email', '=', False), ]
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_Ok()...')
+    # survey_user_input_set_email_Ok(client, user_input_args)
 
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
