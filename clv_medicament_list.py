@@ -764,23 +764,23 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
     # clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
 
-    list_name = 'Orizon 147 (4,0k)'
-    list_version_name = '1508'
-    print('-->', client, list_name, list_version_name)
-    print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
-    clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+    # list_name = 'Orizon 147 (4,0k)'
+    # list_version_name = '1508'
+    # print('-->', client, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    # clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
 
-    list_name = 'Orizon 478 (1,0k)'
-    list_version_name = '1500'
-    print('-->', client, list_name, list_version_name)
-    print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
-    clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+    # list_name = 'Orizon 478 (1,0k)'
+    # list_version_name = '1500'
+    # print('-->', client, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    # clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
 
-    list_name = 'Orizon 483 (0,5k)'
-    list_version_name = '1500'
-    print('-->', client, list_name, list_version_name)
-    print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
-    clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1500'
+    # print('-->', client, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    # clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
