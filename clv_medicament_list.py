@@ -571,6 +571,44 @@ def clv_medicament_list_export(client, medicament_list, medicament_list_version,
     print('item_count: ', item_count)
 
 
+def clv_medicament_list_updt_medicament_orizon_2(client, medicament_list, medicament_list_version):
+
+    list_id = get_medicament_list_id(client, medicament_list)
+    list_version_id = get_medicament_list_version_id(client, list_id, medicament_list_version)
+
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
+    medicament_list_item_browse = clv_medicament_list_item.browse(
+        [('list_version_id', '=', list_version_id),
+         ('medicament_id', '=', False),
+         ])
+
+    clv_medicament = client.model('clv_medicament')
+
+    i = 0
+    found = 0
+    not_found = 0
+    for medicament_list_item in medicament_list_item_browse:
+        i += 1
+        print(i, medicament_list_item.medicament_ref.name.encode('utf-8'))
+
+        medicament_browse = clv_medicament.browse(
+            [('orizon_lpm_id', '=', medicament_list_item.medicament_ref.id), ])
+
+        if medicament_browse.id != []:
+            found += 1
+            print('>>>>>', found, medicament_browse[0].name.encode('utf-8'))
+            values = {
+                'medicament_id': medicament_browse[0].id,
+                }
+            clv_medicament_list_item.write(medicament_list_item.id, values)
+        else:
+            not_found += 1
+
+    print('i: ', i)
+    print('found: ', found)
+    print('not_found: ', not_found)
+
+
 def get_arguments():
 
     global username
@@ -672,45 +710,77 @@ if __name__ == '__main__':
 
     ###########################################
 
-    medicament_list = 'CPqD - Memento'
-    medicament_list_version = '1500'
-    reference = 'clv_medicament'
-    file_path = '/opt/openerp/biobox/data/ml_CPqD_Memento_1500_2016_01_13.csv'
-    print('-->', client, medicament_list, medicament_list_version, reference, file_path)
-    print('--> Executing clv_medicament_list_export()...')
-    clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
+    # medicament_list = 'CPqD - Memento'
+    # medicament_list_version = '1500'
+    # reference = 'clv_medicament'
+    # file_path = '/opt/openerp/biobox/data/ml_CPqD_Memento_1500_2016_01_13.csv'
+    # print('-->', client, medicament_list, medicament_list_version, reference, file_path)
+    # print('--> Executing clv_medicament_list_export()...')
+    # clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
 
-    medicament_list = 'CPqD - Anexo'
-    medicament_list_version = '1500'
-    reference = 'clv_medicament'
-    file_path = '/opt/openerp/biobox/data/ml_CPqD_Anexo_1500_2016_01_13.csv'
-    print('-->', client, medicament_list, medicament_list_version, reference, file_path)
-    print('--> Executing clv_medicament_list_export()...')
-    clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
+    # medicament_list = 'CPqD - Anexo'
+    # medicament_list_version = '1500'
+    # reference = 'clv_medicament'
+    # file_path = '/opt/openerp/biobox/data/ml_CPqD_Anexo_1500_2016_01_13.csv'
+    # print('-->', client, medicament_list, medicament_list_version, reference, file_path)
+    # print('--> Executing clv_medicament_list_export()...')
+    # clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
 
-    medicament_list = 'Econômico'
-    medicament_list_version = '1401'
-    reference = 'clv_medicament'
-    file_path = '/opt/openerp/biobox/data/ml_Economico_1401_2016_01_13.csv'
-    print('-->', client, medicament_list, medicament_list_version, reference, file_path)
-    print('--> Executing clv_medicament_list_export()...')
-    clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
+    # medicament_list = 'Econômico'
+    # medicament_list_version = '1401'
+    # reference = 'clv_medicament'
+    # file_path = '/opt/openerp/biobox/data/ml_Economico_1401_2016_01_13.csv'
+    # print('-->', client, medicament_list, medicament_list_version, reference, file_path)
+    # print('--> Executing clv_medicament_list_export()...')
+    # clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
 
-    medicament_list = 'Orizon 478 (1,0k)'
-    medicament_list_version = '1508'
-    reference = 'clv_orizon_lpm'
-    file_path = '/opt/openerp/biobox/data/ml_Orizon_478_1_0k_1508_2016_01_13.csv'
-    print('-->', client, medicament_list, medicament_list_version, reference, file_path)
-    print('--> Executing clv_medicament_list_export()...')
-    clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
+    # medicament_list = 'Orizon 478 (1,0k)'
+    # medicament_list_version = '1508'
+    # reference = 'clv_orizon_lpm'
+    # file_path = '/opt/openerp/biobox/data/ml_Orizon_478_1_0k_1508_2016_01_13.csv'
+    # print('-->', client, medicament_list, medicament_list_version, reference, file_path)
+    # print('--> Executing clv_medicament_list_export()...')
+    # clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
 
-    medicament_list = 'Orizon 483 (0,5k)'
-    medicament_list_version = '1511'
-    reference = 'clv_orizon_lpm'
-    file_path = '/opt/openerp/biobox/data/ml_Orizon_483_0_5k_1511_2016_01_13.csv'
-    print('-->', client, medicament_list, medicament_list_version, reference, file_path)
-    print('--> Executing clv_medicament_list_export()...')
-    clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
+    # medicament_list = 'Orizon 483 (0,5k)'
+    # medicament_list_version = '1511'
+    # reference = 'clv_orizon_lpm'
+    # file_path = '/opt/openerp/biobox/data/ml_Orizon_483_0_5k_1511_2016_01_13.csv'
+    # print('-->', client, medicament_list, medicament_list_version, reference, file_path)
+    # print('--> Executing clv_medicament_list_export()...')
+    # clv_medicament_list_export(client, medicament_list, medicament_list_version, reference, file_path)
+
+    ###########################################
+
+    # list_name = 'Orizon 478 (1,0k)'
+    # list_version_name = '1508'
+    # print('-->', client, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    # clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1511'
+    # print('-->', client, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    # clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+
+    list_name = 'Orizon 147 (4,0k)'
+    list_version_name = '1508'
+    print('-->', client, list_name, list_version_name)
+    print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+
+    list_name = 'Orizon 478 (1,0k)'
+    list_version_name = '1500'
+    print('-->', client, list_name, list_version_name)
+    print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+
+    list_name = 'Orizon 483 (0,5k)'
+    list_version_name = '1500'
+    print('-->', client, list_name, list_version_name)
+    print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
+    clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
