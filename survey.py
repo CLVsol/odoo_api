@@ -546,26 +546,26 @@ if __name__ == '__main__':
 
     # 3
 
-    # user_input_args = [('state', '=', 'done'),
-    #                    ('email', '!=', False), ]
-    user_input_args = [('state', '=', 'done'), ]
-    print('-->', client, user_input_args)
-    print('--> Executing survey_user_input_clear_email()...')
-    survey_user_input_clear_email(client, user_input_args)
+    # # user_input_args = [('state', '=', 'done'),
+    # #                    ('email', '!=', False), ]
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_clear_email()...')
+    # survey_user_input_clear_email(client, user_input_args)
+
+    # # user_input_args = [('state', '=', 'done'),
+    # #                    ('email', '=', False), ]
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_document_code()...')
+    # survey_user_input_set_email_document_code(client, user_input_args)
 
     # user_input_args = [('state', '=', 'done'),
     #                    ('email', '=', False), ]
-    user_input_args = [('state', '=', 'done'), ]
-    print('-->', client, user_input_args)
-    print('--> Executing survey_user_input_set_email_document_code()...')
-    survey_user_input_set_email_document_code(client, user_input_args)
+    # user_input_args = [('state', '=', 'done'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_Ok()...')
+    # survey_user_input_set_email_Ok(client, user_input_args)
 
-    user_input_args = [('state', '=', 'done'),
-                       ('email', '=', False), ]
-    user_input_args = [('state', '=', 'done'), ]
-    print('-->', client, user_input_args)
-    print('--> Executing survey_user_input_set_email_Ok()...')
-    survey_user_input_set_email_Ok(client, user_input_args)
-
-    print('--> survey.py')
+    # print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
