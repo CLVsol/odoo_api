@@ -355,6 +355,23 @@ def survey_user_input_set_email_Ok(client, args):
                                     print('>>>>>', 'NOT Ok')
                                     is_ok = False
 
+                        elif survey_QDH16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'QDH16_02_02':
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+                            if ir_model_data_name == 'QDH16_02_04':
+                                if input_line.value_text not in ['n/a', 'N/A']:
+                                    if input_line.value_text != family_code:
+                                        err_message = '[Family Code Mismatch!]'
+                                        ok -= 1
+                                        not_ok += 1
+                                        print('>>>>>', 'NOT Ok')
+                                        is_ok = False
+
                         else:
                             err_message = '[Undefined Survey Type!]'
                             ok -= 1
@@ -529,26 +546,26 @@ if __name__ == '__main__':
 
     # 3
 
-    # # user_input_args = [('state', '=', 'done'),
-    # #                    ('email', '!=', False), ]
-    # user_input_args = [('state', '=', 'done'), ]
-    # print('-->', client, user_input_args)
-    # print('--> Executing survey_user_input_clear_email()...')
-    # survey_user_input_clear_email(client, user_input_args)
-
-    # # user_input_args = [('state', '=', 'done'),
-    # #                    ('email', '=', False), ]
-    # user_input_args = [('state', '=', 'done'), ]
-    # print('-->', client, user_input_args)
-    # print('--> Executing survey_user_input_set_email_document_code()...')
-    # survey_user_input_set_email_document_code(client, user_input_args)
+    # user_input_args = [('state', '=', 'done'),
+    #                    ('email', '!=', False), ]
+    user_input_args = [('state', '=', 'done'), ]
+    print('-->', client, user_input_args)
+    print('--> Executing survey_user_input_clear_email()...')
+    survey_user_input_clear_email(client, user_input_args)
 
     # user_input_args = [('state', '=', 'done'),
     #                    ('email', '=', False), ]
-    # user_input_args = [('state', '=', 'done'), ]
-    # print('-->', client, user_input_args)
-    # print('--> Executing survey_user_input_set_email_Ok()...')
-    # survey_user_input_set_email_Ok(client, user_input_args)
+    user_input_args = [('state', '=', 'done'), ]
+    print('-->', client, user_input_args)
+    print('--> Executing survey_user_input_set_email_document_code()...')
+    survey_user_input_set_email_document_code(client, user_input_args)
+
+    user_input_args = [('state', '=', 'done'),
+                       ('email', '=', False), ]
+    user_input_args = [('state', '=', 'done'), ]
+    print('-->', client, user_input_args)
+    print('--> Executing survey_user_input_set_email_Ok()...')
+    survey_user_input_set_email_Ok(client, user_input_args)
 
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
