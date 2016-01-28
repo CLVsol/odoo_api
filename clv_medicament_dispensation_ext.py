@@ -100,9 +100,10 @@ def clv_medicament_dispensation_ext_import_orizon(client, file_name):
         # Limite_Subsidio = row[i.next()]
         Apresentacao_do_Produto = row[i.next()]
         Cod_Prod = row[i.next()]
-        Qtde = row[i.next()]
+        # Qtde = row[i.next()]
         Autorizacao = row[i.next()]
-        Data_da_Venda = row[i.next()]
+        # Data_da_Venda = row[i.next()]
+        Data_da_Captura = row[i.next()]
         Crm = row[i.next()]
         Uf_Crm = row[i.next()]
         # EAN = row[i.next()]
@@ -142,12 +143,12 @@ def clv_medicament_dispensation_ext_import_orizon(client, file_name):
 
         Crm = Uf_Crm + '-CRM-' + Crm
 
-        print(rownum, code_form, Nome_do_Beneficiario, Cod_Prod, Data_da_Venda, Cnpj, Crm, Uf_Crm)
+        print(rownum, code_form, Nome_do_Beneficiario, Cod_Prod, Data_da_Captura, Cnpj, Crm, Uf_Crm)
 
         values = {
             # 'name': '/',
             'name': False,
-            'dispensation_date': Data_da_Venda,
+            'dispensation_date': Data_da_Captura,
             'medicament_code': Cod_Prod,
             'medicament_description': Apresentacao_do_Produto,
             'insured_card_code': code_form,
