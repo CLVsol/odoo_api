@@ -443,6 +443,11 @@ def survey_user_input_link_document(client, args):
                     }
                 clv_document.write(document_browse[0].id, values)
 
+                values = {
+                    "email": email,
+                    }
+                survey_user_input.write(user_input.id, values)
+
     print('--> i: ', i)
 
 
@@ -567,5 +572,5 @@ if __name__ == '__main__':
     # print('--> Executing survey_user_input_set_email_Ok()...')
     # survey_user_input_set_email_Ok(client, user_input_args)
 
-    # print('--> survey.py')
+    print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
