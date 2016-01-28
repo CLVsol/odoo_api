@@ -443,6 +443,7 @@ def survey_user_input_link_document(client, args):
                     }
                 clv_document.write(document_browse[0].id, values)
 
+                email = 'Ok'
                 values = {
                     "email": email,
                     }
