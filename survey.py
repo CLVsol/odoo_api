@@ -372,6 +372,32 @@ def survey_user_input_set_email_Ok(client, args):
                                         print('>>>>>', 'NOT Ok')
                                         is_ok = False
 
+                        elif survey_QMD16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'QMD16_02_02':
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+                            if ir_model_data_name == 'QMD16_02_04':
+                                if input_line.value_text not in ['n/a', 'N/A']:
+                                    if input_line.value_text != family_code:
+                                        err_message = '[Family Code Mismatch!]'
+                                        ok -= 1
+                                        not_ok += 1
+                                        print('>>>>>', 'NOT Ok')
+                                        is_ok = False
+
+                        elif survey_ITM16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'ITM16_02_02':
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+
                         else:
                             err_message = '[Undefined Survey Type!]'
                             ok -= 1
