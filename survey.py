@@ -200,6 +200,7 @@ def survey_user_input_set_email_Ok(client, args):
     for user_input in survey_user_input_browse:
         i += 1
 
+        print(i, user_input)
         if user_input.state != 'done':
             continue
 
