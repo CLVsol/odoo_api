@@ -211,8 +211,6 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
 
         number = s[No[0]]
         if number is not False:
-                # if number == '      ':
-                #     number = '000000'
             number = str(int(number))
 
         complemento = s[Complemento[0]]
@@ -231,13 +229,13 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
 
         ddd = s[DDD[0]]
         if ddd is not False:
-            # if ddd == '    ':
-            #     ddd = '0000'
+            if ddd == '    ':
+                ddd = '0000'
             ddd = str(int(ddd))
         telefone = s[Telefone[0]]
         if telefone is not False:
-            # if telefone == '               ':
-            #     telefone = '000000000000000'
+            if telefone == '               ':
+                telefone = '000000000000000'
             telefone = int(telefone)
             if telefone != 0:
                 telefone = str(telefone)
@@ -1672,28 +1670,28 @@ if __name__ == '__main__':
 
     ########################################
 
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("draft")...')
-    # clv_insured_mng_unlink(client, 'draft')
+    print('-->', client)
+    print('--> Executing clv_insured_mng_unlink("draft")...')
+    clv_insured_mng_unlink(client, 'draft')
 
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("revised")...')
-    # clv_insured_mng_unlink(client, 'revised')
+    print('-->', client)
+    print('--> Executing clv_insured_mng_unlink("revised")...')
+    clv_insured_mng_unlink(client, 'revised')
 
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("done")...')
-    # clv_insured_mng_unlink(client, 'done')
+    print('-->', client)
+    print('--> Executing clv_insured_mng_unlink("done")...')
+    clv_insured_mng_unlink(client, 'done')
 
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("canceled")...')
-    # clv_insured_mng_unlink(client, 'canceled')
+    print('-->', client)
+    print('--> Executing clv_insured_mng_unlink("canceled")...')
+    clv_insured_mng_unlink(client, 'canceled')
 
-    # batch_name = 'PUB_20160128_01'
-    # file_name = '/opt/openerp/biobox/data/PUB_20160128_01.txt'
-    # client_name = 'PUB - Public Broker'
-    # print('-->', client, batch_name, file_name, client_name)
-    # print('--> Executing clv_insured_mng_import()...')
-    # clv_insured_mng_import(client, batch_name, file_name, client_name)
+    batch_name = 'PUB_20160201_01'
+    file_name = '/opt/openerp/biobox/data/PUB_20160201_01.txt'
+    client_name = 'PUB - Public Broker'
+    print('-->', client, batch_name, file_name, client_name)
+    print('--> Executing clv_insured_mng_import()...')
+    clv_insured_mng_import(client, batch_name, file_name, client_name)
 
     # print('-->', client)
     # print('--> Executing clv_insured_mng_check_crd_name()...')
@@ -1724,7 +1722,7 @@ if __name__ == '__main__':
     # seq_N = 0
     # PREFIX = '2016-02-01'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    # CLIENT_BATCH_NAME = 'PUB_20160128_01'
+    # CLIENT_BATCH_NAME = 'PUB_20160201_01'
     # print('-->', client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
     # print('--> Executing clv_insured_mng_create_insured()...')
     # clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
