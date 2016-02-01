@@ -101,7 +101,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
         Telefone[1],
         RG[1],
         UF_Emissao[1],
-        CPF [1],
+        CPF[1],
         Operacao[1],
         DataInativacao[1],
         Setor[1],
@@ -129,8 +129,8 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
     line_no = 0
     for line in fileinput.input([file_name]):
         line_no += 1
-        s = [ line[ w[i-1] : w[i] ] for i in range(1,len(w)) ]
-        
+        s = [line[w[i - 1]:w[i]] for i in range(1, len(w))]
+
         name = s[Nome[0]]
         name = name.strip()
         name = name.replace("  ", " ")
@@ -156,7 +156,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
         insured_mng_id = clv_insured_mng.create(values).id
 
         beneficiario = False
-        if (s[Beneficiario[0]] != False):
+        if (s[Beneficiario[0]] is not False):
             beneficiario = s[Beneficiario[0]]
             beneficiario = beneficiario.strip()
             if beneficiario == 'T':
@@ -183,7 +183,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
                 }
             clv_insured_mng.write(insured_mng_id, values)
 
-        if (s[RG[0]] != False) and (s[RG[0]] != '0000000000'):
+        if (s[RG[0]] is not False) and (s[RG[0]] != '0000000000'):
             rg = s[RG[0]]
             while rg[0] == '0':
                 rg = rg[1:]
@@ -192,7 +192,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
                 }
             clv_insured_mng.write(insured_mng_id, values)
 
-        if (s[Sexo[0]] != False):
+        if (s[Sexo[0]] is not False):
             gender = s[Sexo[0]]
             values = {
                 "gender": gender,
@@ -200,9 +200,9 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
             clv_insured_mng.write(insured_mng_id, values)
 
         birthday = s[DataNascimento[0]]
-        if birthday != False:
+        if birthday is not False:
             d = [0, 2, 4, 8]
-            dd = [ birthday[ d[j-1] : d[j] ] for j in range(1,len(d)) ]
+            dd = [birthday[d[j-1]:d[j]] for j in range(1, len(d))]
             birthday = '%s-%s-%s' % (dd[2], dd[1], dd[1])
             values = {
                 "birthday": birthday,
@@ -210,11 +210,13 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
             clv_insured_mng.write(insured_mng_id, values)
 
         number = s[No[0]]
-        if number != False:
+        if number is not False:
+                # if number == '      ':
+                #     number = '000000'
             number = str(int(number))
 
         complemento = s[Complemento[0]]
-        if complemento != False:
+        if complemento is not False:
             complemento = complemento.strip()
             complemento = complemento.title()
             complemento = complemento.replace(" De ", " de ")
@@ -224,14 +226,18 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
             complemento = complemento.replace(" E ", " e ")
 
         email = s[Email[0]]
-        if email != False:
+        if email is not False:
             email = email.lower().strip()
 
         ddd = s[DDD[0]]
-        if ddd != False:
+        if ddd is not False:
+            # if ddd == '    ':
+            #     ddd = '0000'
             ddd = str(int(ddd))
         telefone = s[Telefone[0]]
-        if telefone != False:
+        if telefone is not False:
+            # if telefone == '               ':
+            #     telefone = '000000000000000'
             telefone = int(telefone)
             if telefone != 0:
                 telefone = str(telefone)
@@ -245,7 +251,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
         cep = s[CEP[0]]
 
         l10n_br_zip = client.model('l10n_br.zip')
-        l10n_br_zip_browse = l10n_br_zip.browse([('zip', '=', re.sub('[^0-9]', '', cep)),])
+        l10n_br_zip_browse = l10n_br_zip.browse([('zip', '=', re.sub('[^0-9]', '', cep)), ])
         zip_id = l10n_br_zip_browse.id
 
         if zip_id != []:
@@ -258,7 +264,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
             street = street_type + ' ' + street
             if street == ' ':
                 street = s[Endereco[0]]
-                if street != False:
+                if street is not False:
                     street = street.strip()
                     street = street.title()
                     street = street.replace(" De ", " de ")
@@ -269,7 +275,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
             district = l10n_br_zip_browse[0].district
             if district == '':
                 district = s[Bairro[0]]
-                if district != False:
+                if district is not False:
                     district = district.strip()
                     district = district.title()
                     district = district.replace(" De ", " de ")
@@ -298,7 +304,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
         else:
             zip_ = cep
             street = s[Endereco[0]]
-            if street != False:
+            if street is not False:
                 street = street.strip()
                 street = street.title()
                 street = street.replace(" De ", " de ")
@@ -307,7 +313,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
                 street = street.replace(" Dos ", " dos ")
                 street = street.replace(" E ", " e ")
             district = s[Bairro[0]]
-            if district != False:
+            if district is not False:
                 district = district.strip()
                 district = district.title()
                 district = district.replace(" De ", " de ")
@@ -319,7 +325,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
             state_id = [0]
             l10n_br_city_id = [0]
             cidade = s[Cidade[0]]
-            if district != False:
+            if district is not False:
                 cidade = cidade.strip()
                 cidade = cidade.title()
                 cidade = cidade.replace(" De ", " de ")
@@ -344,8 +350,8 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
                 "addr_notes": addr_notes,
                 }
             clv_insured_mng.write(insured_mng_id, values)
-            
-        if (s[Matricula[0]] != False):
+
+        if (s[Matricula[0]] is not False):
             reg_number = s[Matricula[0]]
             reg_number = reg_number.strip()
             values = {
@@ -353,7 +359,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
                 }
             clv_insured_mng.write(insured_mng_id, values)
 
-        if (s[Card_Code[0]] != False):
+        if (s[Card_Code[0]] is not False):
             crd_code = s[Card_Code[0]]
             crd_code = crd_code.strip()
             values = {
@@ -1641,6 +1647,115 @@ if __name__ == '__main__':
     # clv_batch_updt_state_checking(client, batch_args)
 
     # PREFIX = '2016-01-31'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
+    # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_batch_producao_export_protocolo()...')
+    # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
+
+    # batch_args = [('state', '=', 'checking'),
+    #               ('name_category', '=', 'Grupo Familiar'),
+    #               ]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # batch_args = [('state', '=', 'checking'),]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # card_args = [('state', '=', 'processing'),]
+    # print('-->', client, card_args)
+    # print('--> Executing clv_insured_card_updt_state_active()...')
+    # clv_insured_card_updt_state_active(client, card_args)
+
+    ########################################
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("draft")...')
+    # clv_insured_mng_unlink(client, 'draft')
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("revised")...')
+    # clv_insured_mng_unlink(client, 'revised')
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("done")...')
+    # clv_insured_mng_unlink(client, 'done')
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("canceled")...')
+    # clv_insured_mng_unlink(client, 'canceled')
+
+    # batch_name = 'PUB_20160128_01'
+    # file_name = '/opt/openerp/biobox/data/PUB_20160128_01.txt'
+    # client_name = 'PUB - Public Broker'
+    # print('-->', client, batch_name, file_name, client_name)
+    # print('--> Executing clv_insured_mng_import()...')
+    # clv_insured_mng_import(client, batch_name, file_name, client_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_check_crd_name()...')
+    # clv_insured_mng_check_crd_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_check_insured()...')
+    # clv_insured_mng_check_insured(client)
+
+    # insured_args = [('state', '=', 'draft'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_revised()...')
+    # clv_insured_mng_updt_state_revised(client, insured_args)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_code()...')
+    # clv_insured_mng_updt_insured_code(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
+    # clv_insured_mng_updt_insured_crd_code(client)
+
+    # insured_args = [('state', '=', 'revised'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_waiting()...')
+    # clv_insured_mng_updt_state_waiting(client, insured_args)
+
+    # seq_N = 0
+    # PREFIX = '2016-02-01'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # CLIENT_BATCH_NAME = 'PUB_20160128_01'
+    # print('-->', client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+    # print('--> Executing clv_insured_mng_create_insured()...')
+    # clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+
+    # PREFIX = '2016-02-01'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # batch_args = [('state', '=', 'draft'),
+    #               ('name', '=', PRODUCTION_BATCH_NAME),
+    #               ]
+    # print('-->', client)
+    # print('--> Executing clv_batch_updt_state_processing()...')
+    # clv_batch_updt_state_processing(client, batch_args)
+
+    # insured_card_args = [('state', '=', 'processing'),]
+    # print('-->', client, insured_card_args)
+    # print('--> Executing clv_insured_updt_state_processing()...')
+    # clv_insured_updt_state_processing(client, insured_card_args)
+
+    # PREFIX = '2016-02-01'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
+    # print('-->', client, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_insured_card_export_producao()...')
+    # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
+
+    # batch_args = [('state', '=', 'processing'),]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_checking()...')
+    # clv_batch_updt_state_checking(client, batch_args)
+
+    # PREFIX = '2016-02-01'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
     # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
     # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
