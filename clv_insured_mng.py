@@ -58,7 +58,7 @@ def clv_insured_mng_unlink(client, status):
     print('--> i: ', i)
 
 
-def clv_insured_mng_import(client, batch_name, file_name, client_name):
+def clv_insured_mng_import(client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A):
 
     Nome =           [ 0, 0]
     Endereco =       [ 1, 60]
@@ -120,8 +120,10 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
     insured_cat_id_dependente = get_insured_category_id(client, 'Dependente')
     insured_cat_id_ascendente = get_insured_category_id(client, 'Ascendente')
 
-    insurance_id_T = get_insurance_id(client, 'HVC - Titulares')
-    insurance_id_D = get_insurance_id(client, 'HVC - Dependentes')
+    # insurance_id_T = get_insurance_id(client, 'HVC - Titulares')
+    insurance_id_T = get_insurance_id(client, insurance_T)
+    # insurance_id_D = get_insurance_id(client, 'HVC - Dependentes')
+    insurance_id_D = get_insurance_id(client, insurance_D)
     insurance_id_A = 0
 
     clv_insured_mng = client.model('clv_insured_mng')
@@ -183,7 +185,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name):
                 }
             clv_insured_mng.write(insured_mng_id, values)
 
-        if (s[RG[0]] is not False) and (s[RG[0]] != '0000000000'):
+        if (s[RG[0]] is not False) and (s[RG[0]] != '0000000000') and (s[RG[0]] != '          '):
             rg = s[RG[0]]
             while rg[0] == '0':
                 rg = rg[1:]
@@ -1689,9 +1691,12 @@ if __name__ == '__main__':
     batch_name = 'PUB_20160201_01'
     file_name = '/opt/openerp/biobox/data/PUB_20160201_01.txt'
     client_name = 'PUB - Public Broker'
-    print('-->', client, batch_name, file_name, client_name)
+    insurance_T = 'PUB - Flex Parceiro'
+    insurance_D = ''
+    insurance_A = ''
+    print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
     print('--> Executing clv_insured_mng_import()...')
-    clv_insured_mng_import(client, batch_name, file_name, client_name)
+    clv_insured_mng_import(client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
 
     # print('-->', client)
     # print('--> Executing clv_insured_mng_check_crd_name()...')
