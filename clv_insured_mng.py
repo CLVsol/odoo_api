@@ -448,7 +448,7 @@ def clv_insured_mng_updt_state_waiting(client, args):
     print('insured_mng_count: ', insured_mng_count)
 
 
-def clv_insured_mng_check_insured(client):
+def clv_insured_mng_check_insured(client, args):
 
     tag_id_VerificarDuplicidadeDeBeneficiario = get_tag_id(\
         client,
@@ -459,7 +459,7 @@ def clv_insured_mng_check_insured(client):
     clv_insured_mng_relation = client.model('clv_insured_mng.relation')
 
     clv_insured_mng = client.model('clv_insured_mng')
-    insured_mng_browse = clv_insured_mng.browse([])
+    insured_mng_browse = clv_insured_mng.browse(args)
     i = 0
     for insured_mng in insured_mng_browse:
         i += 1
@@ -1702,9 +1702,10 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_crd_name()...')
     # clv_insured_mng_check_crd_name(client)
 
-    # print('-->', client)
+    # insured_args = [('state', '=', 'draft'),]
+    # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_check_insured()...')
-    # clv_insured_mng_check_insured(client)
+    # clv_insured_mng_check_insured(client, insured_args)
 
     # insured_args = [('state', '=', 'draft'),]
     # print('-->', client, insured_args)
