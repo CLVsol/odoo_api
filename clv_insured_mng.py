@@ -1672,31 +1672,31 @@ if __name__ == '__main__':
 
     ########################################
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("draft")...')
-    clv_insured_mng_unlink(client, 'draft')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("draft")...')
+    # clv_insured_mng_unlink(client, 'draft')
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("revised")...')
-    clv_insured_mng_unlink(client, 'revised')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("revised")...')
+    # clv_insured_mng_unlink(client, 'revised')
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("done")...')
-    clv_insured_mng_unlink(client, 'done')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("done")...')
+    # clv_insured_mng_unlink(client, 'done')
 
-    print('-->', client)
-    print('--> Executing clv_insured_mng_unlink("canceled")...')
-    clv_insured_mng_unlink(client, 'canceled')
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("canceled")...')
+    # clv_insured_mng_unlink(client, 'canceled')
 
-    batch_name = 'PUB_20160201_01'
-    file_name = '/opt/openerp/biobox/data/PUB_20160201_01.txt'
-    client_name = 'PUB - Public Broker'
-    insurance_T = 'PUB - Flex Parceiro'
-    insurance_D = ''
-    insurance_A = ''
-    print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
-    print('--> Executing clv_insured_mng_import()...')
-    clv_insured_mng_import(client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
+    # batch_name = 'PUB_20160201_01'
+    # file_name = '/opt/openerp/biobox/data/PUB_20160201_01.txt'
+    # client_name = 'PUB - Public Broker'
+    # insurance_T = 'PUB - Flex Parceiro'
+    # insurance_D = ''
+    # insurance_A = ''
+    # print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
+    # print('--> Executing clv_insured_mng_import()...')
+    # clv_insured_mng_import(client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
 
     # print('-->', client)
     # print('--> Executing clv_insured_mng_check_crd_name()...')
