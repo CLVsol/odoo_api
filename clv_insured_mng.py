@@ -1641,6 +1641,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_card_export_producao()...')
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
+    # ******* Skiped - Executed Manually *******
     # batch_args = [('state', '=', 'processing'),]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
@@ -1754,6 +1755,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_card_export_producao()...')
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
+    # ******* Skiped - Executed Manually *******
     # batch_args = [('state', '=', 'processing'),]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
