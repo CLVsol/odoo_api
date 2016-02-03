@@ -189,6 +189,9 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
         if insurance.encode("utf-8") == 'BioBox - Variável':
             Cod_Contrato =     [ 2,   7,  6, '001570']
 
+        if insurance.encode("utf-8") == 'PUB - Flex Parceiro':
+            Cod_Contrato =     [ 2,   7,  6, '001615']
+
         code = re.sub('[^0-9]', '', code)
         code = ''.join((code, (30 - len(code)) * ' '))
         Cod_Beneficiario = [ 3,  13, 30, code]
@@ -240,7 +243,26 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
 
         LCDF =             [23, 319, 15, 15 * '0']
 
-        LCS =              [24, 334, 15, '000000000050000']
+        LCS = False
+        if insurance == 'HVC - Dependentes':
+            LCS =              [24, 334, 15, '000000000050000']
+        if insurance == 'HVC - Titulares':
+            LCS =              [24, 334, 15, '000000000050000']
+        if insurance == 'VCAS - Dependentes':
+            LCS =              [24, 334, 15, '000000000050000']
+        if insurance == 'VCAS - Titulares':
+            LCS =              [24, 334, 15, '000000000050000']
+
+        if insurance == 'BioBox - Pleno':
+            LCS =              [24, 334, 15, '000000000050000']
+        if insurance == 'BioBox - Fixo':
+            LCS =              [24, 334, 15, '000000000050000']
+        if insurance.encode("utf-8") == 'BioBox - Variável':
+            LCS =              [24, 334, 15, '000000000050000']
+
+        if insurance.encode("utf-8") == 'PUB - Flex Parceiro':
+            LCS =              [24, 334, 15, '000000000025000']
+
 
         ADS_Usuario =      [25, 349, 40, 40 * ' ']
         CF_Usuario =       [26, 389, 40, 40 * ' ']
