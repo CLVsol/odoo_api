@@ -558,5 +558,19 @@ if __name__ == '__main__':
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
 
+    ##################################
+
+    # file_name = '/opt/openerp/abcfarma/TABELA_2016_02.dbf'
+    # from_ = 'TABELA_2016_02'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_abcfarma_import_new()...')
+    # clv_abcfarma_import_new(client, file_name, from_)
+
+    # list_name = 'TABELA_2016_02'
+    # previous_list_name = 'TABELA_2016_01'
+    # file_name = '/opt/openerp/abcfarma/TABELA_2016_02.dbf'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_abcfarma_list_import_new(client, file_name, list_name, previous_list_name)
+
     print('--> clv_abcfarma.py')
     print('--> Execution time:', secondsToStr(time() - start))
