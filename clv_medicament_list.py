@@ -609,6 +609,49 @@ def clv_medicament_list_updt_medicament_orizon_2(client, medicament_list, medica
     print('not_found: ', not_found)
 
 
+def clv_medicament_list_import(client, file_path, list_name, list_version_name):
+
+    clv_orizon_lpm = client.model('clv_orizon_lpm')
+
+    delimiter_char = ';'
+
+    f = open(file_path, "rb")
+    r = csv.reader(f, delimiter=delimiter_char)
+    rownum = 0
+    found = 0
+    not_found = 0
+    for row in r:
+
+        if rownum == 0:
+            rownum += 1
+            continue
+
+        i = autoIncrement(0, 1)
+
+        Cod_Prod = row[i.next()]
+        Apresentacao_Do_Produto = row[i.next()]
+        Desconto = row[i.next()]
+        Reembolso = row[i.next()]
+
+        print(rownum, Cod_Prod, Apresentacao_Do_Produto, Desconto, Reembolso)
+
+        orizon_lpm_id = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod), ]).id
+        if orizon_lpm_id != []:
+            found += 1
+            print('>>>>>', orizon_lpm_id)
+        else:
+            not_found += 1
+            print('XXXXXXXXXX', orizon_lpm_id)
+
+        rownum += 1
+
+    f.close()
+
+    print('rownum: ', rownum - 1)
+    print('found: ', found)
+    print('not_found: ', not_found)
+
+
 def get_arguments():
 
     global username
@@ -781,6 +824,22 @@ if __name__ == '__main__':
     # print('-->', client, list_name, list_version_name)
     # print('--> Executing clv_medicament_list_updt_medicament_orizon_2()...')
     # clv_medicament_list_updt_medicament_orizon_2(client, list_name, list_version_name)
+
+    ###########################################
+
+    # file_path = '/opt/openerp/biobox/data/Lista_Flex_Parceiro_1602.csv'
+    # list_name = 'Flex Parceiro'
+    # list_version_name = '1602'
+    # print('-->', client, file_path, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_import()...')
+    # clv_medicament_list_import(client, file_path, list_name, list_version_name)
+
+    # file_path = '/opt/openerp/biobox/data/Lista_Flex_Acesso_1602.csv'
+    # list_name = 'Flex Acesso'
+    # list_version_name = '1602'
+    # print('-->', client, file_path, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_import()...')
+    # clv_medicament_list_import(client, file_path, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
