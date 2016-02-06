@@ -609,17 +609,24 @@ def clv_medicament_list_updt_medicament_orizon_2(client, medicament_list, medica
     print('not_found: ', not_found)
 
 
-def clv_medicament_list_import(client, file_path, list_name, list_version_name):
+def clv_medicament_list_import_orizon(client, file_path, list_name, list_version_name):
+
+    list_id = get_medicament_list_id(client, list_name)
+    list_version_id = get_medicament_list_version_id(client, list_id, list_version_name)
 
     clv_orizon_lpm = client.model('clv_orizon_lpm')
+    clv_medicament = client.model('clv_medicament')
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
 
     delimiter_char = ';'
 
     f = open(file_path, "rb")
     r = csv.reader(f, delimiter=delimiter_char)
     rownum = 0
-    found = 0
-    not_found = 0
+    orizon_lpm_found = 0
+    orizon_lpm_not_found = 0
+    medicament_found = 0
+    medicament_not_found = 0
     for row in r:
 
         if rownum == 0:
@@ -635,21 +642,45 @@ def clv_medicament_list_import(client, file_path, list_name, list_version_name):
 
         print(rownum, Cod_Prod, Apresentacao_Do_Produto, Desconto, Reembolso)
 
-        orizon_lpm_id = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod), ]).id
-        if orizon_lpm_id != []:
-            found += 1
+        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod), ])
+        if len(orizon_lpm_browse) == 1:
+            orizon_lpm_found += 1
+            orizon_lpm_id = orizon_lpm_browse[0].id
             print('>>>>>', orizon_lpm_id)
+
+            medicament_browse = clv_medicament.browse([('orizon_lpm_id', '=', orizon_lpm_id), ])
+            medicament_id = False
+            if len(medicament_browse) == 1:
+                medicament_found += 1
+                medicament_id = medicament_browse[0].id
+                print('>>>>>', medicament_id)
+
+            else:
+                medicament_not_found += 1
+
+            values = {
+                'list_version_id': list_version_id,
+                'medicament_id': medicament_id,
+                'medicament_ref': 'clv_orizon_lpm,' + str(orizon_lpm_id),
+                'order': orizon_lpm_found,
+                'discount': Desconto,
+                'subsidy': Reembolso,
+                }
+            medicament_list_item_id = clv_medicament_list_item.create(values).id
+            print('>>>>>>>>>>', medicament_list_item_id)
+
         else:
-            not_found += 1
-            print('XXXXXXXXXX', orizon_lpm_id)
+            orizon_lpm_not_found += 1
 
         rownum += 1
 
     f.close()
 
     print('rownum: ', rownum - 1)
-    print('found: ', found)
-    print('not_found: ', not_found)
+    print('orizon_lpm_found: ', orizon_lpm_found)
+    print('orizon_lpm_not_found: ', orizon_lpm_not_found)
+    print('medicament_found: ', medicament_found)
+    print('medicament_not_found: ', medicament_not_found)
 
 
 def get_arguments():
@@ -831,15 +862,15 @@ if __name__ == '__main__':
     # list_name = 'Flex Parceiro'
     # list_version_name = '1602'
     # print('-->', client, file_path, list_name, list_version_name)
-    # print('--> Executing clv_medicament_list_import()...')
-    # clv_medicament_list_import(client, file_path, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_import_orizon()...')
+    # clv_medicament_list_import_orizon(client, file_path, list_name, list_version_name)
 
     # file_path = '/opt/openerp/biobox/data/Lista_Flex_Acesso_1602.csv'
     # list_name = 'Flex Acesso'
     # list_version_name = '1602'
     # print('-->', client, file_path, list_name, list_version_name)
-    # print('--> Executing clv_medicament_list_import()...')
-    # clv_medicament_list_import(client, file_path, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_import_orizon()...')
+    # clv_medicament_list_import_orizon(client, file_path, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
