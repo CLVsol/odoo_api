@@ -20,7 +20,6 @@
 
 from __future__ import print_function
 
-import xmlrpclib
 from erppeek import *
 import csv
 
@@ -29,6 +28,7 @@ import argparse
 import getpass
 
 import clv_tag
+
 
 def clv_cmed_import_new(client, infile_name, from_):
 
@@ -161,6 +161,7 @@ def clv_cmed_import_new(client, infile_name, from_):
     print('--> not_found: ', not_found)
     print('--> excluded: ', excluded)
 
+
 def clv_cmed_check_ean(client):
 
     tag_id_EAN_replicado = \
@@ -197,6 +198,7 @@ def clv_cmed_check_ean(client):
     print('--> i: ', i)
     print('--> found: ', found)
     print('--> not found: ', not_found)
+
 
 def clv_cmed_updt_manufacturer(client):
 
@@ -237,6 +239,7 @@ def clv_cmed_updt_manufacturer(client):
     print('--> i: ', i)
     print('--> found: ', found)
     print('--> not found: ', not_found)
+
 
 def clv_cmed_updt_active_component(client):
 
@@ -281,6 +284,7 @@ def clv_cmed_updt_active_component(client):
     print('--> found: ', found)
     print('--> not found: ', not_found)
 
+
 def get_cmed_list_id(client, list_name):
 
     clv_cmed_list = client.model('clv_cmed.list')
@@ -296,6 +300,7 @@ def get_cmed_list_id(client, list_name):
         cmed_list_id = cmed_list_id[0]
 
     return cmed_list_id
+
 
 def clv_cmed_list_import_new(client, file_name, list_name, previous_list_name):
 
@@ -409,6 +414,7 @@ def clv_cmed_list_import_new(client, file_name, list_name, previous_list_name):
     print('cmed_not_found: ', cmed_not_found)
     print('cmed_included: ', cmed_included)
 
+
 def get_arguments():
 
     global admin_pw
@@ -474,6 +480,7 @@ def get_arguments():
     # elif from_ == '*':
     #     from_ = raw_input('from_: ')
 
+
 if __name__ == '__main__':
 
     server = 'http://localhost:8069'
@@ -482,17 +489,17 @@ if __name__ == '__main__':
     # admin_pw = '*'
 
     admin_user = 'admin'
-    admin_user_pw = 'admin' 
-    # admin_user_pw = '*' 
+    admin_user_pw = 'admin'
+    # admin_user_pw = '*'
 
     data_admin_user = 'data.admin'
-    data_admin_user_pw = 'data.admin' 
-    # data_admin_user_pw = '*' 
+    data_admin_user_pw = 'data.admin'
+    # data_admin_user_pw = '*'
 
     # username = 'username'
     username = '*'
-    # paswword = 'paswword' 
-    paswword = '*' 
+    # paswword = 'paswword'
+    paswword = '*'
 
     dbname = 'odoo'
     # dbname = '*'
