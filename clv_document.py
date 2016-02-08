@@ -653,16 +653,24 @@ if __name__ == '__main__':
     # print('--> Executing clv_document_get_survey_user_input_id()...')
     # clv_document_get_survey_user_input_id(client, document_args)
 
-    # document_args = [('survey_user_input_id', '!=', False),
-    #                  ]
-    # print('-->', client, document_args)
-    # print('--> Executing clv_document_activate_patient_and_family()...')
-    # clv_document_activate_patient_and_family(client, document_args)
+
+    ##############################
 
     # document_args = []
     # print('-->', client, document_args)
     # print('--> Executing clv_document_unlink_Termos()...')
     # clv_document_unlink_Termos(client, document_args)
+
+    # patient_args = [('category_ids', '!=', False), ]
+    # print('-->', client, patient_args)
+    # print('--> Executing clv_document_create()...')
+    # clv_document_create(client, patient_args)
+
+    # document_args = [('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_activate_patient_and_family()...')
+    # clv_document_activate_patient_and_family(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
