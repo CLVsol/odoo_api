@@ -489,6 +489,44 @@ def clv_document_get_survey_user_input_id(client, args):
     print('--> not_found: ', not_found)
 
 
+def clv_document_activate_patient_and_family(client, args):
+
+    clv_document = client.model('clv_document')
+    document_browse = clv_document.browse(args)
+
+    i = 0
+    found_patient = 0
+    not_found_patient = 0
+    found_family = 0
+    not_found_family = 0
+    for document in document_browse:
+        i += 1
+        print(i, document.name, document.survey_id.title.encode("utf-8"))
+
+        if document.patient_id is not False:
+            found_patient += 1
+            print('>>>>>', document.patient_id.state)
+        else:
+            not_found_patient += 1
+
+        if document.family_id is not False:
+            found_family += 1
+            print('>>>>>', document.family_id.state)
+        else:
+            not_found_family += 1
+
+        # values = {
+        #     "survey_user_input_id": False,
+        #     }
+        # clv_document.write(document.id, values)
+
+    print('--> i: ', i)
+    print('--> found_patient: ', found_patient)
+    print('--> not_found_patient: ', not_found_patient)
+    print('--> found_family: ', found_family)
+    print('--> not_found_family: ', not_found_family)
+
+
 def get_arguments():
 
     global username
@@ -560,6 +598,12 @@ if __name__ == '__main__':
     # print('-->', client, document_args)
     # print('--> Executing clv_document_get_survey_user_input_id()...')
     # clv_document_get_survey_user_input_id(client, document_args)
+
+    document_args = [('survey_user_input_id', '!=', False),
+                     ]
+    print('-->', client, document_args)
+    print('--> Executing clv_document_activate_patient_and_family()...')
+    clv_document_activate_patient_and_family(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
