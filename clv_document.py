@@ -214,27 +214,27 @@ def clv_document_create(client, args):
 
                 print('>>>>>', document_id)
 
-            if survey_TID16_id not in survey_ids:
+            # if survey_TID16_id not in survey_ids:
 
-                values = {
-                    'survey_id': survey_TID16_id,
-                    'patient_id': patient.id,
-                    'family_id': family_id,
-                    }
-                document_id = clv_document.create(values).id
+            #     values = {
+            #         'survey_id': survey_TID16_id,
+            #         'patient_id': patient.id,
+            #         'family_id': family_id,
+            #         }
+            #     document_id = clv_document.create(values).id
 
-                print('>>>>>', document_id)
+            #     print('>>>>>', document_id)
 
-            if survey_TCP16_id not in survey_ids:
+            # if survey_TCP16_id not in survey_ids:
 
-                values = {
-                    'survey_id': survey_TCP16_id,
-                    'patient_id': patient.id,
-                    'family_id': family_id,
-                    }
-                document_id = clv_document.create(values).id
+            #     values = {
+            #         'survey_id': survey_TCP16_id,
+            #         'patient_id': patient.id,
+            #         'family_id': family_id,
+            #         }
+            #     document_id = clv_document.create(values).id
 
-                print('>>>>>', document_id)
+            #     print('>>>>>', document_id)
 
         if cat_crianca_2016_id in patient.category_ids.id:
             crianca_2016 += 1
@@ -272,16 +272,16 @@ def clv_document_create(client, args):
 
                 print('>>>>>', document_id)
 
-            if survey_TCR16_id not in survey_ids:
+            # if survey_TCR16_id not in survey_ids:
 
-                values = {
-                    'survey_id': survey_TCR16_id,
-                    'patient_id': patient.id,
-                    'family_id': family_id,
-                    }
-                document_id = clv_document.create(values).id
+            #     values = {
+            #         'survey_id': survey_TCR16_id,
+            #         'patient_id': patient.id,
+            #         'family_id': family_id,
+            #         }
+            #     document_id = clv_document.create(values).id
 
-                print('>>>>>', document_id)
+            #     print('>>>>>', document_id)
 
         if cat_dhc_2016_id in patient.category_ids.id:
             dhc_2016 += 1
@@ -308,16 +308,16 @@ def clv_document_create(client, args):
 
                 print('>>>>>', document_id)
 
-            if survey_TCP16_id not in survey_ids:
+            # if survey_TCP16_id not in survey_ids:
 
-                values = {
-                    'survey_id': survey_TCP16_id,
-                    'patient_id': patient.id,
-                    'family_id': family_id,
-                    }
-                document_id = clv_document.create(values).id
+            #     values = {
+            #         'survey_id': survey_TCP16_id,
+            #         'patient_id': patient.id,
+            #         'family_id': family_id,
+            #         }
+            #     document_id = clv_document.create(values).id
 
-                print('>>>>>', document_id)
+            #     print('>>>>>', document_id)
 
         if cat_anemia_2016_id in patient.category_ids.id:
             anemia_2016 += 1
