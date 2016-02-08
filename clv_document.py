@@ -57,6 +57,60 @@ def clv_document_unlink(client, args):
     print('--> not_deleted: ', not_deleted)
 
 
+def clv_document_unlink_Termos(client, args):
+
+    survey_survey = client.model('survey.survey')
+    survey_TCP16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCP16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO PARA A CAMPANHA DE DETECÇÃO DE DIABETES, ' +
+        'HIPERTENSÃO ARTERIAL E HIPERCOLESTEROLEMIA'
+        ), ])[0].id
+    survey_TCR16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCR16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAMES COPROPARASITOLÓGICOS, ' +
+        'DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
+    survey_TID16_id = survey_survey.browse([(
+        'title', '=',
+        '[TID16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAME DE URINA, ' +
+        'COPROPARASITOLÓGICO, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
+
+    clv_document = client.model('clv_document')
+    document_browse = clv_document.browse(args)
+
+    i = 0
+    deleted = 0
+    not_deleted = 0
+    for document in document_browse:
+        i += 1
+        print(i, document.name.encode("utf-8"))
+
+        if (document.survey_id.id == survey_TCP16_id) or \
+           (document.survey_id.id == survey_TCR16_id) or \
+           (document.survey_id.id == survey_TID16_id):
+
+            history = client.model('clv_document.history')
+            history_browse = history.browse([('document_id', '=', document.id), ])
+            history_ids = history_browse.id
+            print('>>>>>', history_ids)
+
+            history.unlink(history_ids)
+            try:
+                clv_document.unlink(document.id)
+                deleted += 1
+            except:
+                print('>>>>>', 'Not deleted!')
+                not_deleted += 1
+
+    print('--> i: ', i)
+    print('--> deleted: ', deleted)
+    print('--> not_deleted: ', not_deleted)
+
+
 def clv_document_create(client, args):
 
     clv_document = client.model('clv_document')
@@ -599,11 +653,16 @@ if __name__ == '__main__':
     # print('--> Executing clv_document_get_survey_user_input_id()...')
     # clv_document_get_survey_user_input_id(client, document_args)
 
-    document_args = [('survey_user_input_id', '!=', False),
-                     ]
-    print('-->', client, document_args)
-    print('--> Executing clv_document_activate_patient_and_family()...')
-    clv_document_activate_patient_and_family(client, document_args)
+    # document_args = [('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_activate_patient_and_family()...')
+    # clv_document_activate_patient_and_family(client, document_args)
+
+    # document_args = []
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_unlink_Termos()...')
+    # clv_document_unlink_Termos(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
