@@ -580,6 +580,22 @@ def clv_document_activate_patient_and_family(client, args):
     print('--> not_found_family: ', not_found_family)
 
 
+def clv_document_updt_state_done(client, args):
+
+    clv_document = client.model('clv_document')
+    document_browse = clv_document.browse(args)
+
+    document_count = 0
+    for document in document_browse:
+        document_count += 1
+
+        print(document_count, document.state, document.name.encode("utf-8"))
+
+        client.exec_workflow('clv_document', 'button_done', document.id)
+
+    print('document_count: ', document_count)
+
+
 def get_arguments():
 
     global username
@@ -676,6 +692,13 @@ if __name__ == '__main__':
     # print('-->', client, document_args)
     # print('--> Executing clv_document_activate_patient_and_family()...')
     # clv_document_activate_patient_and_family(client, document_args)
+
+    # document_args = [('state', '!=', 'done'),
+    #                  ('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_updt_state_done()...')
+    # clv_document_updt_state_done(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
