@@ -596,6 +596,41 @@ def clv_document_updt_state_done(client, args):
     print('document_count: ', document_count)
 
 
+def clv_document_updt_state_waiting(client, args):
+
+    clv_document = client.model('clv_document')
+
+    document_count_1 = 0
+    document_count_2 = 0
+    set_waiting = 0
+
+    document_browse = clv_document.browse(args + [('patient_id', '!=', False)])
+    for document in document_browse:
+        document_count_1 += 1
+
+        print(document_count_1, document.state, document.name.encode("utf-8"))
+
+        print('>>>>>', document.patient_id.state)
+        if document.patient_id.state != 'active':
+            set_waiting += 1
+            client.exec_workflow('clv_document', 'button_waiting', document.id)
+
+    document_browse = clv_document.browse(args + [('family_id', '!=', False)])
+    for document in document_browse:
+        document_count_2 += 1
+
+        print(document_count_2, document.state, document.name.encode("utf-8"))
+
+        print('>>>>>', document.family_id.state)
+        if document.family_id.state != 'active':
+            set_waiting += 1
+            client.exec_workflow('clv_document', 'button_waiting', document.id)
+
+    print('document_count_1: ', document_count_1)
+    print('document_count_2: ', document_count_2)
+    print('--> set_waiting: ', set_waiting)
+
+
 def get_arguments():
 
     global username
@@ -699,6 +734,13 @@ if __name__ == '__main__':
     # print('-->', client, document_args)
     # print('--> Executing clv_document_updt_state_done()...')
     # clv_document_updt_state_done(client, document_args)
+
+    # document_args = [('state', '!=', 'waiting'),
+    #                  ('survey_user_input_id', '=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_updt_state_waiting()...')
+    # clv_document_updt_state_waiting(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
