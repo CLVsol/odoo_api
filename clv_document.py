@@ -560,19 +560,18 @@ def clv_document_activate_patient_and_family(client, args):
         if document.patient_id is not False:
             found_patient += 1
             print('>>>>>', document.patient_id.state)
+            if document.patient_id.state != 'active':
+                client.exec_workflow('clv_patient', 'button_activate', document.patient_id.id)
         else:
             not_found_patient += 1
 
         if document.family_id is not False:
             found_family += 1
             print('>>>>>', document.family_id.state)
+            if document.family_id.state != 'active':
+                client.exec_workflow('clv_family', 'button_activate', document.family_id.id)
         else:
             not_found_family += 1
-
-        # values = {
-        #     "survey_user_input_id": False,
-        #     }
-        # clv_document.write(document.id, values)
 
     print('--> i: ', i)
     print('--> found_patient: ', found_patient)
@@ -665,18 +664,18 @@ if __name__ == '__main__':
     # print('--> Executing clv_document_create()...')
     # clv_document_create(client, patient_args)
 
-    # document_args = [('survey_user_input_id', '!=', False),
-    #                  ]
-    # print('-->', client, document_args)
-    # print('--> Executing clv_document_activate_patient_and_family()...')
-    # clv_document_activate_patient_and_family(client, document_args)
-
     # document_args = [('patient_id', '=', False),
     #                  ('family_id', '=', False),
     #                  ]
     # print('-->', client, document_args)
     # print('--> Executing clv_document_unlink()...')
     # clv_document_unlink(client, document_args)
+
+    # document_args = [('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_activate_patient_and_family()...')
+    # clv_document_activate_patient_and_family(client, document_args)
 
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
