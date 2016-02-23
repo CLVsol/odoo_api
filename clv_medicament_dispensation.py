@@ -261,7 +261,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
         name = dispensation.name
         dispensation_date = dispensation.dispensation_date
         medicament_code = dispensation.medicament.code
-        medicament = dispensation.medicament.name
+        medicament = dispensation.medicament.name.encode('utf-8')
         if dispensation.medicament_ref is not False:
             medicament_ref = dispensation.medicament_ref.name
         else:
