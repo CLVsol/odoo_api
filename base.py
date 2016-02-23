@@ -18,14 +18,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
 ################################################################################
 
+import re
+
+
 def secondsToStr(t):
-    return "%d:%02d:%02d.%03d" % reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],[(t*1000,),1000,60,60])
+    return "%d:%02d:%02d.%03d" % reduce(lambda ll, b: divmod(ll[0], b) + ll[1:], [(t*1000,), 1000, 60, 60])
+
 
 def autoIncrement(start=0, step=1):
     i = start
     while 1:
         yield i
         i += step
+
 
 def validate_cpf(cpf):
 
