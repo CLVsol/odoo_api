@@ -464,7 +464,8 @@ def clv_insured_mng_check_insured(client, args):
     for insured_mng in insured_mng_browse:
         i += 1
 
-        print(i, insured_mng.reg_number, insured_mng.name.encode('utf-8'), insured_mng.insurance_client_id)
+        print(i, insured_mng.reg_number, insured_mng.name.encode('utf-8'),
+              insured_mng.insurance_client_id.name.encode('utf-8'))
 
         insured_browse = clv_insured.browse(
             [('insurance_client_id', '=', insured_mng.insurance_client_id.id),
