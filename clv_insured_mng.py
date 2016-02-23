@@ -124,7 +124,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name, insurance
     insurance_id_T = get_insurance_id(client, insurance_T)
     # insurance_id_D = get_insurance_id(client, 'HVC - Dependentes')
     insurance_id_D = get_insurance_id(client, insurance_D)
-    insurance_id_A = 0
+    insurance_id_A = get_insurance_id(client, insurance_A)
 
     clv_insured_mng = client.model('clv_insured_mng')
 
