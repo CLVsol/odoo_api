@@ -263,7 +263,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
         medicament_code = dispensation.medicament.code
         medicament = dispensation.medicament.name.encode('utf-8')
         if dispensation.medicament_ref is not False:
-            medicament_ref = dispensation.medicament_ref.name
+            medicament_ref = dispensation.medicament_ref.name.encode('utf-8')
         else:
             medicament_ref = False
         max_retail_price = dispensation.max_retail_price
