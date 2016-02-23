@@ -678,6 +678,9 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                         }
                     clv_insured_mng.write(insured_mng.id, values)
 
+                else:
+                    address_id = insured_mng.address_home_id
+
                 if insured_mng.insured_id == False:
                     
                     values = {
