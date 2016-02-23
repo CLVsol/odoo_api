@@ -1939,14 +1939,14 @@ if __name__ == '__main__':
     # clv_insured_mng_updt_state_waiting(client, insured_args)
 
     # seq_N = 100
-    # PREFIX = '2016-02-23b'
+    # PREFIX = '2016-02-22'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
     # CLIENT_BATCH_NAME = 'GSUL_20160218_01'
     # print('-->', client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
     # print('--> Executing clv_insured_mng_create_insured()...')
     # clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
 
-    # PREFIX = '2016-02-23b'
+    # PREFIX = '2016-02-22'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
     # batch_args = [('state', '=', 'draft'),
     #               ('name', '=', PRODUCTION_BATCH_NAME),
@@ -1960,7 +1960,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
 
-    # PREFIX = '2016-02-23b'
+    # PREFIX = '2016-02-22'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
     # file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
     # print('-->', client, PRODUCTION_BATCH_NAME)
@@ -1973,7 +1973,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
 
-    # PREFIX = '2016-02-23b'
+    # PREFIX = '2016-02-22'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
     # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
     # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
