@@ -1894,6 +1894,10 @@ if __name__ == '__main__':
     # clv_insured_mng_unlink(client, 'revised')
 
     # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("waiting")...')
+    # clv_insured_mng_unlink(client, 'waiting')
+
+    # print('-->', client)
     # print('--> Executing clv_insured_mng_unlink("done")...')
     # clv_insured_mng_unlink(client, 'done')
 
