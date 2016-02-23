@@ -352,7 +352,7 @@ def clv_medicament_dispensation_ext_updt_medicament(client):
     for dispensation_ext in dispensation_ext_browse:
 
         i += 1
-        print(i, dispensation_ext.name, dispensation_ext.medicament_ref)
+        print(i, dispensation_ext.name, dispensation_ext.medicament_ref.name.encode('utf-8'))
 
         clv_medicament = client.model('clv_medicament')
         medicament_browse = clv_medicament.browse(
