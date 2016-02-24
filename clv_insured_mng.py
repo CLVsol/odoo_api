@@ -37,7 +37,7 @@ from clv_tag import *
 from clv_batch import *
 
 
-def clv_insured_mng_unlink(client, status):
+def clv_insured_mng_unlink(client, status): 
 
     clv_insured_mng = client.model('clv_insured_mng')
     insured_mng_browse = clv_insured_mng.browse([('state', '=', status),])
@@ -324,7 +324,7 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name, insurance
             country_id = [0]
             state_id = [0]
             l10n_br_city_id = [0]
-            cidade = s[Cidade[0]]
+            cidade = s[Cidade[0]].encode('utf-8')
             if district is not False:
                 cidade = cidade.strip()
                 cidade = cidade.title()
@@ -603,7 +603,7 @@ def clv_insured_mng_updt_insured_crd_code(client):
     print('--> i: ', i)
 
 
-def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME):
+def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME): 
 
     date_inclusion = PREFIX
 
@@ -927,7 +927,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
     print('--> i: ', i)
 
 
-def clv_insured_updt_state_processing(client, args):
+def clv_insured_updt_state_processing(client, args): 
 
     clv_insured = client.model('clv_insured')
 
@@ -947,7 +947,7 @@ def clv_insured_updt_state_processing(client, args):
     print('i: ', i)
 
 
-def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME):
+def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME): 
 
     headings_insured_card = ['seq', 
                              'name', 'code',
@@ -1001,7 +1001,7 @@ def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME):
     file_insured_card.close()
 
 
-def clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME):
+def clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME): 
 
     headings_insured = ['no', 
                         'batch_producao', 'batch_client', 'batch_familiar',
@@ -1158,7 +1158,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_crd_name()...')
     # clv_insured_mng_check_crd_name(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1175,7 +1175,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
@@ -1197,7 +1197,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1209,7 +1209,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_card_export_producao()...')
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1228,12 +1228,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # batch_args = [('state', '=', 'checking'),]
+    # batch_args = [('state', '=', 'checking'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # card_args = [('state', '=', 'processing'),]
+    # card_args = [('state', '=', 'processing'), ]
     # print('-->', client, card_args)
     # print('--> Executing clv_insured_card_updt_state_active()...')
     # clv_insured_card_updt_state_active(client, card_args)
@@ -1271,7 +1271,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1284,7 +1284,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
@@ -1306,7 +1306,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1318,7 +1318,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_card_export_producao()...')
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1337,12 +1337,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # batch_args = [('state', '=', 'checking'),]
+    # batch_args = [('state', '=', 'checking'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # card_args = [('state', '=', 'processing'),]
+    # card_args = [('state', '=', 'processing'), ]
     # print('-->', client, card_args)
     # print('--> Executing clv_insured_card_updt_state_active()...')
     # clv_insured_card_updt_state_active(client, card_args)
@@ -1380,7 +1380,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1393,7 +1393,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
@@ -1415,7 +1415,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1427,7 +1427,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_card_export_producao()...')
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1446,12 +1446,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # batch_args = [('state', '=', 'checking'),]
+    # batch_args = [('state', '=', 'checking'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # card_args = [('state', '=', 'processing'),]
+    # card_args = [('state', '=', 'processing'), ]
     # print('-->', client, card_args)
     # print('--> Executing clv_insured_card_updt_state_active()...')
     # clv_insured_card_updt_state_active(client, card_args)
@@ -1489,7 +1489,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1502,7 +1502,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
@@ -1524,7 +1524,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1536,7 +1536,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_card_export_producao()...')
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1555,12 +1555,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # batch_args = [('state', '=', 'checking'),]
+    # batch_args = [('state', '=', 'checking'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # card_args = [('state', '=', 'processing'),]
+    # card_args = [('state', '=', 'processing'), ]
     # print('-->', client, card_args)
     # print('--> Executing clv_insured_card_updt_state_active()...')
     # clv_insured_card_updt_state_active(client, card_args)
@@ -1598,7 +1598,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1611,7 +1611,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
@@ -1633,7 +1633,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1646,7 +1646,7 @@ if __name__ == '__main__':
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
     # ******* Skiped - Executed Manually *******
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1690,12 +1690,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_crd_name()...')
     # clv_insured_mng_check_crd_name(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client, insured_args)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1708,7 +1708,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
@@ -1730,7 +1730,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1743,7 +1743,7 @@ if __name__ == '__main__':
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
     # ******* Skiped - Executed Manually *******
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1762,12 +1762,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # batch_args = [('state', '=', 'checking'),]
+    # batch_args = [('state', '=', 'checking'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # card_args = [('state', '=', 'processing'),]
+    # card_args = [('state', '=', 'processing'), ]
     # print('-->', client, card_args)
     # print('--> Executing clv_insured_card_updt_state_active()...')
     # clv_insured_card_updt_state_active(client, card_args)
@@ -1804,12 +1804,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_crd_name()...')
     # clv_insured_mng_check_crd_name(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client, insured_args)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1822,12 +1822,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
 
-    # seq_N = 100
+    # seq_N = 0
     # PREFIX = '2016-02-22'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
     # CLIENT_BATCH_NAME = 'GSUL_20160218_01'
@@ -1844,7 +1844,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1857,7 +1857,7 @@ if __name__ == '__main__':
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
     # ******* Skiped - Executed Manually *******
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1876,12 +1876,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # batch_args = [('state', '=', 'checking'),]
+    # batch_args = [('state', '=', 'checking'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # card_args = [('state', '=', 'processing'),]
+    # card_args = [('state', '=', 'processing'), ]
     # print('-->', client, card_args)
     # print('--> Executing clv_insured_card_updt_state_active()...')
     # clv_insured_card_updt_state_active(client, card_args)
@@ -1918,12 +1918,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_crd_name()...')
     # clv_insured_mng_check_crd_name(client)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_check_insured()...')
     # clv_insured_mng_check_insured(client, insured_args)
 
-    # insured_args = [('state', '=', 'draft'),]
+    # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_revised()...')
     # clv_insured_mng_updt_state_revised(client, insured_args)
@@ -1936,7 +1936,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
     # clv_insured_mng_updt_insured_crd_code(client)
 
-    # insured_args = [('state', '=', 'revised'),]
+    # insured_args = [('state', '=', 'revised'), ]
     # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_updt_state_waiting()...')
     # clv_insured_mng_updt_state_waiting(client, insured_args)
@@ -1958,7 +1958,7 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_processing()...')
     # clv_batch_updt_state_processing(client, batch_args)
 
-    # insured_card_args = [('state', '=', 'processing'),]
+    # insured_card_args = [('state', '=', 'processing'), ]
     # print('-->', client, insured_card_args)
     # print('--> Executing clv_insured_updt_state_processing()...')
     # clv_insured_updt_state_processing(client, insured_card_args)
@@ -1971,7 +1971,7 @@ if __name__ == '__main__':
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
     # ******* Skiped - Executed Manually *******
-    # batch_args = [('state', '=', 'processing'),]
+    # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
     # clv_batch_updt_state_checking(client, batch_args)
@@ -1990,12 +1990,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # batch_args = [('state', '=', 'checking'),]
+    # batch_args = [('state', '=', 'checking'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_done()...')
     # clv_batch_updt_state_done(client, batch_args)
 
-    # card_args = [('state', '=', 'processing'),]
+    # card_args = [('state', '=', 'processing'), ]
     # print('-->', client, card_args)
     # print('--> Executing clv_insured_card_updt_state_active()...')
     # clv_insured_card_updt_state_active(client, card_args)
