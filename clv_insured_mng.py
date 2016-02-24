@@ -1790,124 +1790,6 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_unlink("canceled")...')
     # clv_insured_mng_unlink(client, 'canceled')
 
-    # batch_name = 'PUB_20160219_01'
-    # file_name = '/opt/openerp/biobox/data/PUB_20160219_01.txt'
-    # client_name = 'PUB - Public Broker'
-    # insurance_T = 'PUB - Flex Parceiro'
-    # insurance_D = ''
-    # insurance_A = ''
-    # print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
-    # print('--> Executing clv_insured_mng_import()...')
-    # clv_insured_mng_import(client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_check_crd_name()...')
-    # clv_insured_mng_check_crd_name(client)
-
-    # insured_args = [('state', '=', 'draft'),]
-    # print('-->', client, insured_args)
-    # print('--> Executing clv_insured_mng_check_insured()...')
-    # clv_insured_mng_check_insured(client, insured_args)
-
-    # insured_args = [('state', '=', 'draft'),]
-    # print('-->', client, insured_args)
-    # print('--> Executing clv_insured_mng_updt_state_revised()...')
-    # clv_insured_mng_updt_state_revised(client, insured_args)
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_updt_insured_code()...')
-    # clv_insured_mng_updt_insured_code(client)
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
-    # clv_insured_mng_updt_insured_crd_code(client)
-
-    # insured_args = [('state', '=', 'revised'),]
-    # print('-->', client, insured_args)
-    # print('--> Executing clv_insured_mng_updt_state_waiting()...')
-    # clv_insured_mng_updt_state_waiting(client, insured_args)
-
-    # seq_N = 0
-    # PREFIX = '2016-02-23'
-    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    # CLIENT_BATCH_NAME = 'PUB_20160219_01'
-    # print('-->', client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
-    # print('--> Executing clv_insured_mng_create_insured()...')
-    # clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
-
-    # PREFIX = '2016-02-23'
-    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    # batch_args = [('state', '=', 'draft'),
-    #               ('name', '=', PRODUCTION_BATCH_NAME),
-    #               ]
-    # print('-->', client)
-    # print('--> Executing clv_batch_updt_state_processing()...')
-    # clv_batch_updt_state_processing(client, batch_args)
-
-    # insured_card_args = [('state', '=', 'processing'),]
-    # print('-->', client, insured_card_args)
-    # print('--> Executing clv_insured_updt_state_processing()...')
-    # clv_insured_updt_state_processing(client, insured_card_args)
-
-    # PREFIX = '2016-02-23'
-    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    # file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
-    # print('-->', client, PRODUCTION_BATCH_NAME)
-    # print('--> Executing clv_insured_card_export_producao()...')
-    # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
-
-    # ******* Skiped - Executed Manually *******
-    # batch_args = [('state', '=', 'processing'),]
-    # print('-->', client, batch_args)
-    # print('--> Executing clv_batch_updt_state_checking()...')
-    # clv_batch_updt_state_checking(client, batch_args)
-
-    # PREFIX = '2016-02-23'
-    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
-    # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
-    # print('--> Executing clv_batch_producao_export_protocolo()...')
-    # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
-
-    # batch_args = [('state', '=', 'checking'),
-    #               ('name_category', '=', 'Grupo Familiar'),
-    #               ]
-    # print('-->', client, batch_args)
-    # print('--> Executing clv_batch_updt_state_done()...')
-    # clv_batch_updt_state_done(client, batch_args)
-
-    # batch_args = [('state', '=', 'checking'),]
-    # print('-->', client, batch_args)
-    # print('--> Executing clv_batch_updt_state_done()...')
-    # clv_batch_updt_state_done(client, batch_args)
-
-    # card_args = [('state', '=', 'processing'),]
-    # print('-->', client, card_args)
-    # print('--> Executing clv_insured_card_updt_state_active()...')
-    # clv_insured_card_updt_state_active(client, card_args)
-
-    # 2 #######################################
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("draft")...')
-    # clv_insured_mng_unlink(client, 'draft')
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("revised")...')
-    # clv_insured_mng_unlink(client, 'revised')
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("waiting")...')
-    # clv_insured_mng_unlink(client, 'waiting')
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("done")...')
-    # clv_insured_mng_unlink(client, 'done')
-
-    # print('-->', client)
-    # print('--> Executing clv_insured_mng_unlink("canceled")...')
-    # clv_insured_mng_unlink(client, 'canceled')
-
     # batch_name = 'GSUL_20160218_01'
     # file_name = '/opt/openerp/biobox/data/GSUL_20160218_01.txt'
     # client_name = 'GSul - Serviços Administrativos'
@@ -1981,6 +1863,120 @@ if __name__ == '__main__':
     # clv_batch_updt_state_checking(client, batch_args)
 
     # PREFIX = '2016-02-22'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
+    # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_batch_producao_export_protocolo()...')
+    # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
+
+    # batch_args = [('state', '=', 'checking'),
+    #               ('name_category', '=', 'Grupo Familiar'),
+    #               ]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # batch_args = [('state', '=', 'checking'),]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # card_args = [('state', '=', 'processing'),]
+    # print('-->', client, card_args)
+    # print('--> Executing clv_insured_card_updt_state_active()...')
+    # clv_insured_card_updt_state_active(client, card_args)
+
+    # 2 #######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("draft")...')
+    # clv_insured_mng_unlink(client, 'draft')
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("revised")...')
+    # clv_insured_mng_unlink(client, 'revised')
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("done")...')
+    # clv_insured_mng_unlink(client, 'done')
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_unlink("canceled")...')
+    # clv_insured_mng_unlink(client, 'canceled')
+
+    # batch_name = 'PUB_20160219_01'
+    # file_name = '/opt/openerp/biobox/data/PUB_20160219_01.txt'
+    # client_name = 'PUB - Public Broker'
+    # insurance_T = 'PUB - Flex Parceiro'
+    # insurance_D = ''
+    # insurance_A = ''
+    # print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
+    # print('--> Executing clv_insured_mng_import()...')
+    # clv_insured_mng_import(client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_check_crd_name()...')
+    # clv_insured_mng_check_crd_name(client)
+
+    # insured_args = [('state', '=', 'draft'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_check_insured()...')
+    # clv_insured_mng_check_insured(client, insured_args)
+
+    # insured_args = [('state', '=', 'draft'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_revised()...')
+    # clv_insured_mng_updt_state_revised(client, insured_args)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_code()...')
+    # clv_insured_mng_updt_insured_code(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
+    # clv_insured_mng_updt_insured_crd_code(client)
+
+    # insured_args = [('state', '=', 'revised'),]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_waiting()...')
+    # clv_insured_mng_updt_state_waiting(client, insured_args)
+
+    # seq_N = 0
+    # PREFIX = '2016-02-23'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # CLIENT_BATCH_NAME = 'PUB_20160219_01'
+    # print('-->', client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+    # print('--> Executing clv_insured_mng_create_insured()...')
+    # clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+
+    # PREFIX = '2016-02-23'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # batch_args = [('state', '=', 'draft'),
+    #               ('name', '=', PRODUCTION_BATCH_NAME),
+    #               ]
+    # print('-->', client)
+    # print('--> Executing clv_batch_updt_state_processing()...')
+    # clv_batch_updt_state_processing(client, batch_args)
+
+    # insured_card_args = [('state', '=', 'processing'),]
+    # print('-->', client, insured_card_args)
+    # print('--> Executing clv_insured_updt_state_processing()...')
+    # clv_insured_updt_state_processing(client, insured_card_args)
+
+    # PREFIX = '2016-02-23'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
+    # print('-->', client, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_insured_card_export_producao()...')
+    # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
+
+    # ******* Skiped - Executed Manually *******
+    # batch_args = [('state', '=', 'processing'),]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_checking()...')
+    # clv_batch_updt_state_checking(client, batch_args)
+
+    # PREFIX = '2016-02-23'
     # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
     # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
     # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
