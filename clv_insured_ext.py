@@ -173,23 +173,23 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
         insurance = insured_browse.name[0]
 
         Cod_Contrato = False
-        if insurance == 'HVC - Dependentes':
+        if insurance == 'HVC - COPAR 25':
             Cod_Contrato = [2, 7, 6, '001583']
-        if insurance == 'HVC - Titulares':
+        if insurance == 'HVC - PLENO':
             Cod_Contrato = [2, 7, 6, '001583']
-        if insurance == 'VCAS - Dependentes':
+        if insurance == 'VCAS - COPAR 25':
             Cod_Contrato = [2, 7, 6, '001583']
-        if insurance == 'VCAS - Titulares':
+        if insurance == 'VCAS - PLENO':
             Cod_Contrato = [2, 7, 6, '001583']
 
-        if insurance == 'BioBox - Pleno':
+        if insurance == 'GSUL - PLENO':
             Cod_Contrato = [2, 7, 6, '001568']
-        if insurance == 'BioBox - Fixo':
+        if insurance == 'GSUL - COPAR 30':
             Cod_Contrato = [2, 7, 6, '001569']
-        if insurance.encode("utf-8") == 'BioBox - Variável':
+        if insurance.encode("utf-8") == 'GSUL - FLEX ACESSO':
             Cod_Contrato = [2, 7, 6, '001570']
 
-        if insurance.encode("utf-8") == 'PUB - Flex Parceiro':
+        if insurance.encode("utf-8") == 'PUB - FLEX PARCEIRO':
             Cod_Contrato = [2, 7, 6, '001615']
 
         code = re.sub('[^0-9]', '', code)
@@ -244,23 +244,23 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
         LCDF = [23, 319, 15, 15 * '0']
 
         LCS = False
-        if insurance == 'HVC - Dependentes':
+        if insurance == 'HVC - COPAR 25':
             LCS = [24, 334, 15, '000000000050000']
-        if insurance == 'HVC - Titulares':
+        if insurance == 'HVC - PLENO':
             LCS = [24, 334, 15, '000000000050000']
-        if insurance == 'VCAS - Dependentes':
+        if insurance == 'VCAS - COPAR 25':
             LCS = [24, 334, 15, '000000000050000']
-        if insurance == 'VCAS - Titulares':
-            LCS = [24, 334, 15, '000000000050000']
-
-        if insurance == 'BioBox - Pleno':
-            LCS = [24, 334, 15, '000000000050000']
-        if insurance == 'BioBox - Fixo':
-            LCS = [24, 334, 15, '000000000050000']
-        if insurance.encode("utf-8") == 'BioBox - Variável':
+        if insurance == 'VCAS - PLENO':
             LCS = [24, 334, 15, '000000000050000']
 
-        if insurance.encode("utf-8") == 'PUB - Flex Parceiro':
+        if insurance == 'GSUL - PLENO':
+            LCS = [24, 334, 15, '000000000050000']
+        if insurance == 'GSUL - COPAR 30':
+            LCS = [24, 334, 15, '000000000050000']
+        if insurance.encode("utf-8") == 'GSUL - FLEX ACESSO':
+            LCS = [24, 334, 15, '000000000050000']
+
+        if insurance.encode("utf-8") == 'PUB - FLEX PARCEIRO':
             LCS = [24, 334, 15, '000000000025000']
 
         ADS_Usuario = [25, 349, 40, 40 * ' ']
