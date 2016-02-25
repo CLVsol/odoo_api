@@ -1679,7 +1679,7 @@ if __name__ == '__main__':
     # batch_name = 'PUB_20160201_01'
     # file_name = '/opt/openerp/biobox/data/PUB_20160201_01.txt'
     # client_name = 'PUB - Public Broker'
-    # insurance_T = 'PUB - Flex Parceiro'
+    # insurance_T = 'PUB - FLEX PARCEIRO'
     # insurance_D = ''
     # insurance_A = ''
     # print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
@@ -1907,7 +1907,7 @@ if __name__ == '__main__':
     # batch_name = 'PUB_20160219_01'
     # file_name = '/opt/openerp/biobox/data/PUB_20160219_01.txt'
     # client_name = 'PUB - Public Broker'
-    # insurance_T = 'PUB - Flex Parceiro'
+    # insurance_T = 'PUB - FLEX PARCEIRO'
     # insurance_D = ''
     # insurance_A = ''
     # print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
