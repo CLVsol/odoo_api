@@ -603,7 +603,7 @@ def clv_insured_mng_updt_insured_crd_code(client):
     print('--> i: ', i)
 
 
-def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME): 
+def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME):
 
     date_inclusion = PREFIX
 
@@ -927,7 +927,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
     print('--> i: ', i)
 
 
-def clv_insured_updt_state_processing(client, args): 
+def clv_insured_updt_state_processing(client, args):
 
     clv_insured = client.model('clv_insured')
 
@@ -947,7 +947,7 @@ def clv_insured_updt_state_processing(client, args):
     print('i: ', i)
 
 
-def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME): 
+def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME):
 
     headings_insured_card = ['seq', 
                              'name', 'code',
@@ -1001,7 +1001,7 @@ def clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME):
     file_insured_card.close()
 
 
-def clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME): 
+def clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME):
 
     headings_insured = ['no', 
                         'batch_producao', 'batch_client', 'batch_familiar',
@@ -2021,8 +2021,8 @@ if __name__ == '__main__':
     # batch_name = 'HVC_20160229_01'
     # file_name = '/opt/openerp/biobox/data/HVC_20160229_01.txt'
     # client_name = 'HVC - Hospital Vera Cruz'
-    # insurance_T = 'VCAS - PLENO'
-    # insurance_D = 'VCAS - COPAR 25'
+    # insurance_T = 'HVC - PLENO'
+    # insurance_D = 'HVC - COPAR 25'
     # insurance_A = ''
     # print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
     # print('--> Executing clv_insured_mng_import()...')
