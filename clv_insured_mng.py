@@ -2032,9 +2032,10 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_mng_check_crd_name()...')
     # clv_insured_mng_check_crd_name(client)
 
-    # print('-->', client)
+    # insured_args = [('state', '=', 'draft'), ]
+    # print('-->', client, insured_args)
     # print('--> Executing clv_insured_mng_check_insured()...')
-    # clv_insured_mng_check_insured(client)
+    # clv_insured_mng_check_insured(client, insured_args)
 
     # insured_args = [('state', '=', 'draft'), ]
     # print('-->', client, insured_args)
