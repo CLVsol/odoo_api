@@ -2021,9 +2021,12 @@ if __name__ == '__main__':
     # batch_name = 'HVC_20160229_01'
     # file_name = '/opt/openerp/biobox/data/HVC_20160229_01.txt'
     # client_name = 'HVC - Hospital Vera Cruz'
-    # print('-->', client, batch_name, file_name, client_name)
+    # insurance_T = 'VCAS - PLENO'
+    # insurance_D = 'VCAS - COPAR 25'
+    # insurance_A = ''
+    # print('-->', client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
     # print('--> Executing clv_insured_mng_import()...')
-    # clv_insured_mng_import(client, batch_name, file_name, client_name)
+    # clv_insured_mng_import(client, batch_name, file_name, client_name, insurance_T, insurance_D, insurance_A)
 
     # print('-->', client)
     # print('--> Executing clv_insured_mng_check_crd_name()...')
