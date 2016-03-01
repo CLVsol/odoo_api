@@ -2084,7 +2084,6 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_card_export_producao()...')
     # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
-    # ******* Skiped - Executed Manually *******
     # batch_args = [('state', '=', 'processing'), ]
     # print('-->', client, batch_args)
     # print('--> Executing clv_batch_updt_state_checking()...')
@@ -2096,6 +2095,23 @@ if __name__ == '__main__':
     # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
     # print('--> Executing clv_batch_producao_export_protocolo()...')
     # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
+
+    # batch_args = [('state', '=', 'checking'),
+    #               ('name_category', '=', 'Grupo Familiar'),
+    #               ]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # batch_args = [('state', '=', 'checking'), ]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # card_args = [('state', '=', 'processing'), ]
+    # print('-->', client, card_args)
+    # print('--> Executing clv_insured_card_updt_state_active()...')
+    # clv_insured_card_updt_state_active(client, card_args)
 
     print('--> clv_insured_mng.py')
     print('--> Execution time:', secondsToStr(time() - start))
