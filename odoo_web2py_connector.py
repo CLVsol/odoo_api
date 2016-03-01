@@ -89,8 +89,6 @@ if __name__ == '__main__':
 
     server = xmlrpclib.ServerProxy('http://localhost:8000/odoo_web2py_connector/xmlrpc/call/xmlrpc')
     print(str(server.user_test(username,
-                               password,
-                               username,
                                password)))
 
     print('--> odoo_web2py_connector.py')
