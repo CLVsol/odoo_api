@@ -33,7 +33,7 @@ def secondsToStr(t):
 def tester():
 
     import xmlrpclib
-    server = xmlrpclib.ServerProxy('http://localhost:8000/odoo_web2py_connector/default/call/xmlrpc')
+    server = xmlrpclib.ServerProxy('http://localhost:8000/odoo_web2py_connector/xmlrpc/call/xmlrpc')
     return str(server.add(9, 3) + server.sub(2, 9))
 
 
@@ -72,8 +72,8 @@ if __name__ == '__main__':
 
     username = 'username'
     # username = '*'
-    paswword = 'paswword'
-    # paswword = '*'
+    password = 'password'
+    # password = '*'
 
     dbname = 'odoo'
     # dbname = '*'
@@ -87,11 +87,11 @@ if __name__ == '__main__':
 
     # print(tester())
 
-    server = xmlrpclib.ServerProxy('http://localhost:8000/odoo_web2py_connector/default/call/xmlrpc')
+    server = xmlrpclib.ServerProxy('http://localhost:8000/odoo_web2py_connector/xmlrpc/call/xmlrpc')
     print(str(server.user_test(username,
-                               paswword,
+                               password,
                                username,
-                               paswword)))
+                               password)))
 
     print('--> odoo_web2py_connector.py')
     print('--> Execution time:', secondsToStr(time() - start))
