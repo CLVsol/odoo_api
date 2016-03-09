@@ -325,7 +325,7 @@ def survey_user_input_set_email_Ok(client, args):
                                     is_ok = False
 
                         elif survey_CSE16_id == user_input.survey_id.id:
-                            if ir_model_data_name == 'ISE16_02_02':
+                            if ir_model_data_name == 'CSE16_02_02':
                                 if input_line.value_text != patient_code:
                                     err_message = '[Patient Code Mismatch!]'
                                     ok -= 1
