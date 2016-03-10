@@ -651,6 +651,43 @@ def clv_document_updt_state_revised_2(client, args):
     print('--> set_revised: ', set_revised)
 
 
+def clv_document_updt_family_id(client, args):
+
+    clv_document = client.model('clv_document')
+
+    document_count = 0
+    family_id_revised = 0
+
+    document_browse = clv_document.browse(args)
+    for document in document_browse:
+        document_count += 1
+
+        print(document_count, document.state, document.name.encode("utf-8"))
+
+        family_id = False
+        if document.family_id is not False:
+            family_id = document.family_id.id
+        print('>>>>>', family_id)
+
+        patient_family_id = False
+        try:
+            patient_family_id = document.patient_id.person.family_member_ids.family_id.id[0]
+        except:
+            pass
+        print('>>>>>', patient_family_id)
+
+        if (family_id is not False) and patient_family_id is not False:
+            if patient_family_id != family_id:
+                family_id_revised += 1
+                values = {
+                    "family_id": patient_family_id,
+                    }
+                clv_document.write(document.id, values)
+
+    print('document_count: ', document_count)
+    print('--> family_id_revised: ', family_id_revised)
+
+
 def get_arguments():
 
     global username
@@ -808,6 +845,12 @@ if __name__ == '__main__':
     # print('-->', client, document_args)
     # print('--> Executing clv_document_updt_state_revised_2()...')
     # clv_document_updt_state_revised_2(client, document_args)
+
+    # document_args = [('survey_user_input_id', '=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_updt_family_id()...')
+    # clv_document_updt_family_id(client, document_args)
 
     # document_args = [('survey_user_input_id', '!=', False),
     #                  ]
