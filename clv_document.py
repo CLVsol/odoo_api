@@ -764,5 +764,36 @@ if __name__ == '__main__':
     # print('--> Executing clv_document_updt_state_waiting()...')
     # clv_document_updt_state_waiting(client, document_args)
 
+    ##############################
+
+    # # document_args = [('state', '=', 'waiting'),
+    # #                  ('survey_user_input_id', '!=', False),
+    # #                  ]
+    # document_args = [('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_clear_survey_user_input_id()...')
+    # clv_document_clear_survey_user_input_id(client, document_args)
+
+    # document_args = [('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_activate_patient_and_family()...')
+    # clv_document_activate_patient_and_family(client, document_args)
+
+    # document_args = [('state', '!=', 'done'),
+    #                  ('survey_user_input_id', '!=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_updt_state_done()...')
+    # clv_document_updt_state_done(client, document_args)
+
+    # document_args = [('state', '!=', 'waiting'),
+    #                  ('survey_user_input_id', '=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_updt_state_waiting()...')
+    # clv_document_updt_state_waiting(client, document_args)
+
     print('--> clv_document.py')
     print('--> Execution time:', secondsToStr(time() - start))
