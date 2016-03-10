@@ -631,6 +631,26 @@ def clv_document_updt_state_waiting(client, args):
     print('--> set_waiting: ', set_waiting)
 
 
+def clv_document_updt_state_revised_2(client, args):
+
+    clv_document = client.model('clv_document')
+
+    document_count = 0
+    set_revised = 0
+
+    document_browse = clv_document.browse(args)
+    for document in document_browse:
+        document_count += 1
+
+        print(document_count, document.state, document.name.encode("utf-8"))
+
+        set_revised += 1
+        client.exec_workflow('clv_document', 'button_revised', document.id)
+
+    print('document_count: ', document_count)
+    print('--> set_revised: ', set_revised)
+
+
 def get_arguments():
 
     global username
@@ -779,8 +799,15 @@ if __name__ == '__main__':
     #                  ('survey_user_input_id', '=', False),
     #                  ]
     # print('-->', client, document_args)
-    # print('--> Executing clv_document_updt_state_waiting()...')
-    # clv_document_updt_state_waiting(client, document_args)
+    # print('--> Executing clv_document_updt_state_revised_2()...')
+    # clv_document_updt_state_revised_2(client, document_args)
+
+    # document_args = [('state', '=', 'waiting'),
+    #                  ('survey_user_input_id', '=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_updt_state_revised_2()...')
+    # clv_document_updt_state_revised_2(client, document_args)
 
     # document_args = [('survey_user_input_id', '!=', False),
     #                  ]
