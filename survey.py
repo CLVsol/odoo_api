@@ -334,7 +334,7 @@ def survey_user_input_set_email_Ok(client, args):
                                     is_ok = False
                             if ir_model_data_name == 'CSE16_02_04':
                                 if input_line.value_text != family_code:
-                                    err_message = '[Patient Code Mismatch!]'
+                                    err_message = '[Family Code Mismatch!]'
                                     ok -= 1
                                     not_ok += 1
                                     print('>>>>>', 'NOT Ok')
