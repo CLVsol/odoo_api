@@ -775,6 +775,13 @@ if __name__ == '__main__':
     # print('--> Executing clv_document_clear_survey_user_input_id()...')
     # clv_document_clear_survey_user_input_id(client, document_args)
 
+    # document_args = [('state', '=', 'done'),
+    #                  ('survey_user_input_id', '=', False),
+    #                  ]
+    # print('-->', client, document_args)
+    # print('--> Executing clv_document_updt_state_waiting()...')
+    # clv_document_updt_state_waiting(client, document_args)
+
     # document_args = [('survey_user_input_id', '!=', False),
     #                  ]
     # print('-->', client, document_args)
