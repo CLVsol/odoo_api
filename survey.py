@@ -439,6 +439,306 @@ def survey_user_input_set_email_Ok(client, args):
     # print('--> linked: ', linked)
 
 
+def survey_user_input_set_email_Ok_2(client, args):
+
+    survey_survey = client.model('survey.survey')
+    survey_FSE16_id = survey_survey.browse([(
+        'title', '=',
+        '[FSE16] JCAFB 2016 - Questionário Socioeconômico Familiar (Crianças e Idosos)'), ])[0].id
+    survey_ISE16_id = survey_survey.browse([(
+        'title', '=',
+        '[ISE16] JCAFB 2016 - Questionário Socioeconômico Individual (Idosos)'), ])[0].id
+    survey_CSE16_id = survey_survey.browse([(
+        'title', '=',
+        '[CSE16] JCAFB 2016 - Questionário Socioeconômico Individual (Crianças)'), ])[0].id
+    survey_QMD16_id = survey_survey.browse([(
+        'title', '=',
+        '[QMD16] JCAFB 2016 - Questionário Medicamento'), ])[0].id
+    survey_ITM16_id = survey_survey.browse([(
+        'title', '=',
+        '[ITM16] JCAFB 2016 - Interpretação das Tabelas de Medicamentos'), ])[0].id
+    survey_QAN16_id = survey_survey.browse([(
+        'title', '=',
+        '[QAN16] JCAFB 2016 - Questionário para detecção de Anemia'), ])[0].id
+    survey_QDH16_id = survey_survey.browse([(
+        'title', '=',
+        '[QDH16] JCAFB 2016 - Questionário - Diabetes, Hipertensão Arterial e Hipercolesterolemia'), ])[0].id
+    survey_TCP16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCP16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO PARA A CAMPANHA DE DETECÇÃO DE DIABETES, ' +
+        'HIPERTENSÃO ARTERIAL E HIPERCOLESTEROLEMIA'
+        ), ])[0].id
+    survey_TCR16_id = survey_survey.browse([(
+        'title', '=',
+        '[TCR16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAMES COPROPARASITOLÓGICOS, ' +
+        'DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
+    survey_TID16_id = survey_survey.browse([(
+        'title', '=',
+        '[TID16] JCAFB 2016 - ' +
+        'TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO PARA REALIZAÇÃO DE EXAME DE URINA, ' +
+        'COPROPARASITOLÓGICO, DETECÇÃO DE ANEMIA E QUESTIONÁRIO SOCIOECONÔMICO'
+        ), ])[0].id
+
+    survey_user_input = client.model('survey.user_input')
+    survey_user_input_browse = survey_user_input.browse(args)
+
+    survey_user_input_line = client.model('survey.user_input_line')
+
+    clv_document = client.model('clv_document')
+
+    err_message = '[!]'
+
+    i = 0
+    done = 0
+    new = 0
+    not_new = 0
+    ok = 0
+    not_ok = 0
+    for user_input in survey_user_input_browse:
+        i += 1
+
+        print(i, user_input)
+        if user_input.state != 'done':
+            continue
+
+        done += 1
+        document_browse = False
+
+        print(i, user_input.date_create, user_input.token, user_input.state, user_input.email)
+        print('>>>>>', '(survey)', user_input.survey_id.title.encode('utf-8'),)
+
+        survey_user_input_line_browse = survey_user_input_line.browse(
+            [('user_input_id', '=', user_input.id), ])
+
+        is_ok = True
+        is_new = False
+
+        if len(survey_user_input_line_browse) > 0:
+
+            document_browse = clv_document.browse(
+                [('name', '=', survey_user_input_line_browse[0].value_text), ])
+            if document_browse.id != []:
+                print('yyyyy', survey_user_input_line_browse[0].value_text, document_browse)
+                print('>>>>>', '(document)', document_browse[0].survey_id.title.encode("utf-8"))
+                if document_browse[0].survey_user_input_id is not False:
+                    print('xxxxx', document_browse[0].survey_user_input_id.id, user_input.id)
+                    if document_browse[0].survey_user_input_id.id == user_input.id:
+                        not_new += 1
+                        ok += 1
+                    else:
+                        err_message = '[Duplicated Document Code "' + \
+                                      survey_user_input_line_browse[0].value_text + \
+                                      '"!]'
+                        is_new = True
+                        new += 1
+                        not_ok += 1
+                        print('>>>>>', 'NOT Ok')
+                        is_ok = False
+                else:
+                    is_new = True
+                    new += 1
+            else:
+                print('yyyyy', survey_user_input_line_browse[0].value_text, document_browse)
+                err_message = '[Invalid Document Code!]'
+                is_new = True
+                new += 1
+                not_ok += 1
+                print('>>>>>', 'NOT Ok')
+                is_ok = False
+
+        line = 0
+        for input_line in survey_user_input_line_browse:
+            line += 1
+            ir_model_data_name = ir_model_data_get_name(client,
+                                                        'survey.question',
+                                                        input_line.question_id.id)
+
+            if line == 1:
+                if input_line.question_id.type == 'textbox':
+                    document_browse = clv_document.browse(
+                        [('name', '=', input_line.value_text), ])
+                    if document_browse.id != []:
+
+                        if is_ok:
+                            if user_input.survey_id.title.encode('utf-8') == \
+                               document_browse[0].survey_id.title.encode("utf-8"):
+                                ok += 1
+                                print('>>>>>', 'Ok')
+                            else:
+                                err_message = '[Survey Type Mismatch!]'
+                                not_ok += 1
+                                print('>>>>>', 'NOT Ok')
+                                is_ok = False
+                        patient_code = False
+                        if document_browse[0].patient_id is not False:
+                            patient_code = document_browse[0].patient_id.patient_code
+                        family_code = False
+                        if document_browse[0].family_id is not False:
+                            family_code = document_browse[0].family_id.code
+                        print('>>>>>', patient_code, family_code)
+
+            if line <= 200:
+                if input_line.question_id.type == 'textbox':
+                    print('>>>>>>>>>>', line, input_line.value_text.encode('utf-8'),
+                          input_line.question_id.question.encode('utf-8'))
+
+                    if is_ok is True:
+                        if survey_FSE16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'FSE16_02_02':
+                                print('-------->>', family_code, input_line.value_text)
+                                if input_line.value_text != family_code:
+                                    err_message = '[Family Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+
+                        elif survey_ISE16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'ISE16_02_02':
+                                print('-------->>', patient_code, input_line.value_text)
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+                            if ir_model_data_name == 'ISE16_02_04':
+                                print('-------->>', family_code, input_line.value_text)
+                                if input_line.value_text != family_code:
+                                    err_message = '[Family Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+
+                        elif survey_CSE16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'CSE16_02_02':
+                                print('-------->>', patient_code, input_line.value_text)
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+                            if ir_model_data_name == 'CSE16_02_04':
+                                print('-------->>', family_code, input_line.value_text)
+                                if input_line.value_text != family_code:
+                                    err_message = '[Family Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+
+                        elif survey_QAN16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'QAN16_02_02':
+                                print('-------->>', patient_code, input_line.value_text)
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+                            if ir_model_data_name == 'QAN16_02_04':
+                                print('-------->>', family_code, input_line.value_text)
+                                if input_line.value_text != family_code:
+                                    err_message = '[Family Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+
+                        elif survey_QDH16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'QDH16_02_02':
+                                print('-------->>', patient_code, input_line.value_text)
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+                            if ir_model_data_name == 'QDH16_02_04':
+                                if input_line.value_text not in ['n/a', 'N/A']:
+                                    print('-------->>', family_code, input_line.value_text)
+                                    if input_line.value_text != family_code:
+                                        err_message = '[Family Code Mismatch!]'
+                                        ok -= 1
+                                        not_ok += 1
+                                        print('>>>>>', 'NOT Ok')
+                                        is_ok = False
+
+                        elif survey_QMD16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'QMD16_02_02':
+                                print('-------->>', patient_code, input_line.value_text)
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+                            if ir_model_data_name == 'QMD16_02_04':
+                                if input_line.value_text not in ['n/a', 'N/A']:
+                                    print('-------->>', family_code, input_line.value_text)
+                                    if input_line.value_text != family_code:
+                                        err_message = '[Family Code Mismatch!]'
+                                        ok -= 1
+                                        not_ok += 1
+                                        print('>>>>>', 'NOT Ok')
+                                        is_ok = False
+
+                        elif survey_ITM16_id == user_input.survey_id.id:
+                            if ir_model_data_name == 'ITM16_02_02':
+                                print('-------->>', patient_code, input_line.value_text)
+                                if input_line.value_text != patient_code:
+                                    err_message = '[Patient Code Mismatch!]'
+                                    ok -= 1
+                                    not_ok += 1
+                                    print('>>>>>', 'NOT Ok')
+                                    is_ok = False
+
+                        else:
+                            err_message = '[Undefined Survey Type!]'
+                            ok -= 1
+                            not_ok += 1
+                            print('>>>>>', 'NOT Ok')
+                            is_ok = False
+
+        if user_input.partner_id is not False:
+            err_message = '[Duplicated Document Code "' + user_input.email + '"!]'
+            print('>>>>>', 'NOT Ok')
+            if is_ok:
+                not_ok += 1
+                ok -= 1
+                is_ok = False
+
+        if is_ok:
+            if is_new:
+                email = 'Ok {New}'
+            else:
+                email = 'Ok'
+        else:
+            if is_new:
+                email = 'NOT Ok' + ' ' + err_message + ' {New}'
+            else:
+                email = 'NOT Ok' + ' ' + err_message
+
+        print('>>>>>>>>>>', email)
+
+        values = {
+            "email": email,
+            }
+        survey_user_input.write(user_input.id, values)
+
+    print('--> i: ', i)
+    print('--> done: ', done)
+    print('--> new: ', new)
+    print('--> not_new: ', not_new)
+    print('--> ok: ', ok)
+    print('--> not_ok: ', not_ok)
+
+
 def survey_user_input_link_document(client, args):
 
     survey_user_input = client.model('survey.user_input')
@@ -566,6 +866,16 @@ if __name__ == '__main__':
     # print('-->', client, user_input_args)
     # print('--> Executing survey_user_input_set_email_Ok()...')
     # survey_user_input_set_email_Ok(client, user_input_args)
+
+    # user_input_args = [('email', '=', 'NOT Ok [Patient Code Mismatch!] {New}'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_Ok_2()...')
+    # survey_user_input_set_email_Ok_2(client, user_input_args)
+
+    # user_input_args = [('email', '=', 'NOT Ok [Family Code Mismatch!] {New}'), ]
+    # print('-->', client, user_input_args)
+    # print('--> Executing survey_user_input_set_email_Ok_2()...')
+    # survey_user_input_set_email_Ok_2(client, user_input_args)
 
     # 2
 
