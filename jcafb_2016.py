@@ -26,7 +26,18 @@ from base import *
 import argparse
 import getpass
 
-from ir_model_data import *
+
+def ir_model_data_get_instance(client, code):
+
+    ir_model_data = client.model('ir.model.data')
+    ir_model_data_browse = ir_model_data.browse([('name', '=', code), ])
+
+    if ir_model_data_browse.name != []:
+        instance = ir_model_data_browse.name[0], ir_model_data_browse.model[0], ir_model_data_browse.res_id[0]
+        return instance
+    else:
+        instance = False, False, False
+        return instance
 
 
 def get_arguments():
