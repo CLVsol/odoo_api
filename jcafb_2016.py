@@ -294,6 +294,18 @@ if __name__ == '__main__':
     # print('--> survey_question_user_input_line_values()...')
     # survey_question_user_input_line_values(client, file_path, code)
 
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_20_FSE16_06_06.csv'
+    # code = 'FSE16_06_06'
+    # print('-->', client, file_path, code)
+    # print('--> survey_question_user_input_line_values()...')
+    # survey_question_user_input_line_values(client, file_path, code)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_22_FSE16_08_01.csv'
+    # code = 'FSE16_08_01'
+    # print('-->', client, file_path, code)
+    # print('--> survey_question_user_input_line_values()...')
+    # survey_question_user_input_line_values(client, file_path, code)
+
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_29_FSE16_07_04.csv'
     # code = 'FSE16_07_04'
     # print('-->', client, file_path, code)
