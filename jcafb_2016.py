@@ -43,7 +43,7 @@ def ir_model_data_get_instance(client, code):
         return instance
 
 
-def survey_question_user_input_line_values(client, file_path, code):
+def jcafb_2016_export(client, file_path, code):
 
     conn = sqlite3.connect(':memory:')
     conn.text_factory = str
@@ -300,56 +300,56 @@ if __name__ == '__main__':
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
     code = 'QDH16_05_05'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_08_QDH16_04_10.csv'
     code = 'QDH16_04_10'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_09_QDH16_06_06.csv'
     code = 'QDH16_06_06'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_16_QDH16_04_07.csv'
     code = 'QDH16_04_07'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
     code = 'QMD16_03_02'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_20_FSE16_06_06.csv'
     code = 'FSE16_06_06'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_22_FSE16_08_01.csv'
     code = 'FSE16_08_01'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_29_FSE16_07_04.csv'
     code = 'FSE16_07_04'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_30_FSE16_07_05.csv'
     code = 'FSE16_07_05'
     print('-->', client, file_path, code)
-    print('--> survey_question_user_input_line_values()...')
-    survey_question_user_input_line_values(client, file_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, code)
 
     print()
     print('--> survey.py')
