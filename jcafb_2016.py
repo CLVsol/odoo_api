@@ -442,6 +442,199 @@ def jcafb_2016_export_2(client, file_path, db_path, code_1, code_2):
     conn.close()
 
 
+def jcafb_2016_export_3(client, file_path, db_path, code_1, code_2, code_3):
+
+    table_name = 'question_user_input_line_values' + '_' + code_1 + '_' + code_2
+    table_name_1 = 'question_user_input_line_values' + '_' + code_1
+    table_name_2 = 'question_user_input_line_values' + '_' + code_2
+    table_name_3 = 'question_user_input_line_values' + '_' + code_3
+
+    conn = sqlite3.connect(db_path)
+    conn.text_factory = str
+
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''DROP TABLE ''' + table_name + ''';''')
+    except Exception as e:
+        print('------->', e)
+    cursor.execute('''
+        CREATE TABLE ''' + table_name + ''' (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            patient_code,
+            family_code TEXT,
+            question_1 TEXT,
+            question_type_1 TEXT,
+            value_suggested_1 TEXT,
+            value_text_1 TEXT,
+            question_2 TEXT,
+            question_type_2 TEXT,
+            value_suggested_2 TEXT,
+            value_text_2 TEXT,
+            question_3 TEXT,
+            question_type_3 TEXT,
+            value_suggested_3 TEXT,
+            value_text_3 TEXT
+            );
+    ''')
+
+    cursor_1 = conn.cursor()
+    cursor_1.execute('''
+        SELECT * FROM ''' + table_name_1 + ''';
+    ''')
+
+    all_rows = cursor_1.fetchall()
+    for row in all_rows:
+        patient_code = row[1]
+        family_code = row[2]
+        question = row[3]
+        question_type = row[4]
+        value_suggested = row[5]
+        value_text = row[6]
+
+        cursor.execute('''
+                       INSERT INTO ''' + table_name + '''(
+                           patient_code,
+                           family_code,
+                           question_1,
+                           question_type_1,
+                           value_suggested_1,
+                           value_text_1
+                           )
+                       VALUES(?,?,?,?,?,?)''',
+                       (patient_code,
+                        family_code,
+                        question,
+                        question_type,
+                        value_suggested,
+                        value_text
+                        )
+                       )
+
+    conn.commit()
+
+    cursor_2 = conn.cursor()
+    cursor_2.execute('''
+        SELECT * FROM ''' + table_name_2 + ''';
+    ''')
+
+    all_rows = cursor_2.fetchall()
+    for row in all_rows:
+        patient_code = row[1]
+        family_code = row[2]
+        question = row[3]
+        question_type = row[4]
+        value_suggested = row[5]
+        value_text = row[6]
+
+        cursor.execute('''SELECT id, patient_code FROM ''' + table_name + ''' WHERE patient_code=?''', (patient_code,))
+        row_2 = cursor.fetchone()
+        if row_2 is not None:
+            id_2 = row_2[0]
+            print('>>>>>', row_2, id_2)
+            cursor.execute('''UPDATE ''' + table_name + ''' SET question_2 = ? WHERE id = ? ''',
+                           (question, id_2))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET question_type_2 = ? WHERE id = ? ''',
+                           (question_type, id_2))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET value_suggested_2 = ? WHERE id = ? ''',
+                           (value_suggested, id_2))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET value_text_2 = ? WHERE id = ? ''',
+                           (value_text, id_2))
+        else:
+            print('>>>>>', row_2)
+            cursor.execute('''
+                           INSERT INTO ''' + table_name + '''(
+                               patient_code,
+                               family_code,
+                               question_2,
+                               question_type_2,
+                               value_suggested_2,
+                               value_text_2
+                               )
+                           VALUES(?,?,?,?,?,?)''',
+                           (patient_code,
+                            family_code,
+                            question,
+                            question_type,
+                            value_suggested,
+                            value_text
+                            )
+                           )
+
+    conn.commit()
+
+    cursor_3 = conn.cursor()
+    cursor_3.execute('''
+        SELECT * FROM ''' + table_name_3 + ''';
+    ''')
+
+    all_rows = cursor_3.fetchall()
+    for row in all_rows:
+        patient_code = row[1]
+        family_code = row[2]
+        question = row[3]
+        question_type = row[4]
+        value_suggested = row[5]
+        value_text = row[6]
+
+        cursor.execute('''SELECT id, patient_code FROM ''' + table_name + ''' WHERE patient_code=?''', (patient_code,))
+        row_3 = cursor.fetchone()
+        if row_3 is not None:
+            id_3 = row_3[0]
+            print('>>>>>', row_2, id_2)
+            cursor.execute('''UPDATE ''' + table_name + ''' SET question_3 = ? WHERE id = ? ''',
+                           (question, id_3))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET question_type_3 = ? WHERE id = ? ''',
+                           (question_type, id_3))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET value_suggested_3 = ? WHERE id = ? ''',
+                           (value_suggested, id_3))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET value_text_3 = ? WHERE id = ? ''',
+                           (value_text, id_3))
+        else:
+            print('>>>>>', row_3)
+            cursor.execute('''
+                           INSERT INTO ''' + table_name + '''(
+                               patient_code,
+                               family_code,
+                               question_3,
+                               question_type_3,
+                               value_suggested_3,
+                               value_text_3
+                               )
+                           VALUES(?,?,?,?,?,?)''',
+                           (patient_code,
+                            family_code,
+                            question,
+                            question_type,
+                            value_suggested,
+                            value_text
+                            )
+                           )
+
+    conn.commit()
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    print(data)
+    print([field[0] for field in cursor.description])
+    for row in cursor:
+        print(row)
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    csv_file = open(file_path, 'wb')
+    writer_csv_file = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_csv_file.writerow([field[0] for field in cursor.description])
+
+    writer_csv_file.writerows(data)
+
+    csv_file.close()
+    conn.close()
+
+
 def get_arguments():
 
     global username
@@ -560,11 +753,23 @@ if __name__ == '__main__':
     # print('--> survey_question_user_input_line_values_sqlite()...')
     # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QDH16_08_06'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QDH16_08_08'
     # print('-->', client, db_path, code)
     # print('--> survey_question_user_input_line_values_sqlite()...')
     # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QDH16_08_11'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
 
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QMD16_03_02'
@@ -579,15 +784,24 @@ if __name__ == '__main__':
     # code_1 = 'QDH16_03_02'
     # code_2 = 'QDH16_06_03'
     # print('-->', client, file_path, db_path, code_1, code_2)
-    # print('--> jcafb_2016_export()...')
+    # print('--> jcafb_2016_export_2()...')
     # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
+
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_03_QDH16_06_03_QDH16_08_06_QDH16_08_11.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code_1 = 'QDH16_06_03'
+    code_2 = 'QDH16_08_06'
+    code_3 = 'QDH16_08_11'
+    print('-->', client, file_path, db_path, code_1, code_2, code_3)
+    print('--> jcafb_2016_export_3()...')
+    jcafb_2016_export_3(client, file_path, db_path, code_1, code_2, code_3)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_04_QDH16_06_03_QDH16_08_03.csv'
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code_1 = 'QDH16_06_03'
     # code_2 = 'QDH16_08_03'
     # print('-->', client, file_path, db_path, code_1, code_2)
-    # print('--> jcafb_2016_export()...')
+    # print('--> jcafb_2016_export_2()...')
     # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_05_QDH16_06_03_QDH16_08_03.csv'
@@ -595,7 +809,7 @@ if __name__ == '__main__':
     # code_1 = 'QDH16_06_03'
     # code_2 = 'QDH16_08_03'
     # print('-->', client, file_path, db_path, code_1, code_2)
-    # print('--> jcafb_2016_export()...')
+    # print('--> jcafb_2016_export_2()...')
     # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
@@ -610,7 +824,7 @@ if __name__ == '__main__':
     # code_1 = 'QDH16_05_05'
     # code_2 = 'QDH16_08_08'
     # print('-->', client, file_path, db_path, code_1, code_2)
-    # print('--> jcafb_2016_export()...')
+    # print('--> jcafb_2016_export_2()...')
     # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_08_QDH16_04_10.csv'
