@@ -26,6 +26,7 @@ from base import *
 import argparse
 import getpass
 
+import sqlite3
 import csv
 
 
@@ -42,19 +43,30 @@ def ir_model_data_get_instance(client, code):
         return instance
 
 
-def survey_question_user_input_line_values(client, file_path, code):
+def survey_question_user_input_line_values_sqlite(client, db_path, code):
 
-    headings_insured = ['no',
-                        'patient_code',
-                        'family_code',
-                        'question',
-                        'question_type',
-                        'value_suggested',
-                        'value_text',
-                        ]
-    csv_file = open(file_path, 'wb')
-    writer_csv_file = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
-    writer_csv_file.writerow(headings_insured)
+    table_name = 'question_user_input_line_values' + '_' + code
+
+    # conn = sqlite3.connect(':memory:')
+    conn = sqlite3.connect(db_path)
+    conn.text_factory = str
+
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''DROP TABLE ''' + table_name + ''';''')
+    except Exception as e:
+        print('------->', e)
+    cursor.execute('''
+        CREATE TABLE ''' + table_name + ''' (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            patient_code,
+            family_code TEXT,
+            question TEXT,
+            question_type TEXT,
+            value_suggested TEXT,
+            value_text TEXT
+            );
+    ''')
 
     instance = ir_model_data_get_instance(client, code)
     print('------>', instance)
@@ -92,16 +104,24 @@ def survey_question_user_input_line_values(client, file_path, code):
                 clv_document_browse = clv_document.browse([
                     ('survey_user_input_id', '=', user_input_line.user_input_id.id),
                     ])
+
                 patient_code = False
                 if clv_document_browse.patient_id.id != []:
                     patient_code = clv_document_browse.patient_id.patient_code[0]
+                if patient_code is False:
+                    patient_code = None
+
                 family_code = False
                 if clv_document_browse.family_id.id != []:
                     family_code = clv_document_browse.family_id.code[0]
+                if family_code is False:
+                    family_code = None
 
                 value_suggested = False
                 if user_input_line.value_suggested is not False:
                     value_suggested = user_input_line.value_suggested.value.encode('utf-8')
+                if value_suggested is False:
+                    value_suggested = None
 
                 survey_user_input_line_2_browse = survey_user_input_line.browse([
                     ('user_input_id', '=', user_input_line.user_input_id.id),
@@ -113,6 +133,8 @@ def survey_question_user_input_line_values(client, file_path, code):
                 if survey_user_input_line_2_browse.id != []:
                     if survey_user_input_line_2_browse[0].value_text is not False:
                         value_text = survey_user_input_line_2_browse[0].value_text.encode('utf-8')
+                if value_text is False:
+                    value_text = None
 
                 print(i,
                       patient_code,
@@ -123,15 +145,24 @@ def survey_question_user_input_line_values(client, file_path, code):
                       value_text,
                       )
 
-                row_insured = [i,
-                               patient_code,
-                               family_code,
-                               question,
-                               question_type,
-                               value_suggested,
-                               value_text,
-                               ]
-                writer_csv_file.writerow(row_insured)
+                cursor.execute('''
+                               INSERT INTO ''' + table_name + '''(
+                                   patient_code,
+                                   family_code,
+                                   question,
+                                   question_type,
+                                   value_suggested,
+                                   value_text
+                                   )
+                               VALUES(?,?,?,?,?,?)''',
+                               (patient_code,
+                                family_code,
+                                question,
+                                question_type,
+                                value_suggested,
+                                value_text
+                                )
+                               )
 
     if question_type == 'multiple_choice':
 
@@ -155,17 +186,25 @@ def survey_question_user_input_line_values(client, file_path, code):
                         clv_document_browse = clv_document.browse([
                             ('survey_user_input_id', '=', user_input_line_3.user_input_id.id),
                             ])
+
                         patient_code = False
                         if clv_document_browse.patient_id.id != []:
                             patient_code = clv_document_browse.patient_id.patient_code[0]
+                        if patient_code is False:
+                            patient_code = None
+
                         family_code = False
                         if clv_document_browse.family_id.id != []:
                             family_code = clv_document_browse.family_id.code[0]
+                        if family_code is False:
+                            family_code = None
 
                         value_suggested_2 = False
                         if user_input_line_3.value_suggested is not False:
                             value_suggested_2 = user_input_line_3.value_suggested.value.encode('utf-8')
                         value_suggested = value_suggested_2
+                        if value_suggested is False:
+                            value_suggested = None
 
                         first_user_input_line = False
 
@@ -186,6 +225,8 @@ def survey_question_user_input_line_values(client, file_path, code):
                 if survey_user_input_line_2_browse.id != []:
                     if survey_user_input_line_2_browse[0].value_text is not False:
                         value_text = survey_user_input_line_2_browse[0].value_text.encode('utf-8')
+                if value_text is False:
+                    value_text = None
 
                 print(i,
                       patient_code,
@@ -196,20 +237,229 @@ def survey_question_user_input_line_values(client, file_path, code):
                       value_text,
                       )
 
-                row_insured = [i,
-                               patient_code,
-                               family_code,
-                               question,
-                               question_type,
-                               value_suggested,
-                               value_text,
-                               ]
-                writer_csv_file.writerow(row_insured)
+                cursor.execute('''
+                               INSERT INTO ''' + table_name + '''(
+                                   patient_code,
+                                   family_code,
+                                   question,
+                                   question_type,
+                                   value_suggested,
+                                   value_text
+                                   )
+                               VALUES(?,?,?,?,?,?)''',
+                               (patient_code,
+                                family_code,
+                                question,
+                                question_type,
+                                value_suggested,
+                                value_text
+                                )
+                               )
 
-    csv_file.close()
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    print(data)
+    print([field[0] for field in cursor.description])
+    for row in cursor:
+        print(row)
+
+    conn.commit()
+    conn.close()
 
     print()
     print('--> i: ', i)
+
+
+def jcafb_2016_export(client, file_path, db_path, code):
+
+    table_name = 'question_user_input_line_values' + '_' + code
+
+    conn = sqlite3.connect(db_path)
+    conn.text_factory = str
+
+    cursor = conn.cursor()
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    print(data)
+    print([field[0] for field in cursor.description])
+    for row in cursor:
+        print(row)
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    csv_file = open(file_path, 'wb')
+    writer_csv_file = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_csv_file.writerow([field[0] for field in cursor.description])
+
+    writer_csv_file.writerows(data)
+
+    csv_file.close()
+    conn.close()
+
+
+def jcafb_2016_export_2(client, file_path, db_path, code_1, code_2):
+
+    table_name = 'question_user_input_line_values' + '_' + code_1 + '_' + code_2
+    table_name_1 = 'question_user_input_line_values' + '_' + code_1
+    table_name_2 = 'question_user_input_line_values' + '_' + code_2
+
+    conn = sqlite3.connect(db_path)
+    conn.text_factory = str
+
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''DROP TABLE ''' + table_name + ''';''')
+    except Exception as e:
+        print('------->', e)
+    cursor.execute('''
+        CREATE TABLE ''' + table_name + ''' (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            patient_code,
+            family_code TEXT,
+            question_1 TEXT,
+            question_type_1 TEXT,
+            value_suggested_1 TEXT,
+            value_text_1 TEXT,
+            question_2 TEXT,
+            question_type_2 TEXT,
+            value_suggested_2 TEXT,
+            value_text_2 TEXT
+            );
+    ''')
+
+    cursor_1 = conn.cursor()
+
+    data_1 = cursor_1.execute('''
+        SELECT * FROM ''' + table_name_1 + ''';
+    ''')
+
+    print(data_1)
+    print([field[0] for field in cursor_1.description])
+    for row in cursor_1:
+        print(row)
+
+    cursor_2 = conn.cursor()
+
+    data_2 = cursor_2.execute('''
+        SELECT * FROM ''' + table_name_2 + ''';
+    ''')
+
+    print(data_2)
+    print([field[0] for field in cursor_2.description])
+    for row in cursor_2:
+        print(row)
+
+    data_1 = cursor_1.execute('''
+        SELECT * FROM ''' + table_name_1 + ''';
+    ''')
+
+    all_rows = cursor_1.fetchall()
+    for row in all_rows:
+        patient_code = row[1]
+        family_code = row[2]
+        question = row[3]
+        question_type = row[4]
+        value_suggested = row[5]
+        value_text = row[6]
+
+        cursor.execute('''
+                       INSERT INTO ''' + table_name + '''(
+                           patient_code,
+                           family_code,
+                           question_1,
+                           question_type_1,
+                           value_suggested_1,
+                           value_text_1
+                           )
+                       VALUES(?,?,?,?,?,?)''',
+                       (patient_code,
+                        family_code,
+                        question,
+                        question_type,
+                        value_suggested,
+                        value_text
+                        )
+                       )
+
+    conn.commit()
+
+    data_2 = cursor_2.execute('''
+        SELECT * FROM ''' + table_name_2 + ''';
+    ''')
+
+    all_rows = cursor_2.fetchall()
+    for row in all_rows:
+        patient_code = row[1]
+        family_code = row[2]
+        question = row[3]
+        question_type = row[4]
+        value_suggested = row[5]
+        value_text = row[6]
+
+        cursor.execute('''SELECT id, patient_code FROM ''' + table_name + ''' WHERE patient_code=?''', (patient_code,))
+        row_2 = cursor.fetchone()
+        if row_2 is not None:
+            id_2 = row_2[0]
+            print('>>>>>', row_2, id_2)
+            cursor.execute('''UPDATE ''' + table_name + ''' SET question_2 = ? WHERE id = ? ''',
+                           (question, id_2))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET question_type_2 = ? WHERE id = ? ''',
+                           (question_type, id_2))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET value_suggested_2 = ? WHERE id = ? ''',
+                           (value_suggested, id_2))
+            cursor.execute('''UPDATE ''' + table_name + ''' SET value_text_2 = ? WHERE id = ? ''',
+                           (value_text, id_2))
+        else:
+            print('>>>>>', row_2)
+            cursor.execute('''
+                           INSERT INTO ''' + table_name + '''(
+                               patient_code,
+                               family_code,
+                               question_2,
+                               question_type_2,
+                               value_suggested_2,
+                               value_text_2
+                               )
+                           VALUES(?,?,?,?,?,?)''',
+                           (patient_code,
+                            family_code,
+                            question,
+                            question_type,
+                            value_suggested,
+                            value_text
+                            )
+                           )
+
+    conn.commit()
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    print(data)
+    print([field[0] for field in cursor.description])
+    for row in cursor:
+        print(row)
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    csv_file = open(file_path, 'wb')
+    writer_csv_file = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_csv_file.writerow([field[0] for field in cursor.description])
+
+    writer_csv_file.writerows(data)
+
+    csv_file.close()
+    conn.close()
 
 
 def get_arguments():
@@ -264,60 +514,184 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_06_06'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_07_04'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_07_05'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_08_01'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_03_02'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_04_07'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_04_10'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QDH16_05_05'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_06_03'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_06_06'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_08_03'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_08_08'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QMD16_03_02'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # #######################################
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_02_QDH16_03_02_QDH16_06_03.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'QDH16_03_02'
+    # code_2 = 'QDH16_06_03'
+    # print('-->', client, file_path, db_path, code_1, code_2)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_04_QDH16_06_03_QDH16_08_03.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'QDH16_06_03'
+    # code_2 = 'QDH16_08_03'
+    # print('-->', client, file_path, db_path, code_1, code_2)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_05_QDH16_06_03_QDH16_08_03.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'QDH16_06_03'
+    # code_2 = 'QDH16_08_03'
+    # print('-->', client, file_path, db_path, code_1, code_2)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_05_05'
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_07_QDH16_05_05_QDH16_08_08.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'QDH16_05_05'
+    # code_2 = 'QDH16_08_08'
+    # print('-->', client, file_path, db_path, code_1, code_2)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_08_QDH16_04_10.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QDH16_04_10'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_09_QDH16_06_06.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QDH16_06_06'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_16_QDH16_04_07.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QDH16_04_07'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
-
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
-    # code = 'QMD16_03_02'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_20_FSE16_06_06.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'FSE16_06_06'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_22_FSE16_08_01.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'FSE16_08_01'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QMD16_03_02'
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_29_FSE16_07_04.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'FSE16_07_04'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_30_FSE16_07_05.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'FSE16_07_05'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
 
+    # #######################################
+
+    print()
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
     print()
