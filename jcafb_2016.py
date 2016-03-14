@@ -1283,29 +1283,41 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
-    code = 'FSE16_05_01'
-    print('-->', client, db_path, code)
-    print('--> survey_question_user_input_line_values_sqlite()...')
-    survey_question_user_input_line_values_sqlite(client, db_path, code)
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'CSE16_03_03'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
-    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
-    code = 'FSE16_05_02'
-    print('-->', client, db_path, code)
-    print('--> survey_question_user_input_line_values_sqlite()...')
-    survey_question_user_input_line_values_sqlite(client, db_path, code)
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'CSE16_03_04'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
-    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
-    code = 'FSE16_05_03'
-    print('-->', client, db_path, code)
-    print('--> survey_question_user_input_line_values_sqlite()...')
-    survey_question_user_input_line_values_sqlite(client, db_path, code)
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_05_01'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
-    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
-    code = 'FSE16_05_04'
-    print('-->', client, db_path, code)
-    print('--> survey_question_user_input_line_values_sqlite()...')
-    survey_question_user_input_line_values_sqlite(client, db_path, code)
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_05_02'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_05_03'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_05_04'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'FSE16_06_06'
@@ -1563,15 +1575,15 @@ if __name__ == '__main__':
     # print('--> jcafb_2016_export()...')
     # jcafb_2016_export(client, file_path, db_path, code)
 
-    file_path = '/opt/openerp/jcafb/data/jcafb_2016_21_FSE16_05_01_FSE16_05_02_FSE16_05_03_FSE16_05_04.csv'
-    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
-    code_1 = 'FSE16_05_01'
-    code_2 = 'FSE16_05_02'
-    code_3 = 'FSE16_05_03'
-    code_4 = 'FSE16_05_04'
-    print('-->', client, file_path, db_path, code_1, code_2, code_3, code_4)
-    print('--> jcafb_2016_export_4()...')
-    jcafb_2016_export_4(client, file_path, db_path, code_1, code_2, code_3, code_4)
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_21_FSE16_05_01_FSE16_05_02_FSE16_05_03_FSE16_05_04.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'FSE16_05_01'
+    # code_2 = 'FSE16_05_02'
+    # code_3 = 'FSE16_05_03'
+    # code_4 = 'FSE16_05_04'
+    # print('-->', client, file_path, db_path, code_1, code_2, code_3, code_4)
+    # print('--> jcafb_2016_export_4()...')
+    # jcafb_2016_export_4(client, file_path, db_path, code_1, code_2, code_3, code_4)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_22_FSE16_08_01.csv'
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
@@ -1579,6 +1591,28 @@ if __name__ == '__main__':
     # print('-->', client, file_path, db_path, code)
     # print('--> jcafb_2016_export()...')
     # jcafb_2016_export(client, file_path, db_path, code)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_23_FSE16_08_01.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'FSE16_08_01'
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_25_QAN16_04_05.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QAN16_04_05'
+    # print('-->', client, file_path, db_path, code)
+    # print('--> jcafb_2016_export()...')
+    # jcafb_2016_export(client, file_path, db_path, code)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_27_CSE16_03_03_CSE16_03_04.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'CSE16_03_03'
+    # code_2 = 'CSE16_03_04'
+    # print('-->', client, file_path, db_path, code_1, code_2)
+    # print('--> jcafb_2016_export_2()...')
+    # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
