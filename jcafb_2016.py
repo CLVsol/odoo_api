@@ -26,6 +26,7 @@ from base import *
 import argparse
 import getpass
 
+import sqlite3
 import csv
 
 
@@ -44,17 +45,20 @@ def ir_model_data_get_instance(client, code):
 
 def survey_question_user_input_line_values(client, file_path, code):
 
-    headings_insured = ['no',
-                        'patient_code',
-                        'family_code',
-                        'question',
-                        'question_type',
-                        'value_suggested',
-                        'value_text',
-                        ]
-    csv_file = open(file_path, 'wb')
-    writer_csv_file = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
-    writer_csv_file.writerow(headings_insured)
+    conn = sqlite3.connect(':memory:')
+    conn.text_factory = str
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE question_user_input_line_values (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            patient_code,
+            family_code TEXT,
+            question TEXT,
+            question_type TEXT,
+            value_suggested TEXT,
+            value_text TEXT
+            );
+    ''')
 
     instance = ir_model_data_get_instance(client, code)
     print('------>', instance)
@@ -123,15 +127,24 @@ def survey_question_user_input_line_values(client, file_path, code):
                       value_text,
                       )
 
-                row_insured = [i,
-                               patient_code,
-                               family_code,
-                               question,
-                               question_type,
-                               value_suggested,
-                               value_text,
-                               ]
-                writer_csv_file.writerow(row_insured)
+                cursor.execute('''
+                               INSERT INTO question_user_input_line_values(
+                                   patient_code,
+                                   family_code,
+                                   question,
+                                   question_type,
+                                   value_suggested,
+                                   value_text
+                                   )
+                               VALUES(?,?,?,?,?,?)''',
+                               (patient_code,
+                                family_code,
+                                question,
+                                question_type,
+                                value_suggested,
+                                value_text
+                                )
+                               )
 
     if question_type == 'multiple_choice':
 
@@ -196,17 +209,37 @@ def survey_question_user_input_line_values(client, file_path, code):
                       value_text,
                       )
 
-                row_insured = [i,
-                               patient_code,
-                               family_code,
-                               question,
-                               question_type,
-                               value_suggested,
-                               value_text,
-                               ]
-                writer_csv_file.writerow(row_insured)
+                cursor.execute('''
+                               INSERT INTO question_user_input_line_values(
+                                   patient_code,
+                                   family_code,
+                                   question,
+                                   question_type,
+                                   value_suggested,
+                                   value_text
+                                   )
+                               VALUES(?,?,?,?,?,?)''',
+                               (patient_code,
+                                family_code,
+                                question,
+                                question_type,
+                                value_suggested,
+                                value_text
+                                )
+                               )
+
+    data = cursor.execute('''
+        SELECT * FROM question_user_input_line_values;
+    ''')
+
+    csv_file = open(file_path, 'wb')
+    writer_csv_file = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_csv_file.writerow([field[0] for field in cursor.description])
+
+    writer_csv_file.writerows(data)
 
     csv_file.close()
+    conn.close()
 
     print()
     print('--> i: ', i)
@@ -264,60 +297,61 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
-    # code = 'QDH16_05_05'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
+    code = 'QDH16_05_05'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_08_QDH16_04_10.csv'
-    # code = 'QDH16_04_10'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_08_QDH16_04_10.csv'
+    code = 'QDH16_04_10'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_09_QDH16_06_06.csv'
-    # code = 'QDH16_06_06'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_09_QDH16_06_06.csv'
+    code = 'QDH16_06_06'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_16_QDH16_04_07.csv'
-    # code = 'QDH16_04_07'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_16_QDH16_04_07.csv'
+    code = 'QDH16_04_07'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
-    # code = 'QMD16_03_02'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
+    code = 'QMD16_03_02'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_20_FSE16_06_06.csv'
-    # code = 'FSE16_06_06'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_20_FSE16_06_06.csv'
+    code = 'FSE16_06_06'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_22_FSE16_08_01.csv'
-    # code = 'FSE16_08_01'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_22_FSE16_08_01.csv'
+    code = 'FSE16_08_01'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_29_FSE16_07_04.csv'
-    # code = 'FSE16_07_04'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_29_FSE16_07_04.csv'
+    code = 'FSE16_07_04'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_30_FSE16_07_05.csv'
-    # code = 'FSE16_07_05'
-    # print('-->', client, file_path, code)
-    # print('--> survey_question_user_input_line_values()...')
-    # survey_question_user_input_line_values(client, file_path, code)
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_30_FSE16_07_05.csv'
+    code = 'FSE16_07_05'
+    print('-->', client, file_path, code)
+    print('--> survey_question_user_input_line_values()...')
+    survey_question_user_input_line_values(client, file_path, code)
 
+    print()
     print('--> survey.py')
     print('--> Execution time:', secondsToStr(time() - start))
     print()
