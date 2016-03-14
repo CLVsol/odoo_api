@@ -335,28 +335,7 @@ def jcafb_2016_export_2(client, file_path, db_path, code_1, code_2):
     ''')
 
     cursor_1 = conn.cursor()
-
-    data_1 = cursor_1.execute('''
-        SELECT * FROM ''' + table_name_1 + ''';
-    ''')
-
-    print(data_1)
-    print([field[0] for field in cursor_1.description])
-    for row in cursor_1:
-        print(row)
-
-    cursor_2 = conn.cursor()
-
-    data_2 = cursor_2.execute('''
-        SELECT * FROM ''' + table_name_2 + ''';
-    ''')
-
-    print(data_2)
-    print([field[0] for field in cursor_2.description])
-    for row in cursor_2:
-        print(row)
-
-    data_1 = cursor_1.execute('''
+    cursor_1.execute('''
         SELECT * FROM ''' + table_name_1 + ''';
     ''')
 
@@ -390,7 +369,8 @@ def jcafb_2016_export_2(client, file_path, db_path, code_1, code_2):
 
     conn.commit()
 
-    data_2 = cursor_2.execute('''
+    cursor_2 = conn.cursor()
+    cursor_2.execute('''
         SELECT * FROM ''' + table_name_2 + ''';
     ''')
 
