@@ -43,13 +43,21 @@ def ir_model_data_get_instance(client, code):
         return instance
 
 
-def jcafb_2016_export(client, file_path, code):
+def survey_question_user_input_line_values_sqlite(client, db_path, code):
 
-    conn = sqlite3.connect(':memory:')
+    table_name = 'question_user_input_line_values' + '_' + code
+
+    # conn = sqlite3.connect(':memory:')
+    conn = sqlite3.connect(db_path)
     conn.text_factory = str
+
     cursor = conn.cursor()
+    try:
+        cursor.execute('''DROP TABLE ''' + table_name + ''';''')
+    except Exception as e:
+        print('------->', e)
     cursor.execute('''
-        CREATE TABLE question_user_input_line_values (
+        CREATE TABLE ''' + table_name + ''' (
             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             patient_code,
             family_code TEXT,
@@ -96,16 +104,24 @@ def jcafb_2016_export(client, file_path, code):
                 clv_document_browse = clv_document.browse([
                     ('survey_user_input_id', '=', user_input_line.user_input_id.id),
                     ])
+
                 patient_code = False
                 if clv_document_browse.patient_id.id != []:
                     patient_code = clv_document_browse.patient_id.patient_code[0]
+                if patient_code is False:
+                    patient_code = None
+
                 family_code = False
                 if clv_document_browse.family_id.id != []:
                     family_code = clv_document_browse.family_id.code[0]
+                if family_code is False:
+                    family_code = None
 
                 value_suggested = False
                 if user_input_line.value_suggested is not False:
                     value_suggested = user_input_line.value_suggested.value.encode('utf-8')
+                if value_suggested is False:
+                    value_suggested = None
 
                 survey_user_input_line_2_browse = survey_user_input_line.browse([
                     ('user_input_id', '=', user_input_line.user_input_id.id),
@@ -117,6 +133,8 @@ def jcafb_2016_export(client, file_path, code):
                 if survey_user_input_line_2_browse.id != []:
                     if survey_user_input_line_2_browse[0].value_text is not False:
                         value_text = survey_user_input_line_2_browse[0].value_text.encode('utf-8')
+                if value_text is False:
+                    value_text = None
 
                 print(i,
                       patient_code,
@@ -128,7 +146,7 @@ def jcafb_2016_export(client, file_path, code):
                       )
 
                 cursor.execute('''
-                               INSERT INTO question_user_input_line_values(
+                               INSERT INTO ''' + table_name + '''(
                                    patient_code,
                                    family_code,
                                    question,
@@ -168,17 +186,25 @@ def jcafb_2016_export(client, file_path, code):
                         clv_document_browse = clv_document.browse([
                             ('survey_user_input_id', '=', user_input_line_3.user_input_id.id),
                             ])
+
                         patient_code = False
                         if clv_document_browse.patient_id.id != []:
                             patient_code = clv_document_browse.patient_id.patient_code[0]
+                        if patient_code is False:
+                            patient_code = None
+
                         family_code = False
                         if clv_document_browse.family_id.id != []:
                             family_code = clv_document_browse.family_id.code[0]
+                        if family_code is False:
+                            family_code = None
 
                         value_suggested_2 = False
                         if user_input_line_3.value_suggested is not False:
                             value_suggested_2 = user_input_line_3.value_suggested.value.encode('utf-8')
                         value_suggested = value_suggested_2
+                        if value_suggested is False:
+                            value_suggested = None
 
                         first_user_input_line = False
 
@@ -199,6 +225,8 @@ def jcafb_2016_export(client, file_path, code):
                 if survey_user_input_line_2_browse.id != []:
                     if survey_user_input_line_2_browse[0].value_text is not False:
                         value_text = survey_user_input_line_2_browse[0].value_text.encode('utf-8')
+                if value_text is False:
+                    value_text = None
 
                 print(i,
                       patient_code,
@@ -210,7 +238,7 @@ def jcafb_2016_export(client, file_path, code):
                       )
 
                 cursor.execute('''
-                               INSERT INTO question_user_input_line_values(
+                               INSERT INTO ''' + table_name + '''(
                                    patient_code,
                                    family_code,
                                    question,
@@ -229,7 +257,41 @@ def jcafb_2016_export(client, file_path, code):
                                )
 
     data = cursor.execute('''
-        SELECT * FROM question_user_input_line_values;
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    print(data)
+    print([field[0] for field in cursor.description])
+    for row in cursor:
+        print(row)
+
+    conn.commit()
+    conn.close()
+
+    print()
+    print('--> i: ', i)
+
+
+def jcafb_2016_export(client, file_path, db_path, code):
+
+    table_name = 'question_user_input_line_values' + '_' + code
+
+    conn = sqlite3.connect(db_path)
+    conn.text_factory = str
+
+    cursor = conn.cursor()
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
+    ''')
+
+    print(data)
+    print([field[0] for field in cursor.description])
+    for row in cursor:
+        print(row)
+
+    data = cursor.execute('''
+        SELECT * FROM ''' + table_name + ''';
     ''')
 
     csv_file = open(file_path, 'wb')
@@ -240,9 +302,6 @@ def jcafb_2016_export(client, file_path, code):
 
     csv_file.close()
     conn.close()
-
-    print()
-    print('--> i: ', i)
 
 
 def get_arguments():
@@ -297,59 +356,126 @@ if __name__ == '__main__':
 
     client = erppeek.Client(server, dbname, username, password)
 
-    file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'FSE16_06_06'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'FSE16_07_04'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'FSE16_07_05'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'FSE16_08_01'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QDH16_04_07'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QDH16_04_10'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'QDH16_05_05'
-    print('-->', client, file_path, code)
-    print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QDH16_06_06'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QMD16_03_02'
+    print('-->', client, db_path, code)
+    print('--> survey_question_user_input_line_values_sqlite()...')
+    survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # #######################################
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_08_QDH16_04_10.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'QDH16_04_10'
-    print('-->', client, file_path, code)
+    print('-->', client, file_path, db_path, code)
     print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    jcafb_2016_export(client, file_path, db_path, code)
+
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_06_QDH16_05_05.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QDH16_05_05'
+    print('-->', client, file_path, db_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, db_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_09_QDH16_06_06.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'QDH16_06_06'
-    print('-->', client, file_path, code)
+    print('-->', client, file_path, db_path, code)
     print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    jcafb_2016_export(client, file_path, db_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_16_QDH16_04_07.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'QDH16_04_07'
-    print('-->', client, file_path, code)
+    print('-->', client, file_path, db_path, code)
     print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
-
-    file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
-    code = 'QMD16_03_02'
-    print('-->', client, file_path, code)
-    print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    jcafb_2016_export(client, file_path, db_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_20_FSE16_06_06.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'FSE16_06_06'
-    print('-->', client, file_path, code)
+    print('-->', client, file_path, db_path, code)
     print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    jcafb_2016_export(client, file_path, db_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_22_FSE16_08_01.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'FSE16_08_01'
-    print('-->', client, file_path, code)
+    print('-->', client, file_path, db_path, code)
     print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    jcafb_2016_export(client, file_path, db_path, code)
+
+    file_path = '/opt/openerp/jcafb/data/jcafb_2016_28_QMD16_03_02.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    code = 'QMD16_03_02'
+    print('-->', client, file_path, db_path, code)
+    print('--> jcafb_2016_export()...')
+    jcafb_2016_export(client, file_path, db_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_29_FSE16_07_04.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'FSE16_07_04'
-    print('-->', client, file_path, code)
+    print('-->', client, file_path, db_path, code)
     print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    jcafb_2016_export(client, file_path, db_path, code)
 
     file_path = '/opt/openerp/jcafb/data/jcafb_2016_30_FSE16_07_05.csv'
+    db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     code = 'FSE16_07_05'
-    print('-->', client, file_path, code)
+    print('-->', client, file_path, db_path, code)
     print('--> jcafb_2016_export()...')
-    jcafb_2016_export(client, file_path, code)
+    jcafb_2016_export(client, file_path, db_path, code)
+
+    # #######################################
 
     print()
     print('--> survey.py')
