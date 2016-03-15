@@ -1296,6 +1296,12 @@ if __name__ == '__main__':
     # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'CSE16_06_01'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'FSE16_05_01'
     # print('-->', client, db_path, code)
     # print('--> survey_question_user_input_line_values_sqlite()...')
@@ -1339,6 +1345,12 @@ if __name__ == '__main__':
 
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'FSE16_08_01'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'ISE16_08_01'
     # print('-->', client, db_path, code)
     # print('--> survey_question_user_input_line_values_sqlite()...')
     # survey_question_user_input_line_values_sqlite(client, db_path, code)
@@ -1392,6 +1404,12 @@ if __name__ == '__main__':
     # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_08_01'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QDH16_08_03'
     # print('-->', client, db_path, code)
     # print('--> survey_question_user_input_line_values_sqlite()...')
@@ -1434,12 +1452,24 @@ if __name__ == '__main__':
     # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_11_02'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code = 'QDH16_11_03'
+    # print('-->', client, db_path, code)
+    # print('--> survey_question_user_input_line_values_sqlite()...')
+    # survey_question_user_input_line_values_sqlite(client, db_path, code)
+
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QMD16_03_02'
     # print('-->', client, db_path, code)
     # print('--> survey_question_user_input_line_values_sqlite()...')
     # survey_question_user_input_line_values_sqlite(client, db_path, code)
 
-    # #######################################
+    #####################################
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_02_QDH16_03_02_QDH16_06_03.csv'
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
@@ -1449,11 +1479,11 @@ if __name__ == '__main__':
     # print('--> jcafb_2016_export_2()...')
     # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
 
-    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_03_QDH16_06_03_QDH16_08_06_QDH16_08_11.csv'
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_03_QDH16_06_03_QDH16_08_06_QDH16_08_01.csv'
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code_1 = 'QDH16_06_03'
     # code_2 = 'QDH16_08_06'
-    # code_3 = 'QDH16_10_12'
+    # code_3 = 'QDH16_08_01'
     # print('-->', client, file_path, db_path, code_1, code_2, code_3)
     # print('--> jcafb_2016_export_3()...')
     # jcafb_2016_export_3(client, file_path, db_path, code_1, code_2, code_3)
@@ -1502,6 +1532,23 @@ if __name__ == '__main__':
     # print('-->', client, file_path, db_path, code)
     # print('--> jcafb_2016_export()...')
     # jcafb_2016_export(client, file_path, db_path, code)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_10_QDH16_05_05_QDH16_10_02.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'QDH16_05_05'
+    # code_2 = 'QDH16_10_02'
+    # print('-->', client, file_path, db_path, code_1, code_2)
+    # print('--> jcafb_2016_export_2()...')
+    # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
+
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_11_QDH16_05_05_QDH16_11_02_QDH16_11_03.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'QDH16_05_05'
+    # code_2 = 'QDH16_11_02'
+    # code_3 = 'QDH16_11_03'
+    # print('-->', client, file_path, db_path, code_1, code_2, code_3)
+    # print('--> jcafb_2016_export_3()...')
+    # jcafb_2016_export_3(client, file_path, db_path, code_1, code_2, code_3)
 
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_12_QDH16_06_06.csv'
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
@@ -1599,6 +1646,14 @@ if __name__ == '__main__':
     # print('--> jcafb_2016_export()...')
     # jcafb_2016_export(client, file_path, db_path, code)
 
+    # file_path = '/opt/openerp/jcafb/data/jcafb_2016_24_CSE16_06_01_ISE16_08_01.csv'
+    # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
+    # code_1 = 'CSE16_06_01'
+    # code_2 = 'ISE16_08_01'
+    # print('-->', client, file_path, db_path, code_1, code_2)
+    # print('--> jcafb_2016_export_2()...')
+    # jcafb_2016_export_2(client, file_path, db_path, code_1, code_2)
+
     # file_path = '/opt/openerp/jcafb/data/jcafb_2016_25_QAN16_04_05.csv'
     # db_path = '/opt/openerp/jcafb/data/jcafb_2016.sqlite'
     # code = 'QAN16_04_05'
@@ -1635,7 +1690,7 @@ if __name__ == '__main__':
     # print('--> jcafb_2016_export()...')
     # jcafb_2016_export(client, file_path, db_path, code)
 
-    # #######################################
+    ########################################
 
     print()
     print('--> survey.py')
