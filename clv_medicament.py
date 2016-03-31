@@ -310,43 +310,41 @@ def clv_medicament_mark_verify_from_medicament_list(client, list_name, list_vers
 
 def clv_medicament_export(client, file_path):
 
-    headings_medicament = ['no', 
-                           'state', 'name', 'ean13', 'code', 'medicament_name', 
-                           'active_component', 'concentration', 'presentation', 
-                           'pres_form_2', 'pres_quantity', 'pres_quantity_unit', 
+    headings_medicament = ['no',
+                           'state', 'name', 'ean13', 'code', 'medicament_name',
+                           'active_component', 'concentration', 'presentation',
+                           'pres_form_2', 'pres_quantity', 'pres_quantity_unit',
                            'manufacturer',
-                           'med_abc', 
-                           'codigo_ggrem', 'codigo_ggrem_2', 
-                           'orizon_cod_prod', 
+                           'med_abc',
+                           'codigo_ggrem', 'codigo_ggrem_2',
+                           'orizon_cod_prod',
                            'gm_cod_prod_fabricante',
                            'is_fraction',
                            ]
     file_medicament = open(file_path, 'wb')
-    writer_medicament = csv.writer(file_medicament, delimiter = ';', quotechar = '"', quoting=csv.QUOTE_ALL)
+    writer_medicament = csv.writer(file_medicament, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
     writer_medicament.writerow(headings_medicament)
 
     clv_medicament = client.model('clv_medicament')
-    medicament_browse = clv_medicament.browse([('is_product', '=', True),])
+    medicament_browse = clv_medicament.browse([('is_product', '=', True), ])
 
     medicament_count = 0
     for medicament in medicament_browse:
-        # if medicament_count == 100:
-        #     break
         medicament_count += 1
 
         name = medicament.name.encode("utf-8")
         ean13 = medicament.ean13
         code = medicament.code
-        if medicament.medicament_name != False:
+        if medicament.medicament_name is not False:
             medicament_name = medicament.medicament_name.encode("utf-8")
         else:
             medicament_name = False
         concentration = medicament.concentration
-        if medicament.presentation != False:
+        if medicament.presentation is not False:
             presentation = medicament.presentation.encode("utf-8")
         else:
             presentation = False
-        if medicament.pres_form_2 != False:
+        if medicament.pres_form_2 is not False:
             pres_form_2 = medicament.pres_form_2.name.encode("utf-8")
         else:
             pres_form_2 = False
@@ -355,50 +353,50 @@ def clv_medicament_export(client, file_path):
         is_fraction = medicament.is_fraction
         state = medicament.state
 
-        if medicament.active_component != False:
+        if medicament.active_component is not False:
             active_component = medicament.active_component.name.encode("utf-8")
         else:
             active_component = False
 
-        if medicament.manufacturer != False:
+        if medicament.manufacturer is not False:
             manufacturer = medicament.manufacturer.name.encode("utf-8")
         else:
             manufacturer = False
 
-        if medicament.abcfarma_id != False:
+        if medicament.abcfarma_id is not False:
             med_abc = medicament.abcfarma_id.med_abc
         else:
             med_abc = False
 
-        if medicament.cmed_id != False:
+        if medicament.cmed_id is not False:
             codigo_ggrem = medicament.cmed_id.codigo_ggrem
         else:
             codigo_ggrem = False
 
-        if medicament.cmed_id != False:
+        if medicament.cmed_id is not False:
             codigo_ggrem_2 = medicament.cmed_id.codigo_ggrem_2
         else:
             codigo_ggrem_2 = False
 
-        if medicament.orizon_lpm_id != False:
+        if medicament.orizon_lpm_id is not False:
             orizon_cod_prod = medicament.orizon_lpm_id.cod_prod
         else:
             orizon_cod_prod = False
 
-        if medicament.gm_id != False:
+        if medicament.gm_id is not False:
             gm_cod_prod_fabricante = medicament.gm_id.cod_prod_fabricante
         else:
             gm_cod_prod_fabricante = False
 
         print(medicament_count, code, name)
-        row_medicament = [medicament_count, 
-                          state, name, ean13, code, medicament_name, 
-                          active_component, concentration, presentation, 
-                          pres_form_2, pres_quantity, pres_quantity_unit, 
+        row_medicament = [medicament_count,
+                          state, name, ean13, code, medicament_name,
+                          active_component, concentration, presentation,
+                          pres_form_2, pres_quantity, pres_quantity_unit,
                           manufacturer,
-                          med_abc, 
-                          codigo_ggrem, codigo_ggrem_2, 
-                          orizon_cod_prod, 
+                          med_abc,
+                          codigo_ggrem, codigo_ggrem_2,
+                          orizon_cod_prod,
                           gm_cod_prod_fabricante,
                           is_fraction,
                           ]
@@ -572,6 +570,13 @@ if __name__ == '__main__':
     # print('-->', client, medicament_args)
     # print('--> Executing clv_medicament_updt_state_active()...')
     # clv_medicament_updt_state_active(client, medicament_args)
+
+    # 2016-03-31 ############################
+
+    # file_path = '/opt/openerp/biobox/data/medicament_2016_03_31.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_medicament_export()...')
+    # clv_medicament_export(client, file_path)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
