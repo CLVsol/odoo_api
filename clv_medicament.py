@@ -312,7 +312,7 @@ def clv_medicament_export(client, file_path):
 
     headings_medicament = ['no',
                            'state', 'name', 'ean13', 'code', 'medicament_name',
-                           'active_component', 'concentration', 'presentation',
+                           'active_component', 'active_component_code', 'concentration', 'presentation',
                            'pres_form_2', 'pres_quantity', 'pres_quantity_unit',
                            'manufacturer',
                            'med_abc',
@@ -355,8 +355,10 @@ def clv_medicament_export(client, file_path):
 
         if medicament.active_component is not False:
             active_component = medicament.active_component.name.encode("utf-8")
+            active_component_code = medicament.active_component.code
         else:
             active_component = False
+            active_component_code = False
 
         if medicament.manufacturer is not False:
             manufacturer = medicament.manufacturer.name.encode("utf-8")
@@ -391,7 +393,7 @@ def clv_medicament_export(client, file_path):
         print(medicament_count, code, name)
         row_medicament = [medicament_count,
                           state, name, ean13, code, medicament_name,
-                          active_component, concentration, presentation,
+                          active_component, active_component_code, concentration, presentation,
                           pres_form_2, pres_quantity, pres_quantity_unit,
                           manufacturer,
                           med_abc,
@@ -574,6 +576,13 @@ if __name__ == '__main__':
     # 2016-03-31 ############################
 
     # file_path = '/opt/openerp/biobox/data/medicament_2016_03_31.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_medicament_export()...')
+    # clv_medicament_export(client, file_path)
+
+    # 2016-04-03 ############################
+
+    # file_path = '/opt/openerp/biobox/data/medicament_2016_04_03.csv'
     # print('-->', client, file_path)
     # print('--> Executing clv_medicament_export()...')
     # clv_medicament_export(client, file_path)
