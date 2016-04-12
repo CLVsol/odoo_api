@@ -191,6 +191,13 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
 
         if insurance.encode("utf-8") == 'PUB - FLEX PARCEIRO':
             Cod_Contrato = [2, 7, 6, '001615']
+        if insurance.encode("utf-8") == 'PUB - PLENO':
+            Cod_Contrato = [2, 7, 6, '001583']
+
+        if insurance == 'RMC - PLENO':
+            Cod_Contrato = [2, 7, 6, '001583']
+        if insurance == 'RMC - COPAR 25':
+            Cod_Contrato = [2, 7, 6, '001583']
 
         code = re.sub('[^0-9]', '', code)
         code = ''.join((code, (30 - len(code)) * ' '))
