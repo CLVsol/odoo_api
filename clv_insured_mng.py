@@ -2797,30 +2797,30 @@ if __name__ == '__main__':
 
     # 05 ##########
 
-    PREFIX = '2016-04-08'
-    PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    batch_args = [('state', '=', 'draft'),
-                  ('name', '=', PRODUCTION_BATCH_NAME),
-                  ]
-    print('-->', client)
-    print('--> Executing clv_batch_updt_state_processing()...')
-    clv_batch_updt_state_processing(client, batch_args)
+    # PREFIX = '2016-04-08'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # batch_args = [('state', '=', 'draft'),
+    #               ('name', '=', PRODUCTION_BATCH_NAME),
+    #               ]
+    # print('-->', client)
+    # print('--> Executing clv_batch_updt_state_processing()...')
+    # clv_batch_updt_state_processing(client, batch_args)
 
     # 06 ##########
 
-    insured_card_args = [('state', '=', 'processing'), ]
-    print('-->', client, insured_card_args)
-    print('--> Executing clv_insured_updt_state_processing()...')
-    clv_insured_updt_state_processing(client, insured_card_args)
+    # insured_card_args = [('state', '=', 'processing'), ]
+    # print('-->', client, insured_card_args)
+    # print('--> Executing clv_insured_updt_state_processing()...')
+    # clv_insured_updt_state_processing(client, insured_card_args)
 
     # 07 ##########
 
-    PREFIX = '2016-04-08'
-    PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
-    file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
-    print('-->', client, PRODUCTION_BATCH_NAME)
-    print('--> Executing clv_insured_card_export_producao()...')
-    clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
+    # PREFIX = '2016-04-08'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
+    # print('-->', client, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_insured_card_export_producao()...')
+    # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
 
     # 08 ##########
 
