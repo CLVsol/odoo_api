@@ -269,6 +269,13 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
 
         if insurance.encode("utf-8") == 'PUB - FLEX PARCEIRO':
             LCS = [24, 334, 15, '000000000025000']
+        if insurance.encode("utf-8") == 'PUB - PLENO':
+            LCS = [24, 334, 15, '000000000025000']
+
+        if insurance == 'RMC - PLENO':
+            LCS = [24, 334, 15, '000000000050000']
+        if insurance == 'RMC - COPAR 25':
+            LCS = [24, 334, 15, '000000000050000']
 
         ADS_Usuario = [25, 349, 40, 40 * ' ']
         CF_Usuario = [26, 389, 40, 40 * ' ']
