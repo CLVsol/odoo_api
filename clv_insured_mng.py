@@ -1,22 +1,23 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-################################################################################
-#                                                                              #
-# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol                  #
-#                                                                              #
-# This program is free software: you can redistribute it and/or modify         #
-# it under the terms of the GNU Affero General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or            #
-# (at your option) any later version.                                          #
-#                                                                              #
-# This program is distributed in the hope that it will be useful,              #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
-# GNU Affero General Public License for more details.                          #
-#                                                                              #
-# You should have received a copy of the GNU Affero General Public License     #
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
-################################################################################
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
 
 from __future__ import print_function
 
@@ -37,10 +38,10 @@ from clv_tag import *
 from clv_batch import *
 
 
-def clv_insured_mng_unlink(client, status):
+def clv_insured_mng_unlink(client, args):
 
     clv_insured_mng = client.model('clv_insured_mng')
-    insured_mng_browse = clv_insured_mng.browse([('state', '=', status),])
+    insured_mng_browse = clv_insured_mng.browse(args)
 
     i = 0
     for insured_mng in insured_mng_browse:
@@ -48,7 +49,7 @@ def clv_insured_mng_unlink(client, status):
         print(i, insured_mng.name)
 
         history = client.model('clv_insured_mng.history')
-        history_browse = history.browse([('insured_mng_id', '=', insured_mng.id),])
+        history_browse = history.browse([('insured_mng_id', '=', insured_mng.id), ])
         history_ids = history_browse.id
         print('>>>>>', history_ids)
 
@@ -654,15 +655,15 @@ def clv_insured_mng_import(client, batch_name, file_name, client_name, insurance
             clv_insured_mng.write(insured_mng_id, values)
 
 
-def clv_insured_mng_check_crd_name(client):
+def clv_insured_mng_check_crd_name(client, args):
 
-    tag_id_NomeCartaoMaiorQue35caracteres = get_tag_id(\
+    tag_id_NomeCartaoMaiorQue35caracteres = get_tag_id(
         client,
-        'Nome do Cartão > 35 caracteres', 
+        'Nome do Cartão > 35 caracteres',
         'Registro cujo nome do cartão é maior do que 35 caracteres.')
 
     clv_insured_mng = client.model('clv_insured_mng')
-    insured_mng_browse = clv_insured_mng.browse([])
+    insured_mng_browse = clv_insured_mng.browse(args)
     i = 0
     clear_tag = 0
     set_tag = 0
@@ -686,7 +687,7 @@ def clv_insured_mng_check_crd_name(client):
             else:
                 set_tag += 1
                 values = {
-                    'tag_ids': [(4,tag_id_NomeCartaoMaiorQue35caracteres)],
+                    'tag_ids': [(4, tag_id_NomeCartaoMaiorQue35caracteres)],
                     'crd_name': '[' + str(len(insured_mng.crd_name)) + ']' + insured_mng.crd_name,
                     }
             clv_insured_mng.write(insured_mng.id, values)
@@ -802,10 +803,11 @@ def clv_insured_mng_check_insured(client, args):
         #     clv_insured_mng.write(insured_mng.id, values)
 
 
-def clv_insured_mng_updt_insured_code(client):
+def clv_insured_mng_updt_insured_code(client, args):
 
     clv_insured_mng = client.model('clv_insured_mng')
-    insured_mng_browse = clv_insured_mng.browse([('state', '=', 'revised'),
+    insured_mng_browse = clv_insured_mng.browse(args +
+                                                [('state', '=', 'revised'),
                                                  ('code', '=', False),
                                                  ])
     i = 0
@@ -820,10 +822,11 @@ def clv_insured_mng_updt_insured_code(client):
         clv_insured_mng.write(insured_mng.id, values)
 
 
-def clv_insured_mng_updt_insured_crd_code(client):
+def clv_insured_mng_updt_insured_crd_code(client, args):
 
     clv_insured_mng = client.model('clv_insured_mng')
-    insured_mng_browse = clv_insured_mng.browse([('state', '=', 'revised'),
+    insured_mng_browse = clv_insured_mng.browse(args +
+                                                [('state', '=', 'revised'),
                                                  ('crd_code', '=', False),
                                                  ])
     i = 0
@@ -889,7 +892,7 @@ def clv_insured_mng_updt_insured_crd_code(client):
     print('--> i: ', i)
 
 
-def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME):
+def clv_insured_mng_create_insured(client, args, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME):
 
     date_inclusion = PREFIX
 
@@ -899,16 +902,21 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
 
     batch_cat_id_producao = get_batch_category_id(client, 'Produção')
     batch_producao_id = get_batch_id(client,
-                                     PRODUCTION_BATCH_NAME, 
+                                     PRODUCTION_BATCH_NAME,
                                      batch_cat_id_producao)
 
     batch_cat_id_cliente = get_batch_category_id(client, 'Cliente')
     batch_client_id = get_batch_id(client,
-                                   CLIENT_BATCH_NAME, 
-                                   batch_cat_id_cliente, 
+                                   CLIENT_BATCH_NAME,
+                                   batch_cat_id_cliente,
                                    [(4, batch_producao_id)])
 
     batch_cat_id_familiar = get_batch_category_id(client, 'Grupo Familiar')
+
+    tag_id_TitularNaoEncontrado = get_tag_id(
+        client,
+        'Titular não encontrado',
+        'Registro cujo Titular associado não foi encontrado.')
 
     print(batch_client_id, batch_producao_id)
 
@@ -918,9 +926,11 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
     clv_insured_card_batch = client.model('clv_insured_card.batch')
 
     clv_insured_mng = client.model('clv_insured_mng')
-    insured_mng_browse = clv_insured_mng.browse([('state', '=', 'waiting'),])
+    insured_mng_browse = clv_insured_mng.browse(args +
+                                                [('state', '=', 'waiting'), ])
 
     i = 0
+    set_tag = 0
     for insured_mng in insured_mng_browse:
 
         if insured_mng.batch_name == CLIENT_BATCH_NAME:
@@ -932,11 +942,11 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                 seq_N += 1
 
                 batch_id = get_batch_id(client,
-                                        PREFIX + '-%0*d ' % (5, seq_N) + insured_mng.crd_name, 
-                                        batch_cat_id_familiar, 
+                                        PREFIX + '-%0*d ' % (5, seq_N) + insured_mng.crd_name,
+                                        batch_cat_id_familiar,
                                         [(4, batch_client_id)])
 
-                if insured_mng.address_home_id == False:
+                if insured_mng.address_home_id is not False:
 
                     values = {
                         "name": insured_mng.name,
@@ -967,8 +977,8 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                 else:
                     address_id = insured_mng.address_home_id
 
-                if insured_mng.insured_id == False:
-                    
+                if insured_mng.insured_id is not False:
+
                     values = {
                         "name": insured_mng.name,
                         "code": insured_mng.code,
@@ -984,13 +994,13 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                         "date_inclusion": date_inclusion,
                         }
                     insured_id = clv_insured.create(values).id
-                    
+
                     values = {
                         "insured_id": insured_id,
                         }
                     clv_insured_mng.write(insured_mng.id, values)
 
-                if insured_mng.insured_card_id == False:
+                if insured_mng.insured_card_id is not False:
 
                     values = {
                         "name": insured_mng.crd_name,
@@ -1009,26 +1019,27 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                         "batch_id": batch_client_id,
                         "insured_card_id": insured_card_id,
                         }
-                    insured_card_batch_id = clv_insured_card_batch.create(values).id
+                    clv_insured_card_batch.create(values).id
 
                     values = {
                         "seq": seq_N,
                         "batch_id": batch_id,
                         "insured_card_id": insured_card_id,
                         }
-                    insured_card_batch_id = clv_insured_card_batch.create(values).id
+                    clv_insured_card_batch.create(values).id
 
                     values = {
                         "seq": seq_N,
                         "batch_id": batch_producao_id,
                         "insured_card_id": insured_card_id,
                         }
-                    insured_card_batch_id = clv_insured_card_batch.create(values).id
+                    clv_insured_card_batch.create(values).id
 
                 client.exec_workflow('clv_insured_mng', 'button_done', insured_mng.id)
 
-                insured_mng_browse_2 = clv_insured_mng.browse(\
-                    [('reg_number', '=', insured_mng.reg_number), 
+                insured_mng_browse_2 = clv_insured_mng.browse(
+                    args +
+                    [('reg_number', '=', insured_mng.reg_number),
                      ('insurance_client_id', '=', insured_mng.insurance_client_id.id),
                      ('state', '=', 'waiting'),
                      ])
@@ -1041,7 +1052,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                             "address_home_id": address_id,
                             }
                         clv_insured_mng.write(insured_mng_2.id, values)
-                        
+
                         if (insured_cat_id_dependente in insured_mng_2.category_ids.id) or \
                            (insured_cat_id_ascendente in insured_mng_2.category_ids.id):
 
@@ -1050,7 +1061,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
 
                             seq_N += 1
 
-                            if insured_mng_2.insured_id == False:
+                            if insured_mng_2.insured_id is not False:
 
                                 values = {
                                     "name": insured_mng_2.name,
@@ -1074,7 +1085,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                                     }
                                 clv_insured_mng.write(insured_mng_2.id, values)
 
-                            if insured_mng_2.insured_card_id == False:
+                            if insured_mng_2.insured_card_id is not False:
 
                                 values = {
                                     "name": insured_mng_2.crd_name,
@@ -1093,46 +1104,54 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                                     "batch_id": batch_client_id,
                                     "insured_card_id": insured_card_2_id,
                                     }
-                                insured_card_batch_id = clv_insured_card_batch.create(values).id
+                                clv_insured_card_batch.create(values).id
 
                                 values = {
                                     "seq": seq_N,
                                     "batch_id": batch_id,
                                     "insured_card_id": insured_card_2_id,
                                     }
-                                insured_card_batch_id = clv_insured_card_batch.create(values).id
+                                clv_insured_card_batch.create(values).id
 
                                 values = {
                                     "seq": seq_N,
                                     "batch_id": batch_producao_id,
                                     "insured_card_id": insured_card_2_id,
                                     }
-                                insured_card_batch_id = clv_insured_card_batch.create(values).id
+                                clv_insured_card_batch.create(values).id
 
                                 client.exec_workflow('clv_insured_mng', 'button_done', insured_mng_2.id)
 
             else:
 
-                insured_mng_browse_3 = clv_insured_mng.browse([('id', '=', insured_mng.id),])
+                insured_mng_browse_3 = clv_insured_mng.browse(args + [('id', '=', insured_mng.id), ])
 
                 if insured_mng_browse_3[0].state == 'waiting':
 
-                    insured_browse = clv_insured.browse(\
-                        [('reg_number', '=', insured_mng.reg_number), 
+                    insured_browse = clv_insured.browse(
+                        [('reg_number', '=', insured_mng.reg_number),
                          ('insurance_client_id', '=', insured_mng.insurance_client_id.id),
                          ])
+
+                    if insured_browse.id == []:
+                        set_tag += 1
+                        values = {
+                            'tag_ids': [(4, tag_id_TitularNaoEncontrado)],
+                            }
+                        clv_insured_mng.write(insured_mng.id, values)
+
                     for insured in insured_browse:
 
                         if insured_cat_id_titular in insured.category_ids.id:
 
                             print(0, insured.name)
 
-                            insured_card_browse = clv_insured_card.browse([('insured_id', '=', insured.id),])
+                            insured_card_browse = clv_insured_card.browse([('insured_id', '=', insured.id), ])
 
                             batch_id = get_batch_id(client,
-                                                    PREFIX + '-%0*d ' % (5, seq_N) + \
-                                                    insured_card_browse[0].name, 
-                                                    batch_cat_id_familiar, 
+                                                    PREFIX + '-%0*d ' % (5, seq_N) +
+                                                    insured_card_browse[0].name,
+                                                    batch_cat_id_familiar,
                                                     [(4, batch_client_id)])
 
                             values = {
@@ -1149,7 +1168,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
 
                                 seq_N += 1
 
-                                if insured_mng_2.insured_id == False:
+                                if insured_mng_2.insured_id is not False:
 
                                     values = {
                                         "name": insured_mng.name,
@@ -1173,7 +1192,7 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                                         }
                                     clv_insured_mng.write(insured_mng.id, values)
 
-                                if insured_mng_2.insured_card_id == False:
+                                if insured_mng_2.insured_card_id is not False:
 
                                     values = {
                                         "name": insured_mng.crd_name,
@@ -1192,25 +1211,26 @@ def clv_insured_mng_create_insured(client, seq_N, PREFIX, PRODUCTION_BATCH_NAME,
                                         "batch_id": batch_client_id,
                                         "insured_card_id": insured_card_2_id,
                                         }
-                                    insured_card_batch_id = clv_insured_card_batch.create(values).id
+                                    clv_insured_card_batch.create(values).id
 
                                     values = {
                                         "seq": seq_N,
                                         "batch_id": batch_id,
                                         "insured_card_id": insured_card_2_id,
                                         }
-                                    insured_card_batch_id = clv_insured_card_batch.create(values).id
+                                    clv_insured_card_batch.create(values).id
 
                                     values = {
                                         "seq": seq_N,
                                         "batch_id": batch_producao_id,
                                         "insured_card_id": insured_card_2_id,
                                         }
-                                    insured_card_batch_id = clv_insured_card_batch.create(values).id
+                                    clv_insured_card_batch.create(values).id
 
                                     client.exec_workflow('clv_insured_mng', 'button_done', insured_mng.id)
 
     print('--> i: ', i)
+    print('--> set_tag: ', set_tag)
 
 
 def clv_insured_updt_state_processing(client, args):
@@ -2839,6 +2859,178 @@ if __name__ == '__main__':
     # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
 
     # 10 ##########
+
+    # batch_args = [('state', '=', 'checking'),
+    #               ('name_category', '=', 'Grupo Familiar'),
+    #               ]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # batch_args = [('state', '=', 'checking'), ]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_done()...')
+    # clv_batch_updt_state_done(client, batch_args)
+
+    # card_args = [('state', '=', 'processing'), ]
+    # print('-->', client, card_args)
+    # print('--> Executing clv_insured_card_updt_state_active()...')
+    # clv_insured_card_updt_state_active(client, card_args)
+
+    # ########## 2016-04-19 #######################################
+
+    # # 01 ##########
+
+    # insured_mng_args = []
+    # print('-->', client, insured_mng_args)
+    # print('--> Executing clv_insured_mng_unlink()...')
+    # clv_insured_mng_unlink(client, insured_mng_args)
+
+    # # 02 ##########
+
+    # file_name = '/opt/openerp/biobox/data/PUB_20160418_01.txt'
+    # batch_name = 'PUB_20160418_01'
+    # insurance_client = 'PUB'
+    # if insurance_client == 'GSUL':
+    #     insurance_client_name = 'GSul - Serviços Administrativos'
+    #     insurance_T = 'GSUL - PLENO'
+    #     insurance_D = 'GSUL - COPAR 30'
+    #     insurance_A = 'GSUL - FLEX ACESSO'
+    # elif insurance_client == 'HVC':
+    #     insurance_client_name = 'HVC - Hospital Vera Cruz'
+    #     insurance_T = 'HVC - PLENO'
+    #     insurance_D = 'HVC - COPAR 25'
+    #     insurance_A = ''
+    # elif insurance_client == 'VCAS':
+    #     insurance_client_name = 'VCAS - Vera Cruz Associação de Saúde'
+    #     insurance_T = 'VCAS - PLENO'
+    #     insurance_D = 'VCAS - COPAR 25'
+    #     insurance_A = ''
+    # elif insurance_client == 'PUB':
+    #     insurance_client_name = 'PUB - Public Broker'
+    #     insurance_T = 'PUB - FLEX PARCEIRO'
+    #     insurance_D = 'PUB - FLEX ACESSO'
+    #     insurance_A = ''
+    # elif insurance_client == 'PUB-pl':
+    #     insurance_client_name = 'PUB - Public Broker'
+    #     insurance_T = 'PUB - PLENO'
+    #     insurance_D = ''
+    #     insurance_A = ''
+    # elif insurance_client == 'RMC':
+    #     insurance_client_name = 'RMC - Ressonância Magnética Campinas'
+    #     insurance_T = 'RMC - PLENO'
+    #     insurance_D = 'RMC - COPAR 25'
+    #     insurance_A = ''
+    # print('-->', client, batch_name, file_name, insurance_client,
+    #       insurance_client_name, insurance_T, insurance_D, insurance_A)
+    # print('--> Executing clv_insured_mng_import()...')
+    # clv_insured_mng_import(client, batch_name, file_name,
+    #                        insurance_client_name, insurance_T, insurance_D, insurance_A)
+
+    # # 03 ##########
+
+    # batch_name = 'PUB_20160418_01'
+    # insured_mng_args = [('batch_name', '=', batch_name), ]
+    # print('-->', client, insured_mng_args)
+    # print('--> Executing clv_insured_mng_check_crd_name()...')
+    # clv_insured_mng_check_crd_name(client, insured_mng_args)
+
+    # # 04 ##########
+
+    # batch_name = 'PUB_20160418_01'
+    # insured_mng_args = [('state', '=', 'draft'),
+    #                     ('batch_name', '=', batch_name),
+    #                     ]
+    # print('-->', client, insured_mng_args)
+    # print('--> Executing clv_insured_mng_check_insured()...')
+    # clv_insured_mng_check_insured(client, insured_mng_args)
+
+    # # 05 ##########
+
+    # batch_name = 'PUB_20160418_01'
+    # insured_mng_args = [('state', '=', 'draft'),
+    #                     ('batch_name', '=', batch_name),
+    #                     ]
+    # print('-->', client, insured_mng_args)
+    # print('--> Executing clv_insured_mng_updt_state_revised()...')
+    # clv_insured_mng_updt_state_revised(client, insured_mng_args)
+
+    # batch_name = 'PUB_20160418_01'
+    # insured_mng_args = [('batch_name', '=', batch_name), ]
+    # print('-->', client, insured_mng_args)
+    # print('--> Executing clv_insured_mng_updt_insured_code()...')
+    # clv_insured_mng_updt_insured_code(client, insured_mng_args)
+
+    # batch_name = 'PUB_20160418_01'
+    # insured_mng_args = [('batch_name', '=', batch_name), ]
+    # print('-->', client, insured_mng_args)
+    # print('--> Executing clv_insured_mng_updt_insured_crd_code()...')
+    # clv_insured_mng_updt_insured_crd_code(client, insured_mng_args)
+
+    # batch_name = 'PUB_20160418_01'
+    # insured_args = [('state', '=', 'revised'),
+    #                 ('batch_name', '=', batch_name),
+    #                 ]
+    # print('-->', client, insured_args)
+    # print('--> Executing clv_insured_mng_updt_state_waiting()...')
+    # clv_insured_mng_updt_state_waiting(client, insured_args)
+
+    # 06 ##########
+
+    batch_name = 'PUB_20160418_01'
+    insured_args = [('batch_name', '=', batch_name), ]
+    seq_N = 0
+    PREFIX = '2016-04-19'
+    PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    CLIENT_BATCH_NAME = batch_name
+    print('-->', client, insured_args, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+    print('--> Executing clv_insured_mng_create_insured()...')
+    clv_insured_mng_create_insured(client, insured_args, seq_N, PREFIX, PRODUCTION_BATCH_NAME, CLIENT_BATCH_NAME)
+
+    # 07 ##########
+
+    # PREFIX = '2016-04-19'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # batch_args = [('state', '=', 'draft'),
+    #               ('name', '=', PRODUCTION_BATCH_NAME),
+    #               ]
+    # print('-->', client)
+    # print('--> Executing clv_batch_updt_state_processing()...')
+    # clv_batch_updt_state_processing(client, batch_args)
+
+    # 08 ##########
+
+    # insured_card_args = [('state', '=', 'processing'), ]
+    # print('-->', client, insured_card_args)
+    # print('--> Executing clv_insured_updt_state_processing()...')
+    # clv_insured_updt_state_processing(client, insured_card_args)
+
+    # 09 ##########
+
+    # PREFIX = '2016-04-19'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/insured_card_producao_' + PREFIX + '.csv'
+    # print('-->', client, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_insured_card_export_producao()...')
+    # clv_insured_card_export_producao(client, file_path, PRODUCTION_BATCH_NAME)
+
+    # 10 ##########
+
+    # batch_args = [('state', '=', 'processing'), ]
+    # print('-->', client, batch_args)
+    # print('--> Executing clv_batch_updt_state_checking()...')
+    # clv_batch_updt_state_checking(client, batch_args)
+
+    # 11 ##########
+
+    # PREFIX = '2016-04-19'
+    # PRODUCTION_BATCH_NAME = PREFIX + ' Produção'
+    # file_path = '/opt/openerp/biobox/data/protocolo_produção_' + PREFIX + '.csv'
+    # print('-->', client, file_path, PRODUCTION_BATCH_NAME)
+    # print('--> Executing clv_batch_producao_export_protocolo()...')
+    # clv_batch_producao_export_protocolo(client, file_path, PRODUCTION_BATCH_NAME)
+
+    # 12 ##########
 
     # batch_args = [('state', '=', 'checking'),
     #               ('name_category', '=', 'Grupo Familiar'),
