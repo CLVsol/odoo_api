@@ -1,22 +1,23 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-################################################################################
-#                                                                              #
-# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol                  #
-#                                                                              #
-# This program is free software: you can redistribute it and/or modify         #
-# it under the terms of the GNU Affero General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or            #
-# (at your option) any later version.                                          #
-#                                                                              #
-# This program is distributed in the hope that it will be useful,              #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
-# GNU Affero General Public License for more details.                          #
-#                                                                              #
-# You should have received a copy of the GNU Affero General Public License     #
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
-################################################################################
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
 
 from __future__ import print_function
 
@@ -26,6 +27,8 @@ import csv
 from base import *
 import argparse
 import getpass
+
+from clv_insurance_client import *
 
 
 def get_insured_category_id(client, category_name):
@@ -157,6 +160,35 @@ def clv_insured_export_HVC(client, file_path, date_inclusion):
     file_insured.close()
 
     print('i: ', i)
+
+
+def clv_insured_updt_reg_number(client, client_name):
+
+    insurance_client_id = get_insurance_client_id(client, client_name)
+
+    clv_insured = client.model('clv_insured')
+    insured_browse = clv_insured.browse([('insurance_client_id', '=', insurance_client_id), ])
+
+    insured_count = 0
+    for insured in insured_browse:
+        insured_count += 1
+
+        reg_number = insured.reg_number
+
+        print(insured_count, reg_number, insured.name.encode("utf-8"))
+
+        if reg_number[0] == '0':
+            while reg_number[0] == '0':
+                reg_number = reg_number[1:]
+
+            print('>>>>>', reg_number)
+
+            values = {
+                "reg_number": reg_number,
+                }
+            clv_insured.write(insured.id, values)
+
+    print('insured_count: ', insured_count)
 
 
 def get_arguments():
@@ -294,6 +326,8 @@ if __name__ == '__main__':
     # print('-->', client, file_path, date_inclusion)
     # print('--> Executing clv_insured_export_HVC()...')
     # clv_insured_export_HVC(client, file_path, date_inclusion)
+
+    # ########## 2016-04-20 #########################################
 
     print('--> clv_insured.py')
     print('--> Execution time:', secondsToStr(time() - start))
