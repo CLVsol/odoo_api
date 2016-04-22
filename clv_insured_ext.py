@@ -194,6 +194,8 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
             Cod_Contrato = [2, 7, 6, '001615']
         if insurance.encode("utf-8") == 'PUB - PLENO':
             Cod_Contrato = [2, 7, 6, '001583']
+        if insurance.encode("utf-8") == 'PUB - FLEX ACESSO':
+            Cod_Contrato = [2, 7, 6, '001570']
 
         if insurance == 'RMC - PLENO':
             Cod_Contrato = [2, 7, 6, '001583']
@@ -225,7 +227,7 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
 
         birthday = re.sub('[^0-9]', '', birthday)
         d = [0, 4, 6, 8]
-        dd = [birthday[d[j-1]: d[j]] for j in range(1, len(d))]
+        dd = [birthday[d[j - 1]: d[j]] for j in range(1, len(d))]
         birthday = '%s%s%s' % (dd[2], dd[1], dd[0])
         Data_Nascimento = [14, 230, 8, birthday]
 
@@ -271,6 +273,8 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
         if insurance.encode("utf-8") == 'PUB - FLEX PARCEIRO':
             LCS = [24, 334, 15, '000000000025000']
         if insurance.encode("utf-8") == 'PUB - PLENO':
+            LCS = [24, 334, 15, '000000000025000']
+        if insurance.encode("utf-8") == 'PUB - FLEX ACESSO':
             LCS = [24, 334, 15, '000000000025000']
 
         if insurance == 'RMC - PLENO':
@@ -320,9 +324,8 @@ def clv_insured_ext_syncronize_orizon(client, file_name):
         # text_file.write(''.join(line) + '\n')
         text_file.write(''.join(line) + '\r\n')
 
-        values = {
-            'processing_synchronization': True,
-            }
+        values = {'processing_synchronization': True,
+                  }
         clv_insured_ext.write(insured_ext.id, values)
 
     text_file.close()
