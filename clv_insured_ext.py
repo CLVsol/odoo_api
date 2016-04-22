@@ -1,22 +1,23 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-################################################################################
-#                                                                              #
-# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol                  #
-#                                                                              #
-# This program is free software: you can redistribute it and/or modify         #
-# it under the terms of the GNU Affero General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or            #
-# (at your option) any later version.                                          #
-#                                                                              #
-# This program is distributed in the hope that it will be useful,              #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
-# GNU Affero General Public License for more details.                          #
-#                                                                              #
-# You should have received a copy of the GNU Affero General Public License     #
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
-################################################################################
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
 
 from __future__ import print_function
 
@@ -921,6 +922,23 @@ if __name__ == '__main__':
     # print('-->', client)
     # file_name = '/opt/openerp/orizon/USU1865_20160412_160401_I.TXT'
     # date_synchronization = '2016-04-12 21:00:00'
+    # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
+    # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
+
+    # ##### 2016-04-22 ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_insured_ext_updt_from_insured_card_orizon()...')
+    # clv_insured_ext_updt_from_insured_card_orizon(client)
+
+    # print('-->', client)
+    # file_name = '/opt/openerp/orizon/USU1865_20160422_160402_I.TXT'
+    # print('--> Executing clv_insured_ext_syncronize_orizon(' + file_name + ')...')
+    # clv_insured_ext_syncronize_orizon(client, file_name)
+
+    # print('-->', client)
+    # file_name = '/opt/openerp/orizon/USU1865_20160422_160402_I.TXT'
+    # date_synchronization = '2016-04-22 21:00:00'
     # print('--> Executing clv_insured_ext_sync_confirm_orizon() for "' + file_name + '"...')
     # clv_insured_ext_sync_confirm_orizon(client, file_name, date_synchronization)
 
