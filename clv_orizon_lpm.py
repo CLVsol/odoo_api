@@ -1,22 +1,23 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-################################################################################
-#                                                                              #
-# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol                  #
-#                                                                              #
-# This program is free software: you can redistribute it and/or modify         #
-# it under the terms of the GNU Affero General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or            #
-# (at your option) any later version.                                          #
-#                                                                              #
-# This program is distributed in the hope that it will be useful,              #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
-# GNU Affero General Public License for more details.                          #
-#                                                                              #
-# You should have received a copy of the GNU Affero General Public License     #
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
-################################################################################
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
 
 from __future__ import print_function
 
@@ -385,6 +386,20 @@ if __name__ == '__main__':
     # list_name = 'LPM_1603'
     # previous_list_name = 'LPM_1601'
     # file_name = '/opt/openerp/orizon_lpm/LPM_1603.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # ########## 2016-04-26 ########################
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1604.csv'
+    # from_ = 'LPM_1604'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1604'
+    # previous_list_name = 'LPM_1603'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1604.csv'
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
 
