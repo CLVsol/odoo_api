@@ -1,22 +1,23 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-################################################################################
-#                                                                              #
-# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol                  #
-#                                                                              #
-# This program is free software: you can redistribute it and/or modify         #
-# it under the terms of the GNU Affero General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or            #
-# (at your option) any later version.                                          #
-#                                                                              #
-# This program is distributed in the hope that it will be useful,              #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
-# GNU Affero General Public License for more details.                          #
-#                                                                              #
-# You should have received a copy of the GNU Affero General Public License     #
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.        #
-################################################################################
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+# Copyright (C) 2013-Today  Carlos Eduardo Vercelino - CLVsol
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
 
 from __future__ import print_function
 
@@ -38,7 +39,7 @@ def get_medicament_list_id(client, list_name):
     if medicament_list_id == []:
         values = {
             'name': list_name,
-            }
+        }
         medicament_list_id = clv_medicament_list.create(values).id
     else:
         medicament_list_id = medicament_list_id[0]
@@ -59,7 +60,7 @@ def get_medicament_list_version_id(client, list_id, list_version_name):
         values = {
             'list_id': list_id,
             'name': list_version_name,
-            }
+        }
         medicament_list_version_id = clv_medicament_list_version.create(values).id
     else:
         medicament_list_version_id = medicament_list_version_id[0]
@@ -129,17 +130,17 @@ def clv_medicament_list_updt_medicament_orizon(client, list_name, list_version_n
         i += 1
         print(i, medicament_list_item)
 
-        if medicament_list_item.medicament_ref != False:
+        if medicament_list_item.medicament_ref is not False:
             clv_medicament = client.model('clv_medicament')
-            medicament_browse = clv_medicament.browse(\
-                [('orizon_lpm_id', '=', medicament_list_item.medicament_ref.id),])
+            medicament_browse = clv_medicament.browse(
+                [('orizon_lpm_id', '=', medicament_list_item.medicament_ref.id), ])
             print('>>>>>', medicament_browse)
 
             if medicament_browse.id != []:
                 found += 1
                 values = {
                     'medicament_id': medicament_browse[0].id,
-                    }
+                }
                 clv_medicament_list_item.write(medicament_list_item.id, values)
             else:
                 not_found += 1
@@ -177,7 +178,7 @@ def clv_medicament_list_clear_subsidy_orizon(client, list_name, list_version_nam
 
         values = {
             'subsidy': 0.0,
-            }
+        }
         clv_medicament_list_item.write(medicament_list_item.id, values)
 
     print('--> i: ', i)
@@ -233,7 +234,7 @@ def clv_medicament_list_set_subsidy_orizon(client, infile_name, list_name, list_
             found += 1
             values = {
                 'subsidy': 100.0,
-                }
+            }
             clv_medicament_list_item.write(medicament_list_item_id[0], values)
         else:
             not_found += 1
@@ -445,7 +446,97 @@ def clv_medicament_list_include_orizon(client, file_name, list_name, list_versio
                 'order': orizon_lpm_found,
                 'discount': Desconto,
                 'subsidy': Reembolso,
-                }
+            }
+            medicament_list_item_id = clv_medicament_list_item.create(values).id
+            print('>>>>>>>>>>', medicament_list_item_id)
+
+        else:
+            orizon_lpm_not_found += 1
+
+        rownum += 1
+
+    f.close()
+
+    print('rownum: ', rownum - 1)
+    print('orizon_lpm_found: ', orizon_lpm_found)
+    print('orizon_lpm_not_found: ', orizon_lpm_not_found)
+    print('medicament_found: ', medicament_found)
+    print('medicament_not_found: ', medicament_not_found)
+
+
+def clv_medicament_list_include_orizon_2(client, file_name, list_name, list_version_name):
+
+    list_id = get_medicament_list_id(client, list_name)
+    list_version_id = get_medicament_list_version_id(client, list_id, list_version_name)
+
+    delimiter_char = ';'
+
+    clv_orizon_lpm = client.model('clv_orizon_lpm')
+    clv_medicament = client.model('clv_medicament')
+    clv_medicament_list_item = client.model('clv_medicament_list.item')
+
+    f = open(file_name, "rb")
+    r = csv.reader(f, delimiter=delimiter_char)
+    rownum = 0
+    orizon_lpm_found = 0
+    orizon_lpm_not_found = 0
+    medicament_found = 0
+    medicament_not_found = 0
+    for row in r:
+
+        if rownum == 0:
+            rownum += 1
+            continue
+
+        i = autoIncrement(0, 1)
+
+        Cod_Prod = row[i.next()]
+        Laboratorio = row[i.next()]
+        Produto = row[i.next()]
+        Apresentacao_Do_Produto = row[i.next()]
+        EAN_Principal = row[i.next()]
+        Preco_Fabrica = row[i.next()].replace(",", ".")
+        PMC = row[i.next()].replace(",", ".")
+        Desconto = row[i.next()].replace(",", ".")
+        Preco_Venda = row[i.next()].replace(",", ".")
+        Reembolso = row[i.next()]
+        if Reembolso == '1':
+            Reembolso = '100.0'
+        Categoria = row[i.next()]
+        Sub_Categoria = row[i.next()]
+        Classificacao = row[i.next()]
+        Sub_Classificacao = row[i.next()]
+        Descricao = row[i.next()]
+        Classe_Terapeutica = row[i.next()]
+        Sub_Classe_Terapeutica = row[i.next()]
+        Principio_Ativo = row[i.next()]
+
+        print(rownum, Cod_Prod, Apresentacao_Do_Produto)
+
+        orizon_lpm_browse = clv_orizon_lpm.browse([('cod_prod', '=', Cod_Prod), ])
+        if len(orizon_lpm_browse) == 1:
+            orizon_lpm_found += 1
+            orizon_lpm_id = orizon_lpm_browse[0].id
+            print('>>>>>', orizon_lpm_id)
+
+            medicament_browse = clv_medicament.browse([('orizon_lpm_id', '=', orizon_lpm_id), ])
+            medicament_id = False
+            if len(medicament_browse) == 1:
+                medicament_found += 1
+                medicament_id = medicament_browse[0].id
+                print('>>>>>', medicament_id)
+
+            else:
+                medicament_not_found += 1
+
+            values = {
+                'list_version_id': list_version_id,
+                'medicament_id': medicament_id,
+                'medicament_ref': 'clv_orizon_lpm,' + str(orizon_lpm_id),
+                'order': orizon_lpm_found,
+                'discount': Desconto,
+                'subsidy': Reembolso,
+            }
             medicament_list_item_id = clv_medicament_list_item.create(values).id
             print('>>>>>>>>>>', medicament_list_item_id)
 
@@ -599,7 +690,7 @@ def clv_medicament_list_updt_medicament_orizon_2(client, medicament_list, medica
             print('>>>>>', found, medicament_browse[0].name.encode('utf-8'))
             values = {
                 'medicament_id': medicament_browse[0].id,
-                }
+            }
             clv_medicament_list_item.write(medicament_list_item.id, values)
         else:
             not_found += 1
@@ -665,7 +756,7 @@ def clv_medicament_list_import_orizon(client, file_path, list_name, list_version
                 'order': orizon_lpm_found,
                 'discount': Desconto,
                 'subsidy': Reembolso,
-                }
+            }
             medicament_list_item_id = clv_medicament_list_item.create(values).id
             print('>>>>>>>>>>', medicament_list_item_id)
 
@@ -871,6 +962,15 @@ if __name__ == '__main__':
     # print('-->', client, file_path, list_name, list_version_name)
     # print('--> Executing clv_medicament_list_import_orizon()...')
     # clv_medicament_list_import_orizon(client, file_path, list_name, list_version_name)
+
+    # ########## 2016-04-28 ##########################################
+
+    # file_name = '/opt/openerp/orizon_lpm/Lista_483-1604_0_5k.csv'
+    # list_name = 'Orizon 483 (0,5k)'
+    # list_version_name = '1604'
+    # print('-->', client, file_name, list_name, list_version_name)
+    # print('--> Executing clv_medicament_list_include_orizon_2()...')
+    # clv_medicament_list_include_orizon_2(client, file_name, list_name, list_version_name)
 
     print('--> clv_medicament_list.py')
     print('--> Execution time:', secondsToStr(time() - start))
