@@ -162,6 +162,63 @@ def clv_insured_export_HVC(client, file_path, date_inclusion):
     print('i: ', i)
 
 
+def clv_insured_export_RMC(client, file_path, date_inclusion):
+
+    clv_insurance_client = client.model('clv_insurance_client')
+    insurance_client_browse = clv_insurance_client.browse(
+        [('name', '=', 'RMC - Ressonância Magnética Campinas'), ])
+    client_id_RMC = insurance_client_browse[0].id
+
+    headings_insured = ['no',
+                        'name', 'code',
+                        'birthday', 'gender',
+                        'insured_category',
+                        'insurance_client', 'reg_number',
+                        'insurance',
+                        'state',
+                        'date_activation',
+                        ]
+    file_insured = open(file_path, 'wb')
+    writer_insured = csv.writer(file_insured, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    writer_insured.writerow(headings_insured)
+
+    clv_insured = client.model('clv_insured')
+    insured_browse = clv_insured.browse([('state', '!=', 'canceled'),
+                                         ('date_inclusion', '<=', date_inclusion),
+                                         ('insurance_client_id', '=', client_id_RMC), ])
+
+    i = 0
+    for insured in insured_browse:
+        i += 1
+
+        name = insured.name.encode("utf-8")
+        code = insured.code
+        birthday = insured.birthday
+        gender = insured.gender
+        insured_category = insured.category_ids[0].name.encode("utf-8")
+        insurance_client = insured.insurance_client_id.name.encode("utf-8")
+        reg_number = insured.reg_number
+        insurance = insured.insurance_id.name.encode("utf-8")
+        state = insured.state
+        date_inclusion = insured.date_inclusion
+
+        print(i, insured.name.encode("utf-8"))
+        row_insured = [i,
+                       name, code,
+                       birthday, gender,
+                       insured_category,
+                       insurance_client, reg_number,
+                       insurance,
+                       state,
+                       date_inclusion,
+                       ]
+        writer_insured.writerow(row_insured)
+
+    file_insured.close()
+
+    print('i: ', i)
+
+
 def clv_insured_updt_reg_number(client, client_name):
 
     insurance_client_id = get_insurance_client_id(client, client_name)
@@ -327,7 +384,25 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_export_HVC()...')
     # clv_insured_export_HVC(client, file_path, date_inclusion)
 
-    # ########## 2016-04-20 #########################################
+    # 2016-05-03 #########################################
+
+    # file_path = '/opt/openerp/biobox/data/insured_VCAS_2016_04_30.csv'
+    # date_inclusion = '2016-04-30'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_VCAS()...')
+    # clv_insured_export_VCAS(client, file_path, date_inclusion)
+
+    # file_path = '/opt/openerp/biobox/data/insured_HVC_2016_04_30.csv'
+    # date_inclusion = '2016-04-30'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_HVC()...')
+    # clv_insured_export_HVC(client, file_path, date_inclusion)
+
+    # file_path = '/opt/openerp/biobox/data/insured_RMC_2016_04_30.csv'
+    # date_inclusion = '2016-04-30'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_RMC()...')
+    # clv_insured_export_RMC(client, file_path, date_inclusion)
 
     print('--> clv_insured.py')
     print('--> Execution time:', secondsToStr(time() - start))
