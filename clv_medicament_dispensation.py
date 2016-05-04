@@ -233,7 +233,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
                              'med_abc', 'cod_prod', 'insurance_client', 'reg_number', 'insured_name', 'category',
                              'titular_name',
                              'active_component', 'active_component_code', 'concentration', 'pres_form', 'pres_form_2',
-                             'birthday', 'age', 'insured_card_name'
+                             'birthday', 'age', 'insured_card_name', 'insurance'
                              ]
     file_dispensation = open(file_path, 'wb')
     writer_dispensation = csv.writer(file_dispensation, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
@@ -287,6 +287,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
             cod_prod = dispensation.medicament_ref.cod_prod
         else:
             cod_prod = False
+        insurance = dispensation.insured_card_id.insured_id.insurance_id.name.encode("utf-8")
         insurance_client = dispensation.insured_card_id.insured_id.insurance_client_id.name.encode("utf-8")
         reg_number = dispensation.insured_card_id.insured_id.reg_number
         insured_name = dispensation.insured_card_id.insured_id.name.encode("utf-8")
@@ -324,7 +325,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
               refund_price, total_refund_price, insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
               insurance_client, reg_number, insured_name, category_name, titular_name,
               active_component, active_component_code, concentration, pres_form, pres_form_2,
-              birthday, age, insured_card_name)
+              birthday, age, insured_card_name, insurance)
 
         row_dispensation = [i, prescription, template, name, dispensation_date, medicament_code, medicament,
                             medicament_ref,
@@ -336,7 +337,7 @@ def clv_medicament_dispensation_export(client, file_path, start_date, end_date):
                             insured_card, state, prescriber, pharmacy, med_abc, cod_prod,
                             insurance_client, reg_number, insured_name, category_name, titular_name,
                             active_component, active_component_code, concentration, pres_form, pres_form_2,
-                            birthday, age, insured_card_name
+                            birthday, age, insured_card_name, insurance
                             ]
         writer_dispensation.writerow(row_dispensation)
 
@@ -707,6 +708,27 @@ if __name__ == '__main__':
     # file_path = "/opt/openerp/biobox/data/bb_dispensation_2016_03_21_a_2016_04_20.csv"
     # start_date = '2016-03-21'
     # end_date = '2016-04-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### 2016-05-04 ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2016_04_01_a_2016_04_30.csv"
+    # start_date = '2016-04-01'
+    # end_date = '2016-04-30'
     # print('-->', client, file_path, start_date, end_date)
     # print('--> Executing clv_medicament_dispensation_export()...')
     # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
