@@ -404,5 +404,25 @@ if __name__ == '__main__':
     # print('--> Executing clv_insured_export_RMC()...')
     # clv_insured_export_RMC(client, file_path, date_inclusion)
 
+    # 2016-06-02 #########################################
+
+    # file_path = '/opt/openerp/biobox/data/insured_VCAS_2016_05_31.csv'
+    # date_inclusion = '2016-05-31'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_VCAS()...')
+    # clv_insured_export_VCAS(client, file_path, date_inclusion)
+
+    # file_path = '/opt/openerp/biobox/data/insured_HVC_2016_05_31.csv'
+    # date_inclusion = '2016-05-31'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_HVC()...')
+    # clv_insured_export_HVC(client, file_path, date_inclusion)
+
+    # file_path = '/opt/openerp/biobox/data/insured_RMC_2016_05_31.csv'
+    # date_inclusion = '2016-05-31'
+    # print('-->', client, file_path, date_inclusion)
+    # print('--> Executing clv_insured_export_RMC()...')
+    # clv_insured_export_RMC(client, file_path, date_inclusion)
+
     print('--> clv_insured.py')
     print('--> Execution time:', secondsToStr(time() - start))
