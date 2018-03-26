@@ -417,5 +417,105 @@ if __name__ == '__main__':
     # print('-->', client, file_name, list_name, previous_list_name)
     # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
 
+    # ########## 2017-11-25 ########################
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1704.csv'
+    # from_ = 'LPM_1704'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1704'
+    # previous_list_name = 'LPM_1703'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1704.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1705.csv'
+    # from_ = 'LPM_1705'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1705'
+    # previous_list_name = 'LPM_1704'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1705.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1706.csv'
+    # from_ = 'LPM_1706'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1706'
+    # previous_list_name = 'LPM_1705'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1706.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1707.csv'
+    # from_ = 'LPM_1707'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1707'
+    # previous_list_name = 'LPM_1706'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1707.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1708.csv'
+    # from_ = 'LPM_1708'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1708'
+    # previous_list_name = 'LPM_1707'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1708.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1709.csv'
+    # from_ = 'LPM_1709'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1709'
+    # previous_list_name = 'LPM_1708'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1709.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1710.csv'
+    # from_ = 'LPM_1710'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1710'
+    # previous_list_name = 'LPM_1709'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1710.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
+    # ########## 2018-01-31 ########################
+
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1801.csv'
+    # from_ = 'LPM_1801'
+    # print('-->', client, file_name, from_)
+    # print('--> Executing clv_orizon_lpm_import_new()...')
+    # clv_orizon_lpm_import_new(client, file_name, from_)
+
+    # list_name = 'LPM_1801'
+    # previous_list_name = 'LPM_1710'
+    # file_name = '/opt/openerp/orizon_lpm/LPM_1801.csv'
+    # print('-->', client, file_name, list_name, previous_list_name)
+    # clv_orizon_lpm_list_import_new(client, file_name, list_name, previous_list_name)
+
     print('--> clv_orizon_lpm.py')
     print('--> Execution time:', secondsToStr(time() - start))
