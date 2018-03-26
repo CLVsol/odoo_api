@@ -353,23 +353,26 @@ def clv_medicament_dispensation_ext_updt_medicament(client):
     for dispensation_ext in dispensation_ext_browse:
 
         i += 1
-        print(i, dispensation_ext.name, dispensation_ext.medicament_ref.name.encode('utf-8'))
+        if dispensation_ext.medicament_ref is not False:
+            print(i, dispensation_ext.name, dispensation_ext.medicament_ref.name.encode('utf-8'))
 
-        clv_medicament = client.model('clv_medicament')
-        medicament_browse = clv_medicament.browse(
-            [('orizon_lpm_id', '=', dispensation_ext.medicament_ref.id), ])
-        medicament_id = medicament_browse.id
+            clv_medicament = client.model('clv_medicament')
+            medicament_browse = clv_medicament.browse(
+                [('orizon_lpm_id', '=', dispensation_ext.medicament_ref.id), ])
+            medicament_id = medicament_browse.id
 
-        if medicament_id != []:
-            found += 1
+            if medicament_id != []:
+                found += 1
 
-            values = {
-                'medicament': medicament_id[0],
+                values = {
+                    'medicament': medicament_id[0],
                 }
-            clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
+                clv_medicament_dispensation_ext.write(dispensation_ext.id, values)
 
+            else:
+                not_found += 1
         else:
-            not_found += 1
+            print(i, dispensation_ext.name, dispensation_ext.medicament_ref)
 
     print('i: ', i)
     print('found: ', found)
@@ -1260,5 +1263,440 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
     # clv_medicament_dispensation_ext_updt_dispensation(client)
 
+    # ##### (2017-11-25) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_21-05-2017_ate_31-05-2017.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2017-11-26a) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_01-06-2017_ate_30-06-2017.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2017-11-26b) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_01-07-2017_ate_31-07-2017.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2017-11-26c) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_01-08-2017_ate_31-08-2017.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2017-11-26d) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_01-09-2017_ate_30-09-2017.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2017-11-27a) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Anaiitico_01-10_ate_31-10.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2017-12-06) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_01-11_ate_30-11.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2017-12-20) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_01-12_ate_19-12.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2018-02-02) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_01-01_ate_31-01.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2018-02-22) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_2018-02-01_ate_2018-02-20.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # file_name = '/opt/openerp/orizon/1898_Desconto_em_Folha_Analitico_2018-02-01_ate_2018-02-20.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2018-03-01) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_2018-02-21_ate_2018-02-28.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
+    # ##### (2018-03-21) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_2018-03-01_ate_2018-03-20.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
+
+    # file_name = '/opt/openerp/orizon/1897_Desconto_em_Folha_Analitico_01-01-2017_ate_30-09-2017.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # file_name = '/opt/openerp/orizon/1898_Desconto_em_Folha_Analitico_01-01-2017_ate_30-09-2017.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
