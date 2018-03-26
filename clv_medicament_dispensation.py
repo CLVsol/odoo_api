@@ -154,7 +154,8 @@ def clv_medicament_dispensation_updt_mrp(client):
     for dispensation in dispensation_browse:
 
         i += 1
-        print(i, dispensation.name, dispensation.medicament, dispensation.medicament.abcfarma_id)
+        # print(i, dispensation.name, dispensation.medicament, dispensation.medicament.abcfarma_id)
+        print(i, dispensation.name)
 
         if dispensation.medicament.abcfarma_id is not False:
             found += 1
@@ -843,6 +844,321 @@ if __name__ == '__main__':
     # file_path = "/opt/openerp/biobox/data/bb_dispensation_2016_05_21_a_2016_06_20.csv"
     # start_date = '2016-05-21'
     # end_date = '2016-06-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### 2017-11-25 ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_04_21_a_2017_05_20.csv"
+    # start_date = '2017-04-21'
+    # end_date = '2017-05-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_05_01_a_2017_05_31.csv"
+    # start_date = '2017-05-01'
+    # end_date = '2017-05-31'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### 2017-11-26a ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_05_21_a_2017_06_20.csv"
+    # start_date = '2017-05-21'
+    # end_date = '2017-06-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_06_01_a_2017_06_30.csv"
+    # start_date = '2017-06-01'
+    # end_date = '2017-06-30'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### 2017-11-26b ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_06_21_a_2017_07_20.csv"
+    # start_date = '2017-06-21'
+    # end_date = '2017-07-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_07_01_a_2017_07_31.csv"
+    # start_date = '2017-07-01'
+    # end_date = '2017-07-31'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### 2017-11-26c ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_07_21_a_2017_08_20.csv"
+    # start_date = '2017-07-21'
+    # end_date = '2017-08-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_08_01_a_2017_08_31.csv"
+    # start_date = '2017-08-01'
+    # end_date = '2017-08-31'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### 2017-11-26d ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_08_21_a_2017_09_20.csv"
+    # start_date = '2017-08-21'
+    # end_date = '2017-09-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_09_01_a_2017_09_30.csv"
+    # start_date = '2017-09-01'
+    # end_date = '2017-09-30'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### 2017-12-05a ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_09_21_a_2017_10_20.csv"
+    # start_date = '2017-09-21'
+    # end_date = '2017-10-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_10_01_a_2017_10_31.csv"
+    # start_date = '2017-10-01'
+    # end_date = '2017-10-31'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### (2017-12-08) ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_10_21_a_2017_11_20.csv"
+    # start_date = '2017-10-21'
+    # end_date = '2017-11-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_11_01_a_2017_11_30.csv"
+    # start_date = '2017-11-01'
+    # end_date = '2017-11-30'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### (2017-12-20) ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_11_21_a_2017_12_19.csv"
+    # start_date = '2017-11-21'
+    # end_date = '2017-12-19'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### (2018-02-02) ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_12_01_a_2017_12_31.csv"
+    # start_date = '2017-12-01'
+    # end_date = '2017-12-31'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2017_12_20_a_2018_01_20.csv"
+    # start_date = '2017-12-20'
+    # end_date = '2018-01-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2018_01_01_a_2018_01_31.csv"
+    # start_date = '2018-01-01'
+    # end_date = '2018-01-31'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### (2018-02-22) ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2018_01_21_a_2018_02_20.csv"
+    # start_date = '2018-01-21'
+    # end_date = '2018-02-20'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### (2018-03-01) ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2018_02_01_a_2018_02_28.csv"
+    # start_date = '2018-02-01'
+    # end_date = '2018-02-28'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
+    # ##### (2018-03-21) ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2018_02_21_a_2018_03_20.csv"
+    # start_date = '2018-02-21'
+    # end_date = '2018-03-20'
     # print('-->', client, file_path, start_date, end_date)
     # print('--> Executing clv_medicament_dispensation_export()...')
     # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
