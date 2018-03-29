@@ -587,12 +587,19 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_export()...')
     # clv_medicament_export(client, file_path)
 
-    # ########## 2018-01-31 ########################
+    # # ########## 2018-01-31 ########################
 
-    file_path = '/opt/openerp/biobox/data/medicament_2018_01_31.csv'
-    print('-->', client, file_path)
-    print('--> Executing clv_medicament_export()...')
-    clv_medicament_export(client, file_path)
+    # file_path = '/opt/openerp/biobox/data/medicament_2018_01_31.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_medicament_export()...')
+    # clv_medicament_export(client, file_path)
+
+    # ########## 2018-03-29 ########################
+
+    # file_path = '/opt/openerp/biobox/data/medicament_2018_03_29.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_medicament_export()...')
+    # clv_medicament_export(client, file_path)
 
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
