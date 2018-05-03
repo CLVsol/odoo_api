@@ -1226,5 +1226,14 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_dispensation_export()...')
     # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
 
+    # ##### (2018-05-03) ######################################
+
+    file_path = "/opt/openerp/biobox/data/bb_dispensation_2018_04_01_a_2018_04_30.csv"
+    start_date = '2018-04-01'
+    end_date = '2018-04-30'
+    print('-->', client, file_path, start_date, end_date)
+    print('--> Executing clv_medicament_dispensation_export()...')
+    clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
