@@ -1863,6 +1863,41 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
     # clv_medicament_dispensation_ext_updt_dispensation(client)
 
+    # ##### (2018-06-22) ######################################
+
+    # file_name = '/opt/openerp/orizon/1865_Desconto_em_Folha_Analitico_2018-06-01_ate_2018-06-20.csv'
+    # print('-->', client, file_name)
+    # print('--> Executing clv_medicament_dispensation_ext_import_orizon()...')
+    # clv_medicament_dispensation_ext_import_orizon(client, file_name)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_name()...')
+    # clv_medicament_dispensation_ext_updt_name(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_pharmacy()...')
+    # clv_medicament_dispensation_ext_updt_pharmacy(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_prescriber()...')
+    # clv_medicament_dispensation_ext_updt_prescriber(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_insured_card()...')
+    # clv_medicament_dispensation_ext_updt_insured_card(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament_ref_orizon()...')
+    # clv_medicament_dispensation_ext_updt_medicament_ref_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_medicament()...')
+    # clv_medicament_dispensation_ext_updt_medicament(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_ext_updt_dispensation()...')
+    # clv_medicament_dispensation_ext_updt_dispensation(client)
+
     print('--> clv_medicament_dispensation_ext.py')
     print('--> Execution time:', secondsToStr(time() - start))
 
