@@ -1676,5 +1676,26 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_dispensation_export()...')
     # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
 
+    # ##### (2019-04-02) ######################################
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_import_dispensation_ext_orizon()...')
+    # clv_medicament_dispensation_import_dispensation_ext_orizon(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_mrp()...')
+    # clv_medicament_dispensation_updt_mrp(client)
+
+    # print('-->', client)
+    # print('--> Executing clv_medicament_dispensation_updt_refund_price()...')
+    # clv_medicament_dispensation_updt_refund_price(client)
+
+    # file_path = "/opt/openerp/biobox/data/bb_dispensation_2019_03_01_a_2019_03_31.csv"
+    # start_date = '2019-03-01'
+    # end_date = '2019-03-31'
+    # print('-->', client, file_path, start_date, end_date)
+    # print('--> Executing clv_medicament_dispensation_export()...')
+    # clv_medicament_dispensation_export(client, file_path, start_date, end_date)
+
     print('--> clv_medicament_dispensation.py')
     print('--> Execution time:', secondsToStr(time() - start))
