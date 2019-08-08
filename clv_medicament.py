@@ -601,5 +601,12 @@ if __name__ == '__main__':
     # print('--> Executing clv_medicament_export()...')
     # clv_medicament_export(client, file_path)
 
+    # ########## 2019-08-08 ########################
+
+    # file_path = '/opt/openerp/biobox/data/medicament_2019_08_08.csv'
+    # print('-->', client, file_path)
+    # print('--> Executing clv_medicament_export()...')
+    # clv_medicament_export(client, file_path)
+
     print('--> clv_medicament.py')
     print('--> Execution time:', secondsToStr(time() - start))
